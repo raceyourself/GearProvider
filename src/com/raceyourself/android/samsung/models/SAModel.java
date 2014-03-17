@@ -26,61 +26,27 @@
 *-------------------------------------------------------------------------------
 *            |                 |
 ==============================================================================*/
-package com.raceyourself.android.samsung;
+package com.raceyourself.android.samsung.models;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public abstract class SAModel {
 
-	public static final String GPS_STATUS_REQ = "gallery-thumbnail-req";
-	public static final String GPS_STATUS_RESP = "gallery-thumbnail-rsp";
-	public static final String START_TRACKING_REQ = "gallery-image-req";
-	public static final String GPS_POSITION_DATA = "gallery-image-req";
-	public static final String STOP_TRACKING_REQ = "gallery-image-rsp";
-	
-	public static final String MSG_ID = "msgId";
-	public static final String COUNT = "count";
-    public static final String LIST = "list";
-    public static final String REASON = "reason";
-    public static final String RESULT = "result";
-	
-    String mMessgaeId = "";
-    String mResult = "";
-    int mReason = 0;
-    int mCount = 0;
+    public static final String MESSAGE_TYPE = "message-type";
+	public static final String GPS_STATUS_REQ = "gps-status-req";
+	public static final String GPS_STATUS_RESP = "gps-status-resp";
+	public static final String GPS_POSITION_DATA = "gps-position-data";
+	public static final String START_TRACKING_REQ = "start_tracking-req";
+	public static final String STOP_TRACKING_REQ = "stop-tracking-req";
 	
 	public JSONObject toJSON() throws JSONException {
         JSONObject json = new JSONObject();
-        json.put(SAModel.MSG_ID, mMessgaeId);
-        json.put(RESULT, mResult);
-        json.put(REASON, mReason);
-        json.put(COUNT, mCount);
+        json.put(MESSAGE_TYPE, getMessageType());
         return json;
     }
 
-    public void fromJSON(JSONObject json) throws JSONException {
-        mMessgaeId = json.getString(SAModel.MSG_ID);
-        mResult = json.getString(RESULT);
-        mReason = json.getInt(REASON);
-        mCount = json.getInt(COUNT);
-    }
-
-    public String getMessageIdentifier() {
-        return mMessgaeId;
-    }
-
-    public int getMsgCount() {
-        return mCount;
-    }
-
-    public String getResult() {
-        return mResult;
-    }
-
-    public int getReason() {
-        return mReason;
-    }
+    public abstract void fromJSON(JSONObject json) throws JSONException;
     
     public abstract String getMessageType();
 
