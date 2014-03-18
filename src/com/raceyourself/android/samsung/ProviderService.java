@@ -55,9 +55,9 @@ import com.samsung.android.sdk.accessory.SASocket;
  * @author s.amit
  *
  */
-public class RaceYourselfSamsungProvider extends SAAgent implements GPSTracker.PositionListener {
+public class ProviderService extends SAAgent implements GPSTracker.PositionListener {
 	
-    public static final String TAG = "SmartViewProviderService";
+    public static final String TAG = "RaceYourselfProvider";
     public final int DEFAULT_CHANNEL_ID = 104;
 
 	private final IBinder mBinder = new LocalBinder();
@@ -69,8 +69,8 @@ public class RaceYourselfSamsungProvider extends SAAgent implements GPSTracker.P
 	 *
 	 */
 	public class LocalBinder extends Binder {
-		public RaceYourselfSamsungProvider getService() {
-			return RaceYourselfSamsungProvider.this;
+		public ProviderService getService() {
+			return ProviderService.this;
 		}
 	}
 
@@ -81,6 +81,8 @@ public class RaceYourselfSamsungProvider extends SAAgent implements GPSTracker.P
      */
 	@Override
 	public IBinder onBind(Intent intent) {
+	    gpsTracker = new GPSTracker(this);
+        gpsTracker.registerPositionListener(this);
 		return mBinder;
 	}
 
@@ -91,7 +93,6 @@ public class RaceYourselfSamsungProvider extends SAAgent implements GPSTracker.P
 	public void onCreate() {
 		super.onCreate();
 		Log.i(TAG, "onCreate of smart view Provider Service");
-
 	}
 	
     /**
@@ -119,10 +120,8 @@ public class RaceYourselfSamsungProvider extends SAAgent implements GPSTracker.P
     /**
      * 
      */
-	public RaceYourselfSamsungProvider() {
+	public ProviderService() {
 		super(TAG, RaceYourselfSamsungProviderConnection.class);
-		gpsTracker = new GPSTracker(getApplicationContext());
-		gpsTracker.registerPositionListener(this);
 	}
 
     /**
