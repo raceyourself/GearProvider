@@ -42,7 +42,9 @@ import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.glassfitgames.glassfitplatform.auth.AuthenticationActivity;
 import com.glassfitgames.glassfitplatform.gpstracker.GPSTracker;
+import com.glassfitgames.glassfitplatform.gpstracker.Helper;
 import com.raceyourself.samsungprovider.R;
 import com.raceyourself.android.samsung.models.GpsPositionData;
 import com.raceyourself.android.samsung.models.GpsStatusResp;
@@ -195,8 +197,15 @@ public class ProviderService extends SAAgent implements GPSTracker.PositionListe
 		} else if (data.contains(SAModel.STOP_TRACKING_REQ)) {
             gpsTracker.stopTracking();
             //response = new SAModelImpl.Ack(SAModel.START_TRACKING_REQ);
+		} else if (data.contains(SAModel.AUTHENTICATION_REQ)) {
+		    Intent authenticationIntent = new Intent (this, AuthenticationActivity.class);
+		    authenticationIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		    authenticationIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+		    startActivity(authenticationIntent);
+		} else if (data.contains(SAModel.LOG_ANALYTICS)) {
+		    Helper.logEvent(data);
 		} else {
-			Log.e(TAG, "onDataAvailableonChannel: Unknown request received received");
+			Log.e(TAG, "onDataAvailableonChannel: Unknown request received");
 		}
 		
 		// send the response
@@ -217,6 +226,7 @@ public class ProviderService extends SAAgent implements GPSTracker.PositionListe
 	private void send(String connectedPeerId, SAModel message) {
 	    RaceYourselfSamsungProviderConnection conn = mConnectionsMap.get(Integer.parseInt(connectedPeerId));
         try {
+            Log.d(TAG, "Sending message on channel " + DEFAULT_CHANNEL_ID + ": " + message.toJSON().toString());
             conn.send(DEFAULT_CHANNEL_ID, message.toJSON().toString().getBytes());
         } catch (IllegalArgumentException e) {
             // TODO Auto-generated catch block

@@ -39,6 +39,8 @@ public abstract class SAModel {
 	public static final String GPS_POSITION_DATA = "gps-position-data";
 	public static final String START_TRACKING_REQ = "start_tracking-req";
 	public static final String STOP_TRACKING_REQ = "stop-tracking-req";
+	public static final String AUTHENTICATION_REQ = "authentication-req";
+	public static final String LOG_ANALYTICS = "log-analytics";
 	
 	public JSONObject toJSON() throws JSONException {
         JSONObject json = new JSONObject();
