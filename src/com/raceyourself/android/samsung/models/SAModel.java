@@ -33,7 +33,7 @@ import org.json.JSONObject;
 
 public abstract class SAModel {
 
-    public static final String MESSAGE_TYPE = "message-type";
+    public static final String MESSAGE_TYPE = "messageType";
 	public static final String GPS_STATUS_REQ = "gps-status-req";
 	public static final String GPS_STATUS_RESP = "gps-status-resp";
 	public static final String GPS_POSITION_DATA = "gps-position-data";

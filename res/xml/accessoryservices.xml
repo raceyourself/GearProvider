@@ -39,7 +39,7 @@
 		</supportedTransports>      
         <serviceChannel
             id="104"
-            dataRate = "high" 
+            dataRate = "low" 
 			priority = "high" 
 			reliability= "enable" />
     </serviceProfile>

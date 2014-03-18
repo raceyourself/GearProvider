@@ -87,6 +87,15 @@ public class ProviderService extends SAAgent implements GPSTracker.PositionListe
         gpsTracker.registerPositionListener(this);
 		return mBinder;
 	}
+	
+	@Override
+    public boolean onUnbind(Intent intent) {
+        gpsTracker.stopTracking();
+        gpsTracker = null;
+        return false;
+    }
+	
+	
 
     /**
      * 
@@ -173,6 +182,7 @@ public class ProviderService extends SAAgent implements GPSTracker.PositionListe
 				Log.e(TAG, "SASocket object is null");
 		} else
 			Log.e(TAG, "onServiceConnectionResponse result error =" + result);
+		
 	}
 
     /**
@@ -249,12 +259,12 @@ public class ProviderService extends SAAgent implements GPSTracker.PositionListe
 	@Override
 	protected void onFindPeerAgentResponse(SAPeerAgent peerAgent, int result) {
 
-/*		Log.i(TAG,
+		Log.i(TAG,
 				"onPeerAgentAvailable: Use this info when you want provider to initiate peer id = "
 						+ peerAgent.getPeerId());
 		Log.i(TAG,
 				"onPeerAgentAvailable: Use this info when you want provider to initiate peer name= "
-						+ peerAgent.getAccessory().getName());*/
+						+ peerAgent.getAccessory().getName());
 	}
 
     /**
