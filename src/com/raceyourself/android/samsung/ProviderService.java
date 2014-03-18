@@ -198,6 +198,13 @@ public class ProviderService extends SAAgent implements GPSTracker.PositionListe
 				+ connectedPeerId);
 		SAModel response = null;
 		
+		if (gpsTracker == null) {
+		    // TODO: Figure out lifetime of GPSTracker
+		    // TODO: Figure out why SensorService can't be started through intent
+		    gpsTracker = new GPSTracker(this);
+		    gpsTracker.registerPositionListener(this);
+        }
+		
 		// decide what to do based on the message
 		if (data.contains(SAModel.GPS_STATUS_REQ)) {
 		    response = new GpsStatusResp(gpsTracker);
