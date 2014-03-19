@@ -49,6 +49,7 @@ import com.raceyourself.samsungprovider.R;
 import com.raceyourself.android.samsung.models.GpsPositionData;
 import com.raceyourself.android.samsung.models.GpsStatusResp;
 import com.raceyourself.android.samsung.models.SAModel;
+import com.roscopeco.ormdroid.ORMDroidApplication;
 import com.samsung.android.sdk.accessory.SAAgent;
 import com.samsung.android.sdk.accessory.SAPeerAgent;
 import com.samsung.android.sdk.accessory.SASocket;
@@ -63,8 +64,10 @@ public class ProviderService extends SAAgent implements GPSTracker.PositionListe
     public final int DEFAULT_CHANNEL_ID = 104;
 
 	private final IBinder mBinder = new LocalBinder();
-	public static HashMap<Integer, RaceYourselfSamsungProviderConnection> mConnectionsMap = null;
-	public static GPSTracker gpsTracker = null;
+	private static HashMap<Integer, RaceYourselfSamsungProviderConnection> mConnectionsMap = null;
+	private static GPSTracker gpsTracker = null;
+	
+	private boolean registered = false; // have we registered the device with the server yet? Required for inserting stuff into the db.
 
 	/**
 	 * @author s.amit
@@ -103,6 +106,8 @@ public class ProviderService extends SAAgent implements GPSTracker.PositionListe
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		ORMDroidApplication.initialize(this);  // init the database
+		Helper.getDevice();  // if this is the first launch, trigger a background thread to register device with our server
 		Log.i(TAG, "onCreate of smart view Provider Service");
 	}
 	
@@ -194,16 +199,23 @@ public class ProviderService extends SAAgent implements GPSTracker.PositionListe
 	private void onDataAvailableonChannel(String connectedPeerId,
 			long channelId, String data) {
 
-		Log.i(TAG, "incoming data on channel = " + channelId + ": from peer ="
-				+ connectedPeerId);
+        Log.d(TAG, "Received message on channel " + channelId + " from peer " + connectedPeerId
+                + ": " + data);
+		
 		SAModel response = null;
 		
 		if (gpsTracker == null) {
 		    // TODO: Figure out lifetime of GPSTracker
-		    // TODO: Figure out why SensorService can't be started through intent
 		    gpsTracker = new GPSTracker(this);
 		    gpsTracker.registerPositionListener(this);
         }
+		
+		if (!registered) {
+		    //TODO: some useful user feedback, and way of breaking infinite loop on no network..
+		    Log.e(TAG, "Registering device, please ensure you have internet connection..");
+		    while (Helper.getDevice() == null) continue;
+		    registered = true;
+		}
 		
 		// decide what to do based on the message
 		if (data.contains(SAModel.GPS_STATUS_REQ)) {
@@ -233,6 +245,7 @@ public class ProviderService extends SAAgent implements GPSTracker.PositionListe
 	}
 	
 	public void newPosition() {
+	    Log.e(TAG, "Sending new position over SAP");
 	    SAModel gpsData = new GpsPositionData(gpsTracker);
 	    // send to all connected peers
 	    for (RaceYourselfSamsungProviderConnection c : mConnectionsMap.values()) {
