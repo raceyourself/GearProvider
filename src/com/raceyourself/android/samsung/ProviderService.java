@@ -30,21 +30,30 @@
 package com.raceyourself.android.samsung;
 
 import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
 import org.json.JSONException;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.glassfitgames.glassfitplatform.auth.AuthenticationActivity;
 import com.glassfitgames.glassfitplatform.gpstracker.GPSTracker;
 import com.glassfitgames.glassfitplatform.gpstracker.Helper;
+import com.glassfitgames.glassfitplatform.gpstracker.SyncHelper;
+import com.glassfitgames.glassfitplatform.models.Device;
+import com.glassfitgames.glassfitplatform.models.Preference;
 import com.raceyourself.samsungprovider.R;
 import com.raceyourself.android.samsung.models.GpsPositionData;
 import com.raceyourself.android.samsung.models.GpsStatusResp;
@@ -62,6 +71,9 @@ public class ProviderService extends SAAgent implements GPSTracker.PositionListe
 	
     public static final String TAG = "RaceYourselfProvider";
     public final int DEFAULT_CHANNEL_ID = 104;
+    private final String SERVER_TOKEN = "3hrJfCEZwQbACyUB";
+    private static final String EULA_KEY = "EulaAccept";
+    private static final String DISCLAIMER_KEY = "DisclaimerAccept";
 
 	private final IBinder mBinder = new LocalBinder();
 	private static HashMap<Integer, RaceYourselfSamsungProviderConnection> mConnectionsMap = null;
@@ -87,6 +99,7 @@ public class ProviderService extends SAAgent implements GPSTracker.PositionListe
 	@Override
 	public IBinder onBind(Intent intent) {
 	    gpsTracker = new GPSTracker(this);
+	    gpsTracker.setIndoorMode(false);
         gpsTracker.registerPositionListener(this);
 		return mBinder;
 	}
@@ -98,22 +111,29 @@ public class ProviderService extends SAAgent implements GPSTracker.PositionListe
         return false;
     }
 	
-	
 
     /**
-     * 
+     * Called when the service is started
      */
 	@Override
 	public void onCreate() {
 		super.onCreate();
 		ORMDroidApplication.initialize(this);  // init the database
-		Helper.getDevice();  // if this is the first launch, trigger a background thread to register device with our server
-		Log.i(TAG, "onCreate of smart view Provider Service");
+		
+		// check EULA
+		//Boolean eulaAccept = Preference.getBoolean(EULA_KEY);
+		//if (eulaAccept == null || !eulaAccept.booleanValue()) popupEula();
+		
+		// check disclaimer
+		//Boolean disclaimerAccept = Preference.getBoolean(DISCLAIMER_KEY);
+		//if (disclaimerAccept == null || !disclaimerAccept.booleanValue()) popupDisclaimer();
+		
+		// make sure we have a record for the user
+		Helper.getUser();
+		
+		Log.v(TAG, "service created");
 	}
 	
-    /**
-     * 
-     */
 	@Override
 	public void onLowMemory() {
 		Log.e(TAG, "onLowMemory  has been hit better to do  graceful  exit now");
@@ -123,26 +143,16 @@ public class ProviderService extends SAAgent implements GPSTracker.PositionListe
 		super.onLowMemory();
 	}
 
-    /**
-     * 
-     */
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
 		Log.i(TAG, "Service Stopped.");
-
 	}
 
-    /**
-     * 
-     */
 	public ProviderService() {
 		super(TAG, RaceYourselfSamsungProviderConnection.class);
 	}
 
-    /**
-     * @return boolean
-     */
 	public boolean closeConnection() {
 
 		if (mConnectionsMap != null) {
@@ -167,8 +177,7 @@ public class ProviderService extends SAAgent implements GPSTracker.PositionListe
      * @param result
      */
 	@Override
-	protected void onServiceConnectionResponse(SASocket uThisConnection,
-			int result) {
+	protected void onServiceConnectionResponse(SASocket uThisConnection, int result) {
 		if (result == CONNECTION_SUCCESS) {
 			if (uThisConnection != null) {
 				RaceYourselfSamsungProviderConnection myConnection = (RaceYourselfSamsungProviderConnection) uThisConnection;
@@ -183,6 +192,7 @@ public class ProviderService extends SAAgent implements GPSTracker.PositionListe
 				Toast.makeText(getBaseContext(),
 						R.string.ConnectionEstablishedMsg, Toast.LENGTH_LONG)
 						.show();
+				ensureDeviceIsRegistered();
 			} else
 				Log.e(TAG, "SASocket object is null");
 		} else
@@ -210,27 +220,32 @@ public class ProviderService extends SAAgent implements GPSTracker.PositionListe
 		    gpsTracker.registerPositionListener(this);
         }
 		
-		if (!registered) {
-		    //TODO: some useful user feedback, and way of breaking infinite loop on no network..
-		    Log.e(TAG, "Registering device, please ensure you have internet connection..");
-		    while (Helper.getDevice() == null) continue;
-		    registered = true;
-		}
+		ensureDeviceIsRegistered();
 		
 		// decide what to do based on the message
 		if (data.contains(SAModel.GPS_STATUS_REQ)) {
-		    response = new GpsStatusResp(gpsTracker);
+		    if (gpsTracker.hasPosition()) {
+		        response = new GpsStatusResp(GpsStatusResp.GPS_READY);
+		    } else if (gpsTracker.isGpsEnabled()) {
+		        response = new GpsStatusResp(GpsStatusResp.GPS_ENABLED);
+		    } else {
+		        response = new GpsStatusResp(GpsStatusResp.GPS_DISABLED);
+		        popupGpsDialog();
+		    }
 		} else if (data.contains(SAModel.START_TRACKING_REQ)) {
 		    gpsTracker.startTracking();
-		    //response = new SAModelImpl.Ack(SAModel.START_TRACKING_REQ);
 		} else if (data.contains(SAModel.STOP_TRACKING_REQ)) {
             gpsTracker.stopTracking();
-            //response = new SAModelImpl.Ack(SAModel.START_TRACKING_REQ);
+            trySync();  // need to sync every now and then. End of each race seems reasonable. It runs in a background thread.
 		} else if (data.contains(SAModel.AUTHENTICATION_REQ)) {
-		    Intent authenticationIntent = new Intent (this, AuthenticationActivity.class);
-		    authenticationIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		    authenticationIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-		    startActivity(authenticationIntent);
+		    // usually called when the user launches the app on gear
+		    authorize();
+		    trySync();
+		    // Popup webview with user/passwd boxes
+		    //Intent authenticationIntent = new Intent (this, AuthenticationActivity.class);
+		    //authenticationIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		    //authenticationIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+		    //startActivity(authenticationIntent);
 		} else if (data.contains(SAModel.LOG_ANALYTICS)) {
 		    Helper.logEvent(data);
 		} else {
@@ -241,8 +256,83 @@ public class ProviderService extends SAAgent implements GPSTracker.PositionListe
 		if (response != null) {
 		    send(connectedPeerId, response);
 		}
-
 	}
+	
+	private void popupGpsDialog() {
+	    final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
+               .setCancelable(false)
+               .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                   public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, 
+                                       @SuppressWarnings("unused") final int id) {
+                       startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                   }
+               })
+               .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                   public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        dialog.cancel();
+                   }
+               });
+        final AlertDialog alert = builder.create();
+        alert.show();
+	}
+	
+	private void popupNetworkDialog() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("RaceYourself needs to connect to the internet to register your device. Please check your connection and press retry.")
+               .setCancelable(false)
+               .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+                   public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, 
+                                       @SuppressWarnings("unused") final int id) {
+                       ensureInternet();
+                   }
+               })
+               .setNegativeButton("Quit", new DialogInterface.OnClickListener() {
+                   public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        ProviderService.this.stopSelf();
+                   }
+               });
+        final AlertDialog alert = builder.create();
+        alert.show();
+    }
+	
+	private void popupEula() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("RaceYourself end-user license agreement. By clicking accept you aggree to abide by RaceYourself's terms and conditions of use found here: http://www.raceourself.com")
+               .setCancelable(false)
+               .setPositiveButton("Agree", new DialogInterface.OnClickListener() {
+                   public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, 
+                                       @SuppressWarnings("unused") final int id) {
+                       Preference.setBoolean(EULA_KEY, Boolean.TRUE);
+                   }
+               })
+               .setNegativeButton("Decline", new DialogInterface.OnClickListener() {
+                   public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        ProviderService.this.stopSelf();
+                   }
+               });
+        final AlertDialog alert = builder.create();
+        alert.show();
+    }
+	
+	private void popupDisclaimer() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("RaceYourself disclaimer. Bly clicking accept you understand that you are responsible for your own safety whilst using RaceYourself, and RaceYourself will not be held liable for any personal injory or illness sustained through use of this application.")
+               .setCancelable(false)
+               .setPositiveButton("Accept", new DialogInterface.OnClickListener() {
+                   public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, 
+                                       @SuppressWarnings("unused") final int id) {
+                       Preference.setBoolean(DISCLAIMER_KEY, Boolean.TRUE);
+                   }
+               })
+               .setNegativeButton("Decline", new DialogInterface.OnClickListener() {
+                   public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        ProviderService.this.stopSelf();
+                   }
+               });
+        final AlertDialog alert = builder.create();
+        alert.show();
+    }
 	
 	public void newPosition() {
 	    Log.e(TAG, "Sending new position over SAP");
@@ -268,6 +358,73 @@ public class ProviderService extends SAAgent implements GPSTracker.PositionListe
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+	}
+	
+	private void ensureDeviceIsRegistered() {
+	    if (registered) {
+	        // registered, and we know about it locally
+	        return;
+	    } else if (Device.self() != null) {
+	        // registered previously, update local variable
+	        registered = true;
+	        return;
+	    } else {
+	        // not yet registered, attempt to register
+            ensureInternet();
+            try {
+                Device self = SyncHelper.registerDevice();
+                self.self = true;
+                self.save();
+                registered = true;
+            } catch (IOException e) {
+                
+            }
+        }
+	}
+	
+	private void ensureInternet() {
+	    if (!Helper.getInstance(this).hasInternet()) {
+            popupNetworkDialog();
+        }
+	}
+	
+	private void authorize() {
+    	AccountManager mAccountManager = AccountManager.get(this);
+    	List<Account> accounts = new ArrayList<Account>();
+    	accounts.addAll(Arrays.asList(mAccountManager.getAccountsByType("com.google")));
+    	accounts.addAll(Arrays.asList(mAccountManager.getAccountsByType("com.googlemail")));
+        String email = null;
+        for (Account account : accounts) {
+            if (account.name != null && account.name.contains("@")) {
+                email = account.name;
+                break;
+            }
+        }
+        // Potential fault: Can there be multiple accounts? Do we need to sort or provide a selector?
+       
+        // hash email so we don't send user's identity to server
+        // can't guarantee uniqueness but want very low probability of collisions
+        // using SHA-256 means we'd expect a collision on approx. our 1-millionth user
+        // TODO: make this more unique before Samsung sell 1m Gear IIs.
+        MessageDigest messageDigest;
+        try {
+            messageDigest = MessageDigest.getInstance("SHA-256");
+            messageDigest.update(email.getBytes());
+            String hash = new String(messageDigest.digest()).replace('@', '_');
+            Helper.login(hash, SERVER_TOKEN);
+        } catch (NoSuchAlgorithmException e) {
+            Log.e(TAG, "Implementation of SHA-256 algorithm not found. Authorisation failed. Exiting.");
+            throw new RuntimeException();
+        }
+	}
+	
+	private void trySync() {
+	    if (Helper.getInstance(this).hasInternet()) {
+	        authorize();
+	        SyncHelper.getInstance(this).start();
+	        // if wither of these fail, they dump a stack trace to the log and execution continues
+	    }
+	    // if no internet, don't bother
 	}
 	
 	

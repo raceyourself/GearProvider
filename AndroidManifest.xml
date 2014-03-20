@@ -7,47 +7,58 @@
     <uses-sdk
         android:minSdkVersion="16"
         android:targetSdkVersion="17" />
-    
+
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="com.samsung.accessory.permission.ACCESSORY_FRAMEWORK" />
-	<uses-permission android:name="com.samsung.wmanager.APP"/>
-	  
+    <uses-permission android:name="com.samsung.wmanager.APP" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-			
+        
         <service android:name="com.raceyourself.android.samsung.ProviderService" />
         <service android:name="com.glassfitgames.glassfitplatform.sensors.SensorService" />
         
+        <!-- activity for popup notifications -->
+        <activity
+            android:name="com.raceyourself.samsungprovider.PopupActivity"
+            android:label="@string/title_activity_popup"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+           
+             />
+        
+         <!--  android:theme="@android:style/Theme.Dialog" -->
+
         <receiver android:name="com.samsung.android.sdk.accessory.ServiceConnectionIndicationBroadcastReceiver" >
             <intent-filter>
                 <action android:name="android.accessory.service.action.ACCESSORY_SERVICE_CONNECTION_IND" />
             </intent-filter>
         </receiver>
 
-        <!--  register with the Samsung accessory framework after install  -->
+        <!-- register with the Samsung accessory framework after install -->
         <receiver android:name="com.samsung.android.sdk.accessory.RegisterUponInstallReceiver" >
             <intent-filter>
                 <action android:name="android.accessory.device.action.REGISTER_AFTER_INSTALL" />
             </intent-filter>
         </receiver>
-        
-        <!--  set the location of our accessory services configuration file  -->
+
+        <!-- set the location of our accessory services configuration file -->
         <meta-data
             android:name="AccessoryServicesLocation"
             android:value="/res/xml/accessoryservices.xml" />
-        
-        <!--  set the name of the local SQLite database file  -->
+
+        <!-- set the name of the local SQLite database file -->
         <meta-data
             android:name="ormdroid.database.name"
             android:value="raceyourself_database" />
-        
-	</application>
+
+    </application>
 
 </manifest>

@@ -3,22 +3,24 @@ package com.raceyourself.android.samsung.models;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.location.LocationManager;
+
 import com.glassfitgames.glassfitplatform.gpstracker.GPSTracker;
 
 public class GpsStatusResp extends SAModel {
 
-    public final String GPS_STATUS_KEY = "gps-status";
-    public final String GPS_ENABLED = "enabled";
-    public final String GPS_DISABLED = "disabled";
-    public final String GPS_READY = "ready";
+    public static final String GPS_STATUS_KEY = "gps-status";
+    public static final String GPS_ENABLED = "enabled";
+    public static final String GPS_DISABLED = "disabled";
+    public static final String GPS_READY = "ready";
     
     private String mGpsStatus = GPS_DISABLED;
     
-    public GpsStatusResp(GPSTracker gpst) {
-        if (gpst.hasPosition()) {
-            mGpsStatus = GPS_READY;
+    public GpsStatusResp(String status) {
+        if (status.equals(GPS_DISABLED) || status.equals(GPS_ENABLED) || status.equals(GPS_READY)) {
+            mGpsStatus = status;
         } else {
-            mGpsStatus = GPS_ENABLED;
+            throw new RuntimeException("GpsStatusResp: invalid status passed to contructor, cannot continue");
         }
     }
     
