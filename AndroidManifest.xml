@@ -12,9 +12,11 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="com.samsung.accessory.permission.ACCESSORY_FRAMEWORK" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
     <uses-permission android:name="com.samsung.wmanager.APP" />
 
     <application
@@ -28,11 +30,15 @@
         
         <!-- activity for popup notifications -->
         <activity
-            android:name="com.raceyourself.samsungprovider.PopupActivity"
+            android:name="com.raceyourself.android.samsung.PopupActivity"
             android:label="@string/title_activity_popup"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-           
-             />
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+           <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+             </activity>
         
          <!--  android:theme="@android:style/Theme.Dialog" -->
 

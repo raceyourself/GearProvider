@@ -47,6 +47,7 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.glassfitgames.glassfitplatform.gpstracker.GPSTracker;
@@ -121,12 +122,23 @@ public class ProviderService extends SAAgent implements GPSTracker.PositionListe
 		ORMDroidApplication.initialize(this);  // init the database
 		
 		// check EULA
-		//Boolean eulaAccept = Preference.getBoolean(EULA_KEY);
-		//if (eulaAccept == null || !eulaAccept.booleanValue()) popupEula();
+		Boolean eulaAccept = Preference.getBoolean(EULA_KEY);
+		if (eulaAccept == null || !eulaAccept.booleanValue()) popupEula();
 		
 		// check disclaimer
-		//Boolean disclaimerAccept = Preference.getBoolean(DISCLAIMER_KEY);
-		//if (disclaimerAccept == null || !disclaimerAccept.booleanValue()) popupDisclaimer();
+		Boolean disclaimerAccept = Preference.getBoolean(DISCLAIMER_KEY);
+		if (disclaimerAccept == null || !disclaimerAccept.booleanValue()) popupDisclaimer();
+		
+		if(!Helper.getInstance(this).isBluetoothBonded()) popupBluetoothDialog();
+		
+		ensureDeviceIsRegistered();
+		
+		while(!registered){
+			
+		}
+		authorize();
+		
+		trySync();
 		
 		// make sure we have a record for the user
 		Helper.getUser();
@@ -258,6 +270,35 @@ public class ProviderService extends SAAgent implements GPSTracker.PositionListe
 		}
 	}
 	
+	private void popupBluetoothDialog() {
+		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		
+		builder.setMessage("Your bluetooth is not connected to gear, would you like to connect it?")
+			   .setCancelable(false)
+			   .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// TODO Auto-generated method stub
+					Intent bluetooth = new Intent(android.provider.Settings.ACTION_BLUETOOTH_SETTINGS);
+					bluetooth.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					startActivity(bluetooth);
+				}
+			})
+			.setNegativeButton("No", new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+					// TODO Auto-generated method stub
+					dialog.cancel();
+				}
+			});
+		
+		final AlertDialog alert = builder.create();
+		alert.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+		alert.show();
+	}
+	
 	private void popupGpsDialog() {
 	    final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
@@ -265,7 +306,9 @@ public class ProviderService extends SAAgent implements GPSTracker.PositionListe
                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                    public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, 
                                        @SuppressWarnings("unused") final int id) {
-                       startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                	   Intent gps = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                	   gps.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                       startActivity(gps);
                    }
                })
                .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -274,6 +317,7 @@ public class ProviderService extends SAAgent implements GPSTracker.PositionListe
                    }
                });
         final AlertDialog alert = builder.create();
+        alert.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         alert.show();
 	}
 	
@@ -293,6 +337,7 @@ public class ProviderService extends SAAgent implements GPSTracker.PositionListe
                    }
                });
         final AlertDialog alert = builder.create();
+        alert.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         alert.show();
     }
 	
@@ -312,6 +357,7 @@ public class ProviderService extends SAAgent implements GPSTracker.PositionListe
                    }
                });
         final AlertDialog alert = builder.create();
+        alert.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         alert.show();
     }
 	
@@ -331,6 +377,7 @@ public class ProviderService extends SAAgent implements GPSTracker.PositionListe
                    }
                });
         final AlertDialog alert = builder.create();
+        alert.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         alert.show();
     }
 	
@@ -371,14 +418,21 @@ public class ProviderService extends SAAgent implements GPSTracker.PositionListe
 	    } else {
 	        // not yet registered, attempt to register
             ensureInternet();
-            try {
-                Device self = SyncHelper.registerDevice();
-                self.self = true;
-                self.save();
-                registered = true;
-            } catch (IOException e) {
-                
-            }
+            
+            Thread deviceRegistration = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                        
+                    try {
+                    	Device self = SyncHelper.registerDevice();
+                        self.self = true;
+                        self.save();
+                        registered = true;
+                    	} catch (IOException e) {
+                    }
+                }
+            });
+            deviceRegistration.start(); 
         }
 	}
 	
