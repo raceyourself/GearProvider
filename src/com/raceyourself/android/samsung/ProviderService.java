@@ -36,6 +36,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.json.JSONException;
 
@@ -67,7 +69,7 @@ import com.samsung.android.sdk.accessory.SASocket;
  * @author s.amit
  *
  */
-public class ProviderService extends SAAgent implements GPSTracker.PositionListener {
+public class ProviderService extends SAAgent {
 	
     public static final String TAG = "RaceYourselfProvider";
     public final int DEFAULT_CHANNEL_ID = 104;
@@ -78,6 +80,8 @@ public class ProviderService extends SAAgent implements GPSTracker.PositionListe
 	private final IBinder mBinder = new LocalBinder();
 	private static HashMap<Integer, RaceYourselfSamsungProviderConnection> mConnectionsMap = null;
 	private static GPSTracker gpsTracker = null;
+	private static GpsDataSender gpsDataSender = null;
+	private Timer timer = new Timer();
 	
 	private boolean registered = false; // have we registered the device with the server yet? Required for inserting stuff into the db.
 
@@ -100,7 +104,6 @@ public class ProviderService extends SAAgent implements GPSTracker.PositionListe
 	public IBinder onBind(Intent intent) {
 	    gpsTracker = new GPSTracker(this);
 	    gpsTracker.setIndoorMode(false);
-        gpsTracker.registerPositionListener(this);
 		return mBinder;
 	}
 	
@@ -217,7 +220,6 @@ public class ProviderService extends SAAgent implements GPSTracker.PositionListe
 		if (gpsTracker == null) {
 		    // TODO: Figure out lifetime of GPSTracker
 		    gpsTracker = new GPSTracker(this);
-		    gpsTracker.registerPositionListener(this);
         }
 		
 		ensureDeviceIsRegistered();
@@ -234,8 +236,18 @@ public class ProviderService extends SAAgent implements GPSTracker.PositionListe
 		    }
 		} else if (data.contains(SAModel.START_TRACKING_REQ)) {
 		    gpsTracker.startTracking();
+		    if (gpsDataSender == null) {
+                Log.d(TAG, "Starting to send regular GPS data messages");
+                gpsDataSender = new GpsDataSender();
+                timer.scheduleAtFixedRate(gpsDataSender, 0, 500);
+            }
 		} else if (data.contains(SAModel.STOP_TRACKING_REQ)) {
-            gpsTracker.stopTracking();
+		    if (gpsDataSender != null) {
+		        Log.d(TAG, "Stopping regular GPS data messages");
+		        gpsDataSender.cancel();
+		        gpsDataSender = null;
+            }
+		    gpsTracker.stopTracking();
             trySync();  // need to sync every now and then. End of each race seems reasonable. It runs in a background thread.
 		} else if (data.contains(SAModel.AUTHENTICATION_REQ)) {
 		    // usually called when the user launches the app on gear
@@ -334,15 +346,6 @@ public class ProviderService extends SAAgent implements GPSTracker.PositionListe
         alert.show();
     }
 	
-	public void newPosition() {
-	    Log.e(TAG, "Sending new position over SAP");
-	    SAModel gpsData = new GpsPositionData(gpsTracker);
-	    // send to all connected peers
-	    for (RaceYourselfSamsungProviderConnection c : mConnectionsMap.values()) {
-	        send(String.valueOf(c.mConnectionId), gpsData);
-	    }
-    }
-	
 	private void send(String connectedPeerId, SAModel message) {
 	    RaceYourselfSamsungProviderConnection conn = mConnectionsMap.get(Integer.parseInt(connectedPeerId));
         try {
@@ -426,6 +429,17 @@ public class ProviderService extends SAAgent implements GPSTracker.PositionListe
 	    }
 	    // if no internet, don't bother
 	}
+	
+	private class GpsDataSender extends TimerTask {
+        public void run() {
+            Log.e(TAG, "Sending new position over SAP");
+            SAModel gpsData = new GpsPositionData(gpsTracker);
+            // send to all connected peers
+            for (RaceYourselfSamsungProviderConnection c : mConnectionsMap.values()) {
+                send(String.valueOf(c.mConnectionId), gpsData);
+            }
+        }
+    }
 	
 	
     /**
