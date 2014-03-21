@@ -136,12 +136,12 @@ public class ProviderService extends SAAgent {
 		
 		ensureDeviceIsRegistered();
 		
-		while(!registered){
+		//while(!registered){
 			
-		}
-		authorize();
+		//}
+		//authorize();
 		
-		trySync();
+		//trySync();
 		
 		// make sure we have a record for the user
 		Helper.getUser();
@@ -178,6 +178,11 @@ public class ProviderService extends SAAgent {
 					Log.i(TAG, "KEYS found are" + s);
 					mConnectionsMap.get(s).close();
 					mConnectionsMap.remove(s);
+				}
+				
+				// if no connections left, stop tracking
+				if (mConnectionsMap.isEmpty()) {
+				    stopTracking();
 				}
 			}
 		} else
@@ -254,13 +259,7 @@ public class ProviderService extends SAAgent {
                 timer.scheduleAtFixedRate(gpsDataSender, 0, 500);
             }
 		} else if (data.contains(SAModel.STOP_TRACKING_REQ)) {
-		    if (gpsDataSender != null) {
-		        Log.d(TAG, "Stopping regular GPS data messages");
-		        gpsDataSender.cancel();
-		        gpsDataSender = null;
-            }
-		    gpsTracker.stopTracking();
-            trySync();  // need to sync every now and then. End of each race seems reasonable. It runs in a background thread.
+		    stopTracking();
 		} else if (data.contains(SAModel.AUTHENTICATION_REQ)) {
 		    // usually called when the user launches the app on gear
 		    authorize();
@@ -304,7 +303,8 @@ public class ProviderService extends SAAgent {
 					// TODO Auto-generated method stub
 					dialog.cancel();
 				}
-			});
+			})
+            .setTitle("RaceYourself Gear Edition");
 		
 		final AlertDialog alert = builder.create();
 		alert.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
@@ -327,7 +327,8 @@ public class ProviderService extends SAAgent {
                    public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
                         dialog.cancel();
                    }
-               });
+               })
+               .setTitle("RaceYourself Gear Edition");
         final AlertDialog alert = builder.create();
         alert.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         alert.show();
@@ -347,7 +348,8 @@ public class ProviderService extends SAAgent {
                    public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
                         ProviderService.this.stopSelf();
                    }
-               });
+               })
+               .setTitle("RaceYourself Gear Edition");
         final AlertDialog alert = builder.create();
         alert.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         alert.show();
@@ -367,7 +369,8 @@ public class ProviderService extends SAAgent {
                    public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
                         ProviderService.this.stopSelf();
                    }
-               });
+               })
+               .setTitle("RaceYourself Gear Edition");
         final AlertDialog alert = builder.create();
         alert.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         alert.show();
@@ -387,7 +390,8 @@ public class ProviderService extends SAAgent {
                    public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
                         ProviderService.this.stopSelf();
                    }
-               });
+               })
+               .setTitle("RaceYourself Gear Edition");
         final AlertDialog alert = builder.create();
         alert.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         alert.show();
@@ -439,6 +443,16 @@ public class ProviderService extends SAAgent {
         }
 	}
 	
+	private void stopTracking() {
+	    if (gpsDataSender != null) {
+            Log.d(TAG, "Stopping regular GPS data messages");
+            gpsDataSender.cancel();
+            gpsDataSender = null;
+        }
+        gpsTracker.stopTracking();
+        trySync();  // need to sync every now and then. End of each race seems reasonable. It runs in a background thread.
+	}
+	
 	private void ensureInternet() {
 	    if (!Helper.getInstance(this).hasInternet()) {
             popupNetworkDialog();
@@ -486,7 +500,7 @@ public class ProviderService extends SAAgent {
 	
 	private class GpsDataSender extends TimerTask {
         public void run() {
-            Log.e(TAG, "Sending new position over SAP");
+            Log.d(TAG, "Sending new position over SAP");
             SAModel gpsData = new GpsPositionData(gpsTracker);
             // send to all connected peers
             for (RaceYourselfSamsungProviderConnection c : mConnectionsMap.values()) {
