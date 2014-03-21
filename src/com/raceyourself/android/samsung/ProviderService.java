@@ -40,16 +40,23 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
+import android.text.SpannableString;
+import android.text.method.LinkMovementMethod;
+import android.text.util.Linkify;
+import android.util.Base64;
 import android.util.Log;
 import android.view.WindowManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.glassfitgames.glassfitplatform.gpstracker.GPSTracker;
@@ -61,6 +68,7 @@ import com.raceyourself.samsungprovider.R;
 import com.raceyourself.android.samsung.models.GpsPositionData;
 import com.raceyourself.android.samsung.models.GpsStatusResp;
 import com.raceyourself.android.samsung.models.SAModel;
+import com.raceyourself.android.samsung.models.WebLinkReq;
 import com.roscopeco.ormdroid.ORMDroidApplication;
 import com.samsung.android.sdk.accessory.SAAgent;
 import com.samsung.android.sdk.accessory.SAPeerAgent;
@@ -216,11 +224,8 @@ public class ProviderService extends SAAgent {
 				}
 				myConnection.mConnectionId = (int) (System.currentTimeMillis() & 255);
 				mConnectionsMap.put(myConnection.mConnectionId, myConnection);
-				// String toastString = R.string.ConnectionEstablishedMsg + ":"
-				// + uThisConnection.getRemotePeerId();
-				Toast.makeText(getBaseContext(),
-						R.string.ConnectionEstablishedMsg, Toast.LENGTH_LONG)
-						.show();
+
+				// make sure we have a device ID (initially from the server) - req for writes to db
 				ensureDeviceIsRegistered();
 				
 				// init GPS tracker to start searching for position
@@ -275,6 +280,18 @@ public class ProviderService extends SAAgent {
 		    //startActivity(authenticationIntent);
 		} else if (data.contains(SAModel.LOG_ANALYTICS)) {
 		    Helper.logEvent(data);
+		} else if (data.contains(SAModel.WEB_LINK_REQ)) {
+		    JSONObject json;
+            try {
+                json = new JSONObject(data);
+                String uri = WebLinkReq.fromJSON(json).getUri();
+                Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                startActivity(myIntent);
+            } catch (JSONException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
 		} else {
 			Log.e(TAG, "onDataAvailableonChannel: Unknown request received");
 		}
@@ -370,8 +387,16 @@ public class ProviderService extends SAAgent {
     }
 	
 	private void popupEula() {
+	    
+	    final SpannableString message = new SpannableString("RaceYourself end-user license agreement. By clicking accept you aggree to abide by RaceYourself's terms and conditions of use found here: http://www.raceourself.com");
+	    Linkify.addLinks(message, Linkify.WEB_URLS);
+	    
+	    final TextView view = new TextView(this);
+	    view.setText(message);
+	    view.setMovementMethod(LinkMovementMethod.getInstance());
+	    
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("RaceYourself end-user license agreement. By clicking accept you aggree to abide by RaceYourself's terms and conditions of use found here: http://www.raceourself.com")
+        builder.setView(view)
                .setCancelable(false)
                .setPositiveButton("Agree", new DialogInterface.OnClickListener() {
                    public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, 
@@ -542,7 +567,9 @@ public class ProviderService extends SAAgent {
         try {
             messageDigest = MessageDigest.getInstance("SHA-256");
             messageDigest.update(email.getBytes());
-            String hash = new String(messageDigest.digest()).replace('@', '_');
+            String hash = new String(messageDigest.digest());
+            hash = new String(Base64.encode(hash.getBytes(), Base64.DEFAULT)).replace("@", "_").replace("\n", "_");  //base64 encode and substitute @ symbols
+            hash += "@hashed.raceyourself.com";  // make it look like an email so it passes server validation
             Helper.login(hash, SERVER_TOKEN);
         } catch (NoSuchAlgorithmException e) {
             Log.e(TAG, "Implementation of SHA-256 algorithm not found. Authorisation failed. Exiting.");
@@ -561,8 +588,8 @@ public class ProviderService extends SAAgent {
 	
 	private class GpsDataSender extends TimerTask {
         public void run() {
-            Log.d(TAG, "Sending new position over SAP");
             if (gpsTracker.hasPosition()) {
+                Log.d(TAG, "Sending new position over SAP");
                 SAModel gpsData = new GpsPositionData(gpsTracker);
                 // send to all connected peers
                 for (RaceYourselfSamsungProviderConnection c : mConnectionsMap.values()) {
@@ -661,6 +688,11 @@ public class ProviderService extends SAAgent {
 					+ mConnectionId + "error code =" + errorCode);
 			if (mConnectionsMap != null) {
 				    mConnectionsMap.remove(mConnectionId);
+				    if (mConnectionsMap.isEmpty()) {
+	                    // turn off GPS tracker and sensor service
+	                    Log.d(TAG, "No connections remaining, destroying GPS tracker");
+	                    stopTracking();
+	                }
 
             }
 

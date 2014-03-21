@@ -41,14 +41,13 @@ public abstract class SAModel {
 	public static final String STOP_TRACKING_REQ = "stop-tracking-req";
 	public static final String AUTHENTICATION_REQ = "authentication-req";
 	public static final String LOG_ANALYTICS = "log-analytics";
+	public static final String WEB_LINK_REQ = "web-link-req";
 	
 	public JSONObject toJSON() throws JSONException {
         JSONObject json = new JSONObject();
         json.put(MESSAGE_TYPE, getMessageType());
         return json;
     }
-
-    public abstract void fromJSON(JSONObject json) throws JSONException;
     
     public abstract String getMessageType();
 
