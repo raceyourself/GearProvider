@@ -135,12 +135,12 @@ public class ProviderService extends SAAgent {
 				else {
 					ensureDeviceIsRegistered();
 				
-					//while(!registered){
-						
-					//}
-					//authorize();
+					if(registered){
+						authorize();
 					
-					//trySync();
+						trySync();
+					}
+					
 				}
 				
 			}
@@ -303,12 +303,12 @@ public class ProviderService extends SAAgent {
 					
 					ensureDeviceIsRegistered();
        				
-       				while(!registered){
-       						
-       				}
-       				authorize();
+       				if(registered){
+       					authorize();
        					
-       				trySync();
+       					trySync();	
+       				}
+       				
        				
 				}
 			})
@@ -406,12 +406,11 @@ public class ProviderService extends SAAgent {
 	       				else {
 	       					ensureDeviceIsRegistered();
 	       				
-	       					while(!registered){
-	       						
+	       					if(registered){
+	       						authorize();
+	       						trySync();
 	       					}
-	       					authorize();
 	       					
-	       					trySync();
 	       				}
                    }
                })
@@ -464,7 +463,13 @@ public class ProviderService extends SAAgent {
                         self.self = true;
                         self.save();
                         registered = true;
+                        
+                        authorize();
+       					
+       					trySync();
+       					
                     	} catch (IOException e) {
+                    		Log.e(TAG, "Error registering device");
                     }
                 }
             });
