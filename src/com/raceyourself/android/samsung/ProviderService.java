@@ -124,21 +124,27 @@ public class ProviderService extends SAAgent {
 		// check EULA
 		Boolean eulaAccept = Preference.getBoolean(EULA_KEY);
 		if (eulaAccept == null || !eulaAccept.booleanValue()) popupEula();
-		
-		// check disclaimer
-		Boolean disclaimerAccept = Preference.getBoolean(DISCLAIMER_KEY);
-		if (disclaimerAccept == null || !disclaimerAccept.booleanValue()) popupDisclaimer();
-		
-		if(!Helper.getInstance(this).isBluetoothBonded()) popupBluetoothDialog();
-		
-		ensureDeviceIsRegistered();
-		
-		//while(!registered){
+		else {
+			Boolean disclaimerAccept = Preference.getBoolean(DISCLAIMER_KEY);
+			if (disclaimerAccept == null || !disclaimerAccept.booleanValue()) popupDisclaimer();
+			else {
+				if(!Helper.getInstance(this).isBluetoothBonded()) popupBluetoothDialog();
+				else {
+					ensureDeviceIsRegistered();
+				
+					if(registered){
+						authorize();
+					
+						trySync();
+					}
+					
+				}
+				
+			}
 			
-		//}
-		//authorize();
+		}
+		// check disclaimer
 		
-		//trySync();
 		
 		// make sure we have a record for the user
 		Helper.getUser();
@@ -292,6 +298,16 @@ public class ProviderService extends SAAgent {
 					Intent bluetooth = new Intent(android.provider.Settings.ACTION_BLUETOOTH_SETTINGS);
 					bluetooth.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 					startActivity(bluetooth);
+					
+					ensureDeviceIsRegistered();
+       				
+       				if(registered){
+       					authorize();
+       					
+       					trySync();	
+       				}
+       				
+       				
 				}
 			})
 			.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -361,6 +377,8 @@ public class ProviderService extends SAAgent {
                    public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, 
                                        @SuppressWarnings("unused") final int id) {
                        Preference.setBoolean(EULA_KEY, Boolean.TRUE);
+                       Boolean disclaimerAccept = Preference.getBoolean(DISCLAIMER_KEY);
+           				if (disclaimerAccept == null || !disclaimerAccept.booleanValue()) popupDisclaimer();
                    }
                })
                .setNegativeButton("Decline", new DialogInterface.OnClickListener() {
@@ -381,7 +399,17 @@ public class ProviderService extends SAAgent {
                .setPositiveButton("Accept", new DialogInterface.OnClickListener() {
                    public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, 
                                        @SuppressWarnings("unused") final int id) {
-                       Preference.setBoolean(DISCLAIMER_KEY, Boolean.TRUE);
+                        Preference.setBoolean(DISCLAIMER_KEY, Boolean.TRUE);
+                        if(!Helper.getInstance(ProviderService.this).isBluetoothBonded()) popupBluetoothDialog();
+	       				else {
+	       					ensureDeviceIsRegistered();
+	       				
+	       					if(registered){
+	       						authorize();
+	       						trySync();
+	       					}
+	       					
+	       				}
                    }
                })
                .setNegativeButton("Decline", new DialogInterface.OnClickListener() {
@@ -433,7 +461,13 @@ public class ProviderService extends SAAgent {
                         self.self = true;
                         self.save();
                         registered = true;
+                        
+                        authorize();
+       					
+       					trySync();
+       					
                     	} catch (IOException e) {
+                    		Log.e(TAG, "Error registering device");
                     }
                 }
             });
