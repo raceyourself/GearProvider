@@ -562,10 +562,12 @@ public class ProviderService extends SAAgent {
 	private class GpsDataSender extends TimerTask {
         public void run() {
             Log.d(TAG, "Sending new position over SAP");
-            SAModel gpsData = new GpsPositionData(gpsTracker);
-            // send to all connected peers
-            for (RaceYourselfSamsungProviderConnection c : mConnectionsMap.values()) {
-                send(String.valueOf(c.mConnectionId), gpsData);
+            if (gpsTracker.hasPosition()) {
+                SAModel gpsData = new GpsPositionData(gpsTracker);
+                // send to all connected peers
+                for (RaceYourselfSamsungProviderConnection c : mConnectionsMap.values()) {
+                    send(String.valueOf(c.mConnectionId), gpsData);
+                }
             }
         }
     }
