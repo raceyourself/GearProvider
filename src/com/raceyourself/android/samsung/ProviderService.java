@@ -103,15 +103,12 @@ public class ProviderService extends SAAgent {
      */
 	@Override
 	public IBinder onBind(Intent intent) {
-	    gpsTracker = new GPSTracker(this);
-	    gpsTracker.setIndoorMode(false);
 		return mBinder;
 	}
 	
 	@Override
     public boolean onUnbind(Intent intent) {
-        gpsTracker.stopTracking();
-        gpsTracker = null;
+        stopTracking();
         return false;
     }
 	
@@ -169,6 +166,8 @@ public class ProviderService extends SAAgent {
 	}
 
 	public boolean closeConnection() {
+	    
+	    Log.d(TAG, "closeConnection called");
 
 		if (mConnectionsMap != null) {
 			List<Integer> listConnections = new ArrayList<Integer>(
@@ -180,8 +179,10 @@ public class ProviderService extends SAAgent {
 					mConnectionsMap.remove(s);
 				}
 				
-				// if no connections left, stop tracking
+				// if no connections left
 				if (mConnectionsMap.isEmpty()) {
+				    // stop sending updates
+				    Log.d(TAG, "No connections remaining, destroying GPS tracker");
 				    stopTracking();
 				}
 			}
@@ -200,12 +201,14 @@ public class ProviderService extends SAAgent {
 	protected void onServiceConnectionResponse(SASocket uThisConnection, int result) {
 		if (result == CONNECTION_SUCCESS) {
 			if (uThisConnection != null) {
-				RaceYourselfSamsungProviderConnection myConnection = (RaceYourselfSamsungProviderConnection) uThisConnection;
+			    
+			    RaceYourselfSamsungProviderConnection myConnection = (RaceYourselfSamsungProviderConnection) uThisConnection;
+			    Log.d(TAG,"onServiceConnection connectionID = "+myConnection.mConnectionId);
+				
 				if (mConnectionsMap == null) {
 					mConnectionsMap = new HashMap<Integer, RaceYourselfSamsungProviderConnection>();
 				}
 				myConnection.mConnectionId = (int) (System.currentTimeMillis() & 255);
-				Log.d(TAG,"onServiceConnection connectionID = "+myConnection.mConnectionId);
 				mConnectionsMap.put(myConnection.mConnectionId, myConnection);
 				// String toastString = R.string.ConnectionEstablishedMsg + ":"
 				// + uThisConnection.getRemotePeerId();
@@ -213,6 +216,10 @@ public class ProviderService extends SAAgent {
 						R.string.ConnectionEstablishedMsg, Toast.LENGTH_LONG)
 						.show();
 				ensureDeviceIsRegistered();
+				
+				// init GPS tracker to start searching for position
+				ensureGps();
+				
 			} else
 				Log.e(TAG, "SASocket object is null");
 		} else
@@ -234,15 +241,11 @@ public class ProviderService extends SAAgent {
 		
 		SAModel response = null;
 		
-		if (gpsTracker == null) {
-		    // TODO: Figure out lifetime of GPSTracker
-		    gpsTracker = new GPSTracker(this);
-        }
-		
 		ensureDeviceIsRegistered();
 		
 		// decide what to do based on the message
 		if (data.contains(SAModel.GPS_STATUS_REQ)) {
+		    ensureGps();
 		    if (gpsTracker.hasPosition()) {
 		        response = new GpsStatusResp(GpsStatusResp.GPS_READY);
 		    } else if (gpsTracker.isGpsEnabled()) {
@@ -252,12 +255,7 @@ public class ProviderService extends SAAgent {
 		        popupGpsDialog();
 		    }
 		} else if (data.contains(SAModel.START_TRACKING_REQ)) {
-		    gpsTracker.startTracking();
-		    if (gpsDataSender == null) {
-                Log.d(TAG, "Starting to send regular GPS data messages");
-                gpsDataSender = new GpsDataSender();
-                timer.scheduleAtFixedRate(gpsDataSender, 0, 500);
-            }
+		    startTracking();
 		} else if (data.contains(SAModel.STOP_TRACKING_REQ)) {
 		    stopTracking();
 		} else if (data.contains(SAModel.AUTHENTICATION_REQ)) {
@@ -443,13 +441,42 @@ public class ProviderService extends SAAgent {
         }
 	}
 	
-	private void stopTracking() {
+	private void ensureGps() {
+	    // start listening for GPS updates
+	    Log.d(TAG,"ensureGps called");
+        if (gpsTracker == null) gpsTracker = new GPSTracker(this);
+        gpsTracker.setIndoorMode(false);
+        gpsTracker.onResume();
+	}
+	
+    private void startTracking() {
+
+        Log.d(TAG,"startTracking called");
+        ensureGps();
+        gpsTracker.startTracking();
+        
+        if (gpsDataSender == null) {
+            Log.d(TAG, "Starting to send regular GPS data messages");
+            gpsDataSender = new GpsDataSender();
+            timer.scheduleAtFixedRate(gpsDataSender, 0, 500);
+        }
+    }
+
+    private void stopTracking() {
+	    
+	    // stop sending updates
+        Log.d(TAG,"stopTracking called");
 	    if (gpsDataSender != null) {
             Log.d(TAG, "Stopping regular GPS data messages");
             gpsDataSender.cancel();
             gpsDataSender = null;
         }
-        gpsTracker.stopTracking();
+	    
+	    // stop listening for GPS/sensors
+	    if (gpsTracker != null) {
+	        gpsTracker.stopTracking();
+	        gpsTracker.onPause();
+	    }
         trySync();  // need to sync every now and then. End of each race seems reasonable. It runs in a background thread.
 	}
 	
@@ -599,10 +626,10 @@ public class ProviderService extends SAAgent {
 			if (mConnectionsMap != null) {
 				    mConnectionsMap.remove(mConnectionId);
 
+            }
 
-		}
+        }
 
-	}
-
-  }
+    }
+	
 }
