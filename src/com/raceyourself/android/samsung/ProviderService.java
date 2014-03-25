@@ -55,6 +55,8 @@ import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.util.Base64;
 import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -285,8 +287,7 @@ public class ProviderService extends SAAgent {
             try {
                 json = new JSONObject(data);
                 String uri = WebLinkReq.fromJSON(json).getUri();
-                Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-                startActivity(myIntent);
+                launchWebBrowser(uri);
             } catch (JSONException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -388,16 +389,21 @@ public class ProviderService extends SAAgent {
 	
 	private void popupEula() {
 	    
-	    final SpannableString message = new SpannableString("RaceYourself end-user license agreement. By clicking accept you aggree to abide by RaceYourself's terms and conditions of use found here: http://www.raceourself.com");
-	    Linkify.addLinks(message, Linkify.WEB_URLS);
+	    final String message = new String("End-user license agreement.\n\nBy clicking accept you agree to abide by RaceYourself's terms and conditions of use.\n\nDetails can be found at http://www.raceyourself.com/gear/#eula");
+	    //Linkify.addLinks(message, Linkify.WEB_URLS);
 	    
-	    final TextView view = new TextView(this);
-	    view.setText(message);
-	    view.setMovementMethod(LinkMovementMethod.getInstance());
+	    //final TextView view = new TextView(this);
+	    //view.setText(message);
+	    //view.setMovementMethod(LinkMovementMethod.getInstance());
+	    //view.setOnClickListener(new OnClickListener() {
+	    //    public void onClick(View onClick) {                 
+	    //        launchWebBrowser("http://www.raceyourself.com/gear/#eula");
+	    //    }
+	    //});
 	    
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setView(view)
-               .setCancelable(false)
+        builder.setMessage(message)
+               .setCancelable(true)
                .setPositiveButton("Agree", new DialogInterface.OnClickListener() {
                    public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, 
                                        @SuppressWarnings("unused") final int id) {
@@ -406,6 +412,14 @@ public class ProviderService extends SAAgent {
            				if (disclaimerAccept == null || !disclaimerAccept.booleanValue()) popupDisclaimer();
                    }
                })
+               /* The following doesn't allow synchronous return to the dialog. Probably need an activity here.
+                * TODO: fix this so the link is clickable
+                * .setNeutralButton("Details", new DialogInterface.OnClickListener() {
+                   public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        // link to website
+                       launchWebBrowser("http://www.raceyourself.com/gear/#eula");
+                   }
+               })*/
                .setNegativeButton("Decline", new DialogInterface.OnClickListener() {
                    public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
                         ProviderService.this.stopSelf();
@@ -419,7 +433,8 @@ public class ProviderService extends SAAgent {
 	
 	private void popupDisclaimer() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("RaceYourself disclaimer. Bly clicking accept you understand that you are responsible for your own safety whilst using RaceYourself, and RaceYourself will not be held liable for any personal injory or illness sustained through use of this application.")
+        builder.setTitle("RaceYourself Gear Edition")
+               .setMessage("Disclaimer\n\nBy clicking accept you agree to take full responsibility for you own safety whilst using RaceYourself, and accept that RaceYourself will not be held liable for any personal injory or illness sustained through use of this application.\n\nYou agree to the full RaceYourself disclaimer which can be viewed online at https://www.raceyourself.com/gear/#disclaimer")
                .setCancelable(false)
                .setPositiveButton("Accept", new DialogInterface.OnClickListener() {
                    public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, 
@@ -441,8 +456,7 @@ public class ProviderService extends SAAgent {
                    public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
                         ProviderService.this.stopSelf();
                    }
-               })
-               .setTitle("RaceYourself Gear Edition");
+               });
         final AlertDialog alert = builder.create();
         alert.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         alert.show();
@@ -625,6 +639,12 @@ public class ProviderService extends SAAgent {
 	protected void onError(String error, int errorCode) {
 		// TODO Auto-generated method stub
 		Log.e(TAG,"ERROR: " + errorCode + ": " + error);
+	}
+	
+	private void launchWebBrowser(String uri) {
+	    Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+        myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(myIntent);
 	}
 	
 	// service connection inner class
