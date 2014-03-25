@@ -66,9 +66,11 @@ import com.glassfitgames.glassfitplatform.gpstracker.Helper;
 import com.glassfitgames.glassfitplatform.gpstracker.SyncHelper;
 import com.glassfitgames.glassfitplatform.models.Device;
 import com.glassfitgames.glassfitplatform.models.Preference;
+import com.glassfitgames.glassfitplatform.models.RemoteConfiguration;
 import com.raceyourself.samsungprovider.R;
 import com.raceyourself.android.samsung.models.GpsPositionData;
 import com.raceyourself.android.samsung.models.GpsStatusResp;
+import com.raceyourself.android.samsung.models.RemoteConfigurationResp;
 import com.raceyourself.android.samsung.models.SAModel;
 import com.raceyourself.android.samsung.models.WebLinkReq;
 import com.roscopeco.ormdroid.ORMDroidApplication;
@@ -292,7 +294,10 @@ public class ProviderService extends SAAgent {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-
+        } else if (data.contains(SAModel.REMOTE_CONFIGURATION_REQ)) {
+            RemoteConfiguration config = SyncHelper.get("configurations/gear", RemoteConfiguration.class);
+            if (config != null) response = new RemoteConfigurationResp(config.configuration);
+            
 		} else {
 			Log.e(TAG, "onDataAvailableonChannel: Unknown request received");
 		}
