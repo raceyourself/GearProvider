@@ -44,11 +44,13 @@ import org.json.JSONObject;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Binder;
+import android.os.Handler;
 import android.os.IBinder;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
@@ -91,10 +93,13 @@ public class ProviderService extends SAAgent {
     private static final String DISCLAIMER_KEY = "DisclaimerAccept";
 
 	private final IBinder mBinder = new LocalBinder();
-	private static HashMap<Integer, RaceYourselfSamsungProviderConnection> mConnectionsMap = null;
+	private static HashMap<Integer, RaceYourselfSamsungProviderConnection> mConnectionsMap = new HashMap<Integer, RaceYourselfSamsungProviderConnection>();
 	private static GPSTracker gpsTracker = null;
 	private static GpsDataSender gpsDataSender = null;
 	private Timer timer = new Timer();
+	
+	private AlertDialog alert;
+	private boolean initialisingInProgress = false;
 	
 	private boolean registered = false; // have we registered the device with the server yet? Required for inserting stuff into the db.
 
@@ -124,44 +129,84 @@ public class ProviderService extends SAAgent {
         return false;
     }
 	
-
-    /**
-     * Called when the service is started
-     */
+	/**
+	 *  Called when the service is started
+	 */
 	@Override
-	public void onCreate() {
-		super.onCreate();
-		ORMDroidApplication.initialize(this);  // init the database
-		
-		// check EULA
-		Boolean eulaAccept = Preference.getBoolean(EULA_KEY);
-		if (eulaAccept == null || !eulaAccept.booleanValue()) popupEula();
-		else {
-			Boolean disclaimerAccept = Preference.getBoolean(DISCLAIMER_KEY);
-			if (disclaimerAccept == null || !disclaimerAccept.booleanValue()) popupDisclaimer();
-			else {
-				if(!Helper.getInstance(this).isBluetoothBonded()) popupBluetoothDialog();
-				else {
-					ensureDeviceIsRegistered();
-				
-					if(registered){
-						authorize();
-					
-						trySync();
-					}
-					
-				}
-				
-			}
-			
-		}
-		// check disclaimer
-		
-		
-		// make sure we have a record for the user
-		Helper.getUser();
-		
-		Log.v(TAG, "service created");
+	public int onStartCommand(Intent i, int j, int k) {
+        
+        ORMDroidApplication.initialize(this);  // init the database
+        
+        // check the user has done everything they need to
+        // separate thread to allow onCreate() to complete and SAP to 
+        // deploy the wgt to gear.
+        // Don't trigger if init is already in progress, or we're already connected to gear
+        if (!initialisingInProgress && mConnectionsMap.isEmpty()) {
+            new Handler().post(new Runnable() {
+                public void run() {
+                    runUserInit();
+                }
+            });
+        }
+        // make sure we have a record for the user
+        Helper.getUser();
+        
+        int result = super.onStartCommand(i,j,k);
+        
+        Log.v(TAG, "service created");
+        
+        return result;
+    }
+	
+	
+	private void runUserInit() {
+	    
+	    Log.d(TAG, "Running user init");
+	    initialisingInProgress = true;
+	    
+	    // check EULA
+	    Boolean eulaAccept = Preference.getBoolean(EULA_KEY);
+        if (eulaAccept == null || !eulaAccept.booleanValue()) {
+            popupEula();
+            return;
+        }
+        
+        // check disclaimer
+        Boolean disclaimerAccept = Preference.getBoolean(DISCLAIMER_KEY);
+        if (disclaimerAccept == null || !disclaimerAccept.booleanValue()) {
+            popupDisclaimer();
+            return;
+        }
+        
+        // register with server
+        if (!ensureDeviceIsRegistered()) {
+            popupNetworkDialog();
+            return;
+        }
+        
+        // check bluetooth - if they want to launch the app now
+        if (!Helper.getInstance(this).isBluetoothBonded()) {
+            popupBluetoothDialog();
+            return;
+        }
+        
+        // check the gear app is running
+        
+        if (mConnectionsMap.isEmpty()) {
+            popupWaitingForGearDialog();
+            return;
+        }
+        
+        popupSuccessDialog();
+        
+        Log.d(TAG, "User init completed successfully");
+        initialisingInProgress = false;
+        
+        // do in background
+        if(registered){
+            authorize();
+            trySync();
+        } 
 	}
 	
 	@Override
@@ -176,6 +221,7 @@ public class ProviderService extends SAAgent {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
+		Helper.getInstance(this).destroy();  // unregister intent receivers etc
 		Log.i(TAG, "Service Stopped.");
 	}
 
@@ -223,9 +269,6 @@ public class ProviderService extends SAAgent {
 			    RaceYourselfSamsungProviderConnection myConnection = (RaceYourselfSamsungProviderConnection) uThisConnection;
 			    Log.d(TAG,"onServiceConnection connectionID = "+myConnection.mConnectionId);
 				
-				if (mConnectionsMap == null) {
-					mConnectionsMap = new HashMap<Integer, RaceYourselfSamsungProviderConnection>();
-				}
 				myConnection.mConnectionId = (int) (System.currentTimeMillis() & 255);
 				mConnectionsMap.put(myConnection.mConnectionId, myConnection);
 
@@ -322,15 +365,8 @@ public class ProviderService extends SAAgent {
 					bluetooth.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 					startActivity(bluetooth);
 					
-					ensureDeviceIsRegistered();
-       				
-       				if(registered){
-       					authorize();
-       					
-       					trySync();	
-       				}
-       				
-       				
+					// continue with init
+					runUserInit();
 				}
 			})
 			.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -343,7 +379,7 @@ public class ProviderService extends SAAgent {
 			})
             .setTitle("RaceYourself Gear Edition");
 		
-		final AlertDialog alert = builder.create();
+		alert = builder.create();
 		alert.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
 		alert.show();
 	}
@@ -366,31 +402,10 @@ public class ProviderService extends SAAgent {
                    }
                })
                .setTitle("RaceYourself Gear Edition");
-        final AlertDialog alert = builder.create();
+        alert = builder.create();
         alert.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         alert.show();
 	}
-	
-	private void popupNetworkDialog() {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("RaceYourself needs to connect to the internet to register your device. Please check your connection and press retry.")
-               .setCancelable(false)
-               .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
-                   public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, 
-                                       @SuppressWarnings("unused") final int id) {
-                       ensureInternet();
-                   }
-               })
-               .setNegativeButton("Quit", new DialogInterface.OnClickListener() {
-                   public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
-                        ProviderService.this.stopSelf();
-                   }
-               })
-               .setTitle("RaceYourself Gear Edition");
-        final AlertDialog alert = builder.create();
-        alert.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
-        alert.show();
-    }
 	
 	private void popupEula() {
 	    
@@ -413,8 +428,13 @@ public class ProviderService extends SAAgent {
                    public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, 
                                        @SuppressWarnings("unused") final int id) {
                        Preference.setBoolean(EULA_KEY, Boolean.TRUE);
-                       Boolean disclaimerAccept = Preference.getBoolean(DISCLAIMER_KEY);
-           				if (disclaimerAccept == null || !disclaimerAccept.booleanValue()) popupDisclaimer();
+                      
+                       // continue with init
+                       new Handler().post(new Runnable() {
+                           public void run() {
+                               runUserInit();
+                           }
+                       });
                    }
                })
                /* The following doesn't allow synchronous return to the dialog. Probably need an activity here.
@@ -431,7 +451,7 @@ public class ProviderService extends SAAgent {
                    }
                })
                .setTitle("RaceYourself Gear Edition");
-        final AlertDialog alert = builder.create();
+        alert = builder.create();
         alert.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         alert.show();
     }
@@ -439,22 +459,19 @@ public class ProviderService extends SAAgent {
 	private void popupDisclaimer() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("RaceYourself Gear Edition")
-               .setMessage("Disclaimer\n\nBy clicking accept you agree to take full responsibility for you own safety whilst using RaceYourself, and accept that RaceYourself will not be held liable for any personal injory or illness sustained through use of this application.\n\nYou agree to the full RaceYourself disclaimer which can be viewed online at https://www.raceyourself.com/gear/#disclaimer")
+               .setMessage("Disclaimer\n\nBy clicking accept you agree to take full responsibility for you own safety whilst using RaceYourself, and accept that RaceYourself will not be held liable for any personal injury or illness sustained through use of this application.\n\nYou agree to the full RaceYourself disclaimer which can be viewed online at https://www.raceyourself.com/gear/#disclaimer")
                .setCancelable(false)
                .setPositiveButton("Accept", new DialogInterface.OnClickListener() {
                    public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, 
                                        @SuppressWarnings("unused") final int id) {
                         Preference.setBoolean(DISCLAIMER_KEY, Boolean.TRUE);
-                        if(!Helper.getInstance(ProviderService.this).isBluetoothBonded()) popupBluetoothDialog();
-	       				else {
-	       					ensureDeviceIsRegistered();
-	       				
-	       					if(registered){
-	       						authorize();
-	       						trySync();
-	       					}
-	       					
-	       				}
+
+                        // continue with init
+                        new Handler().post(new Runnable() {
+                            public void run() {
+                                runUserInit();
+                            }
+                        });
                    }
                })
                .setNegativeButton("Decline", new DialogInterface.OnClickListener() {
@@ -462,10 +479,79 @@ public class ProviderService extends SAAgent {
                         ProviderService.this.stopSelf();
                    }
                });
-        final AlertDialog alert = builder.create();
+        alert = builder.create();
         alert.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         alert.show();
     }
+	
+	private void popupNetworkDialog() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("RaceYourself needs to connect to the internet to register your device. Please check your connection and press retry.")
+               .setCancelable(false)
+               .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+                   public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, 
+                                       @SuppressWarnings("unused") final int id) {
+                       runUserInit();
+                   }
+               })
+               .setNegativeButton("Quit", new DialogInterface.OnClickListener() {
+                   public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        ProviderService.this.stopSelf();
+                   }
+               })
+               .setTitle("RaceYourself Gear Edition");
+        alert = builder.create();
+        alert.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+        alert.show();
+    }
+	
+    private void popupWaitingForGearDialog() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("RaceYourself Gear Edition")
+                .setMessage(
+                        "Waiting for Gear. Launch RaceYourself from the Apps section of Gear.\n\nIf you have just installed RaceYourself, the icon may take a few moments to appear. \n\nIf you are waiting a while, make sure UnifiedHostManager is connected to gear or try disabling/re-enabing bluetooth on Gear.")
+                .setCancelable(false)
+                .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+                    public void onClick(@SuppressWarnings("unused") final DialogInterface dialog,
+                            @SuppressWarnings("unused") final int id) {
+                        new Handler().post(new Runnable() {
+                            public void run() {
+                                runUserInit();
+                            }
+                        });
+                    }
+                }).setNegativeButton("Quit", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog,
+                            @SuppressWarnings("unused") final int id) {
+                        ProviderService.this.stopSelf();
+                    }
+                });
+        alert = builder.create();
+        alert.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+        alert.show();
+    }
+	
+	private void popupSuccessDialog() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("RaceYourself Gear Edition")
+               .setMessage("Connected to Gear.\n\nRaceYourself is ready to go!\n\nIt's important to keep Gear connected to your phone when you workout, so RaceYourself can use the GPS in your phone.")
+               .setCancelable(false)
+               .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                   public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, 
+                                       @SuppressWarnings("unused") final int id) {
+                        // nothing - just dismiss dialog
+                   }
+               })
+               .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                   public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                       // nothing - just dismiss dialog
+                   }
+               });
+        alert = builder.create();
+        alert.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+        alert.show();
+    }
+
 	
 	private void send(String connectedPeerId, SAModel message) {
 	    RaceYourselfSamsungProviderConnection conn = mConnectionsMap.get(Integer.parseInt(connectedPeerId));
@@ -484,18 +570,16 @@ public class ProviderService extends SAAgent {
         }
 	}
 	
-	private void ensureDeviceIsRegistered() {
+	private boolean ensureDeviceIsRegistered() {
 	    if (registered) {
 	        // registered, and we know about it locally
-	        return;
+	        return true;
 	    } else if (Device.self() != null) {
 	        // registered previously, update local variable
 	        registered = true;
-	        return;
-	    } else {
+	        return true;
+	    } else if (Helper.getInstance(this).hasInternet()){
 	        // not yet registered, attempt to register
-            ensureInternet();
-            
             Thread deviceRegistration = new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -507,7 +591,6 @@ public class ProviderService extends SAAgent {
                         registered = true;
                         
                         authorize();
-       					
        					trySync();
        					
                     	} catch (IOException e) {
@@ -515,7 +598,11 @@ public class ProviderService extends SAAgent {
                     }
                 }
             });
-            deviceRegistration.start(); 
+            deviceRegistration.start();
+            return true;
+        } else {
+            // not yet registered, no internet, need to prompt user
+            return false;
         }
 	}
 	

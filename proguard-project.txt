@@ -18,3 +18,14 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+-dontskipnonpubliclibraryclasses
+-libraryjars <java.home>/bundle/Classes/classes.jar
+-keep class com.raceyourself.android.samsung.PopupActivity.java  {*;}
+-keep class com.raceyourself.android.samsung.ProviderService {*;}
+-keep class com.raceyourself.android.samsung.ProviderService$RaceYourselfSamsungProviderConnection {*;}
+-keep class com.samsung.** {*;}
+-keep public class com.glassfitgames.glassfitplatform.models.* {*;}
+
+-keepattributes *Annotation*
+
