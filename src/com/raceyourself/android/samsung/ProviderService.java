@@ -1,31 +1,19 @@
-/**============================== FILE HEADER ==================================
-*
-*           Copyright (c) 2013 Samsung R&D Institute India- Bangalore Pvt. Ltd (SRI-B)
-*                      Samsung Confidential Proprietary
-*                            All Rights Reserved
-*          This software is the confidential and proprietary information 
-*          of Samsung R&D Institute India- Bangalore Pvt. Ltd (SRI-B).
-*
-*         You shall not disclose such Confidential Information and shall use
-*		  it only in accordance with the terms of the license agreement you entered 
-*		  into with Samsung R&D Institute India- Bangalore Pvt. Ltd (SRI-B).
-================================================================================
-*                               Module Name :Gallery Provider B App
-================================================================================
-* File                : SASmartViewProviderImpl.java
-*
-* Author(s)           : Amit Singh
-*
-* Date                : 12 December 2013
-*
-* Description         : This file handles the backend  service of the  provider  and  extends the  SAAgent class
-================================================================================
-*                            Modification History
-*-------------------------------------------------------------------------------
-*    Date    |       Name      |        Modification
-*-------------------------------------------------------------------------------
-*            |                 |
-==============================================================================*/
+/**
+ * Copyright (c) 2014 RaceYourself Inc
+ * All Rights Reserved
+ *
+ * No part of this application or any of its contents may be reproduced, copied, modified or 
+ * adapted, without the prior written consent of the author, unless otherwise indicated.
+ *
+ * Commercial use and distribution of the application or any part is not allowed without 
+ * express and prior written consent of the author.
+ *
+ * The application makes use of some publicly available libraries, some of which have their 
+ * own copyright notices and licences. These notices are reproduced in the Open Source License 
+ * Acknowledgement file included with this software.
+ * 
+ */
+
 
 package com.raceyourself.android.samsung;
 
@@ -80,10 +68,6 @@ import com.samsung.android.sdk.accessory.SAAgent;
 import com.samsung.android.sdk.accessory.SAPeerAgent;
 import com.samsung.android.sdk.accessory.SASocket;
 
-/**
- * @author s.amit
- *
- */
 public class ProviderService extends SAAgent {
 	
     public static final String TAG = "RaceYourselfProvider";
@@ -99,26 +83,18 @@ public class ProviderService extends SAAgent {
 	private Timer timer = new Timer();
 	
 	private AlertDialog alert;
+	private AlertDialog waitingAlert;
 	private boolean initialisingInProgress = false;
 	private boolean firstLaunch = false;
 	
 	private boolean registered = false; // have we registered the device with the server yet? Required for inserting stuff into the db.
 
-	/**
-	 * @author s.amit
-	 *
-	 */
 	public class LocalBinder extends Binder {
 		public ProviderService getService() {
 			return ProviderService.this;
 		}
 	}
 
-	 /**
-     * 
-     * @param intent
-     * @return IBinder
-     */
 	@Override
 	public IBinder onBind(Intent intent) {
 		return mBinder;
@@ -131,7 +107,7 @@ public class ProviderService extends SAAgent {
     }
 	
 	/**
-	 *  Called when the service is started
+	 *  Called when the service is started, even if already running
 	 */
 	@Override
 	public int onStartCommand(Intent i, int j, int k) {
@@ -188,9 +164,9 @@ public class ProviderService extends SAAgent {
         
         // check the gear app is running
         
-        if (firstLaunch && mConnectionsMap.isEmpty()) {
-                popupWaitingForGearDialog();
-                return;
+        if (mConnectionsMap.isEmpty()) {
+            popupWaitingForGearDialog();
+            return;
         }
         
         Log.d(TAG, "User init completed successfully");
@@ -254,6 +230,9 @@ public class ProviderService extends SAAgent {
      * 
      * @param uThisConnection
      * @param result
+     * 
+     * Based on Samsung sample app by s.amit
+     * 
      */
 	@Override
 	protected void onServiceConnectionResponse(SASocket uThisConnection, int result) {
@@ -271,6 +250,13 @@ public class ProviderService extends SAAgent {
 				
 				// init GPS tracker to start searching for position
 				ensureGps();
+				
+				try {
+				    waitingAlert.cancel();
+				} catch (Exception e) {
+				    // waiting Alert may have been null, or not popped up,
+				    // in which case don't worry
+				}
 				
 				firstLaunch = false;
 		        popupSuccessDialog();
@@ -351,22 +337,21 @@ public class ProviderService extends SAAgent {
 	private void popupBluetoothDialog() {
 		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		
-		builder.setMessage("Your bluetooth is not connected to gear, would you like to connect it?")
+		builder.setMessage("Your bluetooth is not enabled.\n\nPlease enable, connect to Gear and press retry.")
 			   .setCancelable(false)
-			   .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+			   .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
 				
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					// TODO Auto-generated method stub
-					Intent bluetooth = new Intent(android.provider.Settings.ACTION_BLUETOOTH_SETTINGS);
-					bluetooth.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-					startActivity(bluetooth);
+					//Intent bluetooth = new Intent(android.provider.Settings.ACTION_BLUETOOTH_SETTINGS);
+					//bluetooth.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					//startActivity(bluetooth);
 					
 					// continue with init
 					runUserInit();
 				}
 			})
-			.setNegativeButton("No", new DialogInterface.OnClickListener() {
+			.setNegativeButton("Quit", new DialogInterface.OnClickListener() {
 				
 				@Override
 				public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
@@ -383,7 +368,7 @@ public class ProviderService extends SAAgent {
 	
 	private void popupGpsDialog() {
 	    final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
+        builder.setMessage("RaceYourself works best with GPS.\n\nWould you like to enable your GPS now?")
                .setCancelable(false)
                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                    public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, 
@@ -523,9 +508,9 @@ public class ProviderService extends SAAgent {
                         ProviderService.this.stopSelf();
                     }
                 });
-        alert = builder.create();
-        alert.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
-        alert.show();
+        waitingAlert = builder.create();
+        waitingAlert.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+        waitingAlert.show();
     }
 	
 	private void popupSuccessDialog() {
@@ -736,11 +721,9 @@ public class ProviderService extends SAAgent {
         startActivity(myIntent);
 	}
 	
-	// service connection inner class
-	
-	 /**
-     * 
-     * @author amit.s5
+	/**
+     * Service connection
+     * Based on Samsung sample app by s.amit
      *
      */
 	public class RaceYourselfSamsungProviderConnection extends SASocket {
