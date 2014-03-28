@@ -100,6 +100,7 @@ public class ProviderService extends SAAgent {
 	
 	private AlertDialog alert;
 	private boolean initialisingInProgress = false;
+	private boolean firstLaunch = false;
 	
 	private boolean registered = false; // have we registered the device with the server yet? Required for inserting stuff into the db.
 
@@ -167,19 +168,14 @@ public class ProviderService extends SAAgent {
 	    // check EULA
 	    Boolean eulaAccept = Preference.getBoolean(EULA_KEY);
         if (eulaAccept == null || !eulaAccept.booleanValue()) {
+            firstLaunch = true;
             popupEula();
-            return;
-        }
-        
-        // check disclaimer
-        Boolean disclaimerAccept = Preference.getBoolean(DISCLAIMER_KEY);
-        if (disclaimerAccept == null || !disclaimerAccept.booleanValue()) {
-            popupDisclaimer();
             return;
         }
         
         // register with server
         if (!ensureDeviceIsRegistered()) {
+            firstLaunch = true;
             popupNetworkDialog();
             return;
         }
@@ -192,12 +188,10 @@ public class ProviderService extends SAAgent {
         
         // check the gear app is running
         
-        if (mConnectionsMap.isEmpty()) {
-            popupWaitingForGearDialog();
-            return;
+        if (firstLaunch && mConnectionsMap.isEmpty()) {
+                popupWaitingForGearDialog();
+                return;
         }
-        
-        popupSuccessDialog();
         
         Log.d(TAG, "User init completed successfully");
         initialisingInProgress = false;
@@ -277,6 +271,9 @@ public class ProviderService extends SAAgent {
 				
 				// init GPS tracker to start searching for position
 				ensureGps();
+				
+				firstLaunch = false;
+		        popupSuccessDialog();
 				
 			} else
 				Log.e(TAG, "SASocket object is null");
@@ -409,7 +406,7 @@ public class ProviderService extends SAAgent {
 	
 	private void popupEula() {
 	    
-	    final String message = new String("End-user license agreement.\n\nBy clicking accept you agree to abide by RaceYourself's terms and conditions of use.\n\nDetails can be found at http://www.raceyourself.com/gear/#eula");
+	    final String message = new String("End-user license agreement and disclaimer.\n\nBy clicking accept you agree to abide by RaceYourself's terms and conditions of use. You also agree to take full responsibility for you own safety whilst using RaceYourself, and accept that RaceYourself will not be held liable for any personal injury or illness sustained through use of this application.\n\nYou agree to the full EULA and Disclaimers which can be viewed online:\n\nhttp://www.raceyourself.com/gear/#eula\n\nhttp://www.raceyourself.com/gear/#disclaimer");
 	    //Linkify.addLinks(message, Linkify.WEB_URLS);
 	    
 	    //final TextView view = new TextView(this);
@@ -509,7 +506,7 @@ public class ProviderService extends SAAgent {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("RaceYourself Gear Edition")
                 .setMessage(
-                        "Waiting for Gear. Launch RaceYourself from the Apps section of Gear.\n\nIf you have just installed RaceYourself, the icon may take a few moments to appear. \n\nIf you are waiting a while, make sure UnifiedHostManager is connected to gear or try disabling/re-enabing bluetooth on Gear.")
+                        "Please launch RaceYourself on Gear.\n\nIf you have just installed RaceYourself, the icon may take a few moments to appear. \n\nIf you are waiting a while, make sure UnifiedHostManager is connected to gear or try disabling/re-enabing bluetooth on Gear.")
                 .setCancelable(false)
                 .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
                     public void onClick(@SuppressWarnings("unused") final DialogInterface dialog,
