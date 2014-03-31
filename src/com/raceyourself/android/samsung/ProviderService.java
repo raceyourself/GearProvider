@@ -309,7 +309,14 @@ public class ProviderService extends SAAgent {
 		    //authenticationIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 		    //startActivity(authenticationIntent);
 		} else if (data.contains(SAModel.LOG_ANALYTICS)) {
-		    Helper.logEvent(data);
+            try {
+                JSONObject json = new JSONObject(data);
+                Helper.logEvent(json.getJSONObject("value").toString());
+            } catch (JSONException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
 		} else if (data.contains(SAModel.WEB_LINK_REQ)) {
 		    JSONObject json;
             try {
