@@ -78,6 +78,7 @@ public class ProviderService extends SAAgent {
 	private boolean initialisingInProgress = false;
 	
 	private boolean registered = false; // have we registered the device with the server yet? Required for inserting stuff into the db.
+	private Thread deviceRegistration = null;
 
 	public class LocalBinder extends Binder {
 		public ProviderService getService() {
@@ -550,8 +551,11 @@ public class ProviderService extends SAAgent {
 	        registered = true;
 	        return true;
 	    } else if (Helper.getInstance(this).hasInternet()){
+	        if (deviceRegistration != null && deviceRegistration.isAlive()) {
+	            return true;
+	        }
 	        // not yet registered, attempt to register
-            Thread deviceRegistration = new Thread(new Runnable() {
+            deviceRegistration = new Thread(new Runnable() {
                 @Override
                 public void run() {
                         
@@ -565,7 +569,7 @@ public class ProviderService extends SAAgent {
        					trySync();
        					
                     	} catch (IOException e) {
-                    		Log.e(TAG, "Error registering device");
+                    		Log.e(TAG, "Error registering device", e);
                     }
                 }
             });
