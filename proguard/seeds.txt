@@ -10919,6 +10919,7 @@ com.raceyourself.android.samsung.ProviderService: com.glassfitgames.glassfitplat
 com.raceyourself.android.samsung.ProviderService: com.raceyourself.android.samsung.ProviderService$GpsDataSender gpsDataSender
 com.raceyourself.android.samsung.ProviderService: java.util.Timer timer
 com.raceyourself.android.samsung.ProviderService: android.app.AlertDialog alert
+com.raceyourself.android.samsung.ProviderService: android.app.AlertDialog waitingAlert
 com.raceyourself.android.samsung.ProviderService: boolean initialisingInProgress
 com.raceyourself.android.samsung.ProviderService: boolean firstLaunch
 com.raceyourself.android.samsung.ProviderService: boolean registered
@@ -11058,7 +11059,11 @@ com.raceyourself.samsungprovider.R$menu: int authentication
 com.raceyourself.samsungprovider.R$menu: int easy_gallery_consumer
 com.raceyourself.samsungprovider.R$menu: int popup
 com.raceyourself.samsungprovider.R$raw: int beta_game_list
+com.raceyourself.samsungprovider.R$raw: int eula
 com.raceyourself.samsungprovider.R$raw: int master_game_list
+com.raceyourself.samsungprovider.R$raw: int medical_disclaimer
+com.raceyourself.samsungprovider.R$raw: int notice
+com.raceyourself.samsungprovider.R$raw: int open_source_license_acknowledgement
 com.raceyourself.samsungprovider.R$raw: int sensoria_demo_data
 com.raceyourself.samsungprovider.R$string: int ConnectionEstablishedMsg
 com.raceyourself.samsungprovider.R$string: int action_settings

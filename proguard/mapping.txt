@@ -14636,6 +14636,7 @@ com.raceyourself.android.samsung.ProviderService -> com.raceyourself.android.sam
     com.raceyourself.android.samsung.ProviderService$GpsDataSender gpsDataSender -> gpsDataSender
     java.util.Timer timer -> timer
     android.app.AlertDialog alert -> alert
+    android.app.AlertDialog waitingAlert -> waitingAlert
     boolean initialisingInProgress -> initialisingInProgress
     boolean firstLaunch -> firstLaunch
     boolean registered -> registered
