@@ -32,7 +32,6 @@ import org.json.JSONObject;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -40,16 +39,9 @@ import android.net.Uri;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
-import android.text.SpannableString;
-import android.text.method.LinkMovementMethod;
-import android.text.util.Linkify;
 import android.util.Base64;
 import android.util.Log;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.WindowManager;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.glassfitgames.glassfitplatform.gpstracker.GPSTracker;
 import com.glassfitgames.glassfitplatform.gpstracker.Helper;
@@ -57,7 +49,6 @@ import com.glassfitgames.glassfitplatform.gpstracker.SyncHelper;
 import com.glassfitgames.glassfitplatform.models.Device;
 import com.glassfitgames.glassfitplatform.models.Preference;
 import com.glassfitgames.glassfitplatform.models.RemoteConfiguration;
-import com.raceyourself.samsungprovider.R;
 import com.raceyourself.android.samsung.models.GpsPositionData;
 import com.raceyourself.android.samsung.models.GpsStatusResp;
 import com.raceyourself.android.samsung.models.RemoteConfigurationResp;
@@ -85,7 +76,6 @@ public class ProviderService extends SAAgent {
 	private AlertDialog alert;
 	private AlertDialog waitingAlert;
 	private boolean initialisingInProgress = false;
-	private boolean firstLaunch = false;
 	
 	private boolean registered = false; // have we registered the device with the server yet? Required for inserting stuff into the db.
 
@@ -144,14 +134,12 @@ public class ProviderService extends SAAgent {
 	    // check EULA
 	    Boolean eulaAccept = Preference.getBoolean(EULA_KEY);
         if (eulaAccept == null || !eulaAccept.booleanValue()) {
-            firstLaunch = true;
             popupEula();
             return;
         }
         
         // register with server
         if (!ensureDeviceIsRegistered()) {
-            firstLaunch = true;
             popupNetworkDialog();
             return;
         }
@@ -258,7 +246,6 @@ public class ProviderService extends SAAgent {
 				    // in which case don't worry
 				}
 				
-				firstLaunch = false;
 		        popupSuccessDialog();
 				
 			} else
@@ -313,8 +300,7 @@ public class ProviderService extends SAAgent {
                 JSONObject json = new JSONObject(data);
                 Helper.logEvent(json.getJSONObject("value").toString());
             } catch (JSONException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                Log.e(TAG, "Error parsing analytics event", e);
             }
 
 		} else if (data.contains(SAModel.WEB_LINK_REQ)) {
@@ -324,8 +310,7 @@ public class ProviderService extends SAAgent {
                 String uri = WebLinkReq.fromJSON(json).getUri();
                 launchWebBrowser(uri);
             } catch (JSONException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                Log.e(TAG, "Error parsing WebLinkReq", e);
             }
         } else if (data.contains(SAModel.REMOTE_CONFIGURATION_REQ)) {
             RemoteConfiguration config = SyncHelper.get("configurations/gear", RemoteConfiguration.class);
@@ -548,14 +533,11 @@ public class ProviderService extends SAAgent {
             Log.d(TAG, "Sending message on channel " + DEFAULT_CHANNEL_ID + ": " + message.toJSON().toString());
             conn.send(DEFAULT_CHANNEL_ID, message.toJSON().toString().getBytes());
         } catch (IllegalArgumentException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            Log.e(TAG, "IllegalArgumentException sending SAP message", e);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            Log.e(TAG, "IOException sending SAP message", e);
         } catch (JSONException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            Log.e(TAG, "JSONException sending SAP message", e);
         }
 	}
 	
@@ -723,6 +705,7 @@ public class ProviderService extends SAAgent {
 	}
 	
 	private void launchWebBrowser(String uri) {
+	    Log.i(TAG, "Launching browser for URI: " + uri);
 	    Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
         myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(myIntent);
