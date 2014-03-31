@@ -64,6 +64,11 @@
         <meta-data
             android:name="ormdroid.database.name"
             android:value="raceyourself_database" />
+        
+        <!-- tells the Samsung store this is a Gear 2 app -->
+        <meta-data
+            android:name="GearAppType" 
+            android:value="wgt" />
 
     </application>
 
