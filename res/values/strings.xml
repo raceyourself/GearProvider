@@ -6,5 +6,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="ConnectionEstablishedMsg">Phone to gear comms open</string>
     <string name="title_activity_popup">RaceYourself Gear Edition</string>
-
+    <string name="notification_title">Race Yourself</string>
+    <string name="notification_message">Tethered to Gear</string>
+    
 </resources>

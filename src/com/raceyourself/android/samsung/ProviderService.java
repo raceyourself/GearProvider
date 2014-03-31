@@ -33,12 +33,15 @@ import org.json.JSONObject;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.AlertDialog;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
+import android.support.v4.app.NotificationCompat;
 import android.util.Base64;
 import android.util.Log;
 import android.view.WindowManager;
@@ -54,6 +57,7 @@ import com.raceyourself.android.samsung.models.GpsStatusResp;
 import com.raceyourself.android.samsung.models.RemoteConfigurationResp;
 import com.raceyourself.android.samsung.models.SAModel;
 import com.raceyourself.android.samsung.models.WebLinkReq;
+import com.raceyourself.samsungprovider.R;
 import com.roscopeco.ormdroid.ORMDroidApplication;
 import com.samsung.android.sdk.accessory.SAAgent;
 import com.samsung.android.sdk.accessory.SAPeerAgent;
@@ -79,6 +83,9 @@ public class ProviderService extends SAAgent {
 	
 	private boolean registered = false; // have we registered the device with the server yet? Required for inserting stuff into the db.
 	private Thread deviceRegistration = null;
+	
+	private final int TETHER_NOTIFICATION_ID = 1;
+	private boolean iconEnabled = false;
 
 	public class LocalBinder extends Binder {
 		public ProviderService getService() {
@@ -233,6 +240,9 @@ public class ProviderService extends SAAgent {
 				
 				myConnection.mConnectionId = (int) (System.currentTimeMillis() & 255);
 				mConnectionsMap.put(myConnection.mConnectionId, myConnection);
+				
+				// Enabled 'tethered' icon
+				enableIcon();
 
 				// make sure we have a device ID (initially from the server) - req for writes to db
 				ensureDeviceIsRegistered();
@@ -299,7 +309,7 @@ public class ProviderService extends SAAgent {
 		} else if (data.contains(SAModel.LOG_ANALYTICS)) {
             try {
                 JSONObject json = new JSONObject(data);
-                Helper.logEvent(json.getJSONObject("value").toString());
+                Helper.logEvent(json.getString("value"));
             } catch (JSONException e) {
                 Log.e(TAG, "Error parsing analytics event", e);
             }
@@ -775,6 +785,8 @@ public class ProviderService extends SAAgent {
 			if (mConnectionsMap != null) {
 				    mConnectionsMap.remove(mConnectionId);
 				    if (mConnectionsMap.isEmpty()) {
+				        // Disable 'tethered' icon
+				        disableIcon();
 	                    // turn off GPS tracker and sensor service
 	                    Log.d(TAG, "No connections remaining, destroying GPS tracker");
 	                    stopTracking();
@@ -786,4 +798,44 @@ public class ProviderService extends SAAgent {
 
     }
 	
+	private void enableIcon() {
+	    if (iconEnabled) return;
+        iconEnabled = true;
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.ic_launcher)
+                .setContentTitle(getString(R.string.notification_title))
+                .setContentText(getString(R.string.notification_message));
+        
+        String device = "unregistered device";
+        Device self = Device.self();
+        if (self != null) device = "device " + self.getId();
+        
+        // TODO: Replace with single-page view
+        Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto","support@raceyourself.com", null));
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Gear support request for " + device);
+        PendingIntent resultPendingIntent =
+            PendingIntent.getActivity(
+            this,
+            0,
+            Intent.createChooser(emailIntent, "Send support email.."),
+            PendingIntent.FLAG_UPDATE_CURRENT
+        );        
+        mBuilder.setContentIntent(resultPendingIntent);
+        
+        // Gets an instance of the NotificationManager service
+        NotificationManager mNotifyMgr = 
+                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        // Builds the notification and issues it.
+        mNotifyMgr.notify(TETHER_NOTIFICATION_ID, mBuilder.build());
+	}
+	
+	private void disableIcon() {
+	    if (!iconEnabled) return;
+        // Gets an instance of the NotificationManager service
+        NotificationManager mNotifyMgr = 
+                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        mNotifyMgr.cancel(TETHER_NOTIFICATION_ID);
+        iconEnabled = false;
+	}
 }
