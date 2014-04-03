@@ -8,5 +8,12 @@
     <string name="title_activity_popup">RaceYourself Gear Edition</string>
     <string name="notification_title">Race Yourself</string>
     <string name="notification_message">Tethered to Gear</string>
+    <string name="splash_content">Race Yourself</string>
+    <string name="header_content">Race Yourself Gear Edition</string>
     
+    <string name="howto">HOW TO PLAY</string>
+    <string name="connection">CONNECTION STATUS</string>
+    <string name="feedback">FEEDBACK</string>
+    
+    <string name="footer">© copyright raceyourself inc 2014</string>
 </resources>
