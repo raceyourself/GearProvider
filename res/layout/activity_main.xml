@@ -24,7 +24,7 @@
         android:src="@drawable/mainimage"
 		android:scaleType = "centerCrop" />
  
-     <TextView
+    <TextView
         android:id = "@+id/textview1" 
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -36,10 +36,11 @@
         android:textSize="20sp"
 		android:layout_below="@+id/imageview2"
 		android:clickable="true"
-		android:onClick="onHowtoClick"
-        android:text="@string/howto" />
+		android:onClick="onConnectionClick"
+		android:textStyle="bold"
+        android:text="@string/service_starting" />
     
-    <TextView
+     <TextView
         android:id = "@+id/textview2" 
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -51,8 +52,8 @@
         android:textSize="20sp"
 		android:layout_below="@+id/textview1"
 		android:clickable="true"
-		android:onClick="onConnectionClick"
-        android:text="@string/connection" />
+		android:onClick="onHowtoClick"
+        android:text="@string/howto" />
     
     <TextView
         android:id = "@+id/textview3" 

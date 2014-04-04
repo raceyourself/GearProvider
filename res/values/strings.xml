@@ -12,7 +12,9 @@
     <string name="header_content">Race Yourself Gear Edition</string>
     
     <string name="howto">HOW TO PLAY</string>
-    <string name="connection">CONNECTION STATUS</string>
+    <string name="connected">CONNECTED</string>
+    <string name="connect">NOT CONNECTED\nTAP TO CONNECT</string>
+    <string name="service_starting">SERVICE STARTING</string>
     <string name="feedback">FEEDBACK</string>
     
     <string name="footer">© copyright raceyourself inc 2014</string>

@@ -134,7 +134,7 @@ public class ProviderService extends SAAgent {
     }
 	
 	
-	private void runUserInit() {
+	public void runUserInit() {
 	    
 	    Log.d(TAG, "Running user init");
 	    initialisingInProgress = true;
@@ -599,6 +599,14 @@ public class ProviderService extends SAAgent {
         gpsTracker.onResume();
 	}
 	
+	public boolean hasBluetooth() {
+	    return Helper.getInstance(this).isBluetoothBonded();
+	}
+    
+	public boolean hasGear() {
+	    return !mConnectionsMap.isEmpty();
+	}
+	
     private void startTracking() {
 
         Log.d(TAG,"startTracking called");
@@ -807,18 +815,12 @@ public class ProviderService extends SAAgent {
                 .setContentTitle(getString(R.string.notification_title))
                 .setContentText(getString(R.string.notification_message));
         
-        String device = "unregistered device";
-        Device self = Device.self();
-        if (self != null) device = "device " + self.getId();
-        
-        // TODO: Replace with single-page view
-        Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto","support@raceyourself.com", null));
-        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Gear support request for " + device);
+        Intent intent = new Intent(this, PopupActivity.class);
         PendingIntent resultPendingIntent =
             PendingIntent.getActivity(
             this,
             0,
-            Intent.createChooser(emailIntent, "Send support email.."),
+            intent,
             PendingIntent.FLAG_UPDATE_CURRENT
         );        
         mBuilder.setContentIntent(resultPendingIntent);
