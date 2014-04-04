@@ -138,6 +138,12 @@ public class ProviderService extends SAAgent {
 	    
 	    Log.d(TAG, "Running user init");
 	    initialisingInProgress = true;
+
+        // do in background
+        if(registered){
+            authorize();
+            trySync();
+        } 
 	    
 	    // check EULA
 	    Boolean eulaAccept = Preference.getBoolean(EULA_KEY);
@@ -413,6 +419,7 @@ public class ProviderService extends SAAgent {
                    public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, 
                                        @SuppressWarnings("unused") final int id) {
                        Preference.setBoolean(EULA_KEY, Boolean.TRUE);
+                       Helper.logEvent("{\"event_type\":\"Progress guard\", \"guard\":\"GearProvider EULA\", \"passed\":true}");
                       
                        // continue with init
                        new Handler().post(new Runnable() {
@@ -450,6 +457,7 @@ public class ProviderService extends SAAgent {
                    public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, 
                                        @SuppressWarnings("unused") final int id) {
                         Preference.setBoolean(DISCLAIMER_KEY, Boolean.TRUE);
+                        Helper.logEvent("{\"event_type\":\"Progress guard\", \"guard\":\"GearProvider Disclaimer\", \"passed\":true}");
 
                         // continue with init
                         new Handler().post(new Runnable() {
