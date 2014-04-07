@@ -11,11 +11,11 @@
     <string name="splash_content">Race Yourself</string>
     <string name="header_content">Race Yourself Gear Edition</string>
     
-    <string name="howto">HOW TO PLAY</string>
-    <string name="connected">CONNECTED</string>
-    <string name="connect">NOT CONNECTED\nTAP TO CONNECT</string>
-    <string name="service_starting">SERVICE STARTING</string>
-    <string name="feedback">FEEDBACK</string>
+    <string name="howto">How to play</string>
+    <string name="connected">Connected</string>
+    <string name="connect">Not connected\ntap to connect</string>
+    <string name="service_starting">Service starting</string>
+    <string name="feedback">Feedback</string>
     
     <string name="footer">© copyright raceyourself inc 2014</string>
 </resources>

@@ -21,7 +21,9 @@
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
 		android:layout_below="@+id/imageview1"
-        android:src="@drawable/mainimage"
+		android:clickable="true"
+		android:onClick="onConnectionClick"
+        android:src="@drawable/notconnected"
 		android:scaleType = "centerCrop" />
  
     <TextView
@@ -53,6 +55,7 @@
 		android:layout_below="@+id/textview1"
 		android:clickable="true"
 		android:onClick="onHowtoClick"
+		android:textStyle="bold"
         android:text="@string/howto" />
     
     <TextView
@@ -68,6 +71,7 @@
 		android:layout_below="@+id/textview2"
 		android:clickable="true"
 		android:onClick="onFeedbackClick"
+		android:textStyle="bold"
         android:text="@string/feedback" />
     
     <TextView

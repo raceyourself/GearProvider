@@ -32,6 +32,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.glassfitgames.glassfitplatform.models.Device;
@@ -62,9 +63,9 @@ public class PopupActivity extends Activity {
 //        finish();
                 
         setContentView(R.layout.activity_main);
-        setTabColour(R.id.textview1, "#d4358a");
-        setTabColour(R.id.textview2, "#6666ff");
-        setTabColour(R.id.textview3, "#47ad4c");
+        setTabColour(R.id.textview1, "#33CC33");
+        setTabColour(R.id.textview2, "#FF6666");
+        setTabColour(R.id.textview3, "#FF9900");
         
         Thread pollThread = new Thread(new Runnable() {
 
@@ -154,12 +155,14 @@ public class PopupActivity extends Activity {
     }
 
     private void setConnectedStyle(boolean connected) {
+        ImageView iv = (ImageView)findViewById(R.id.imageview2);
+        TextView tv = (TextView)findViewById(R.id.textview1);
         if (connected) {
-            TextView tv = (TextView)findViewById(R.id.textview1);
+            iv.setImageResource(R.drawable.connected);
             tv.setText(R.string.connected);
             tv.setTextColor(Color.parseColor("#00FF00"));
         } else {
-            TextView tv = (TextView)findViewById(R.id.textview1);
+            iv.setImageResource(R.drawable.notconnected);
             tv.setText(R.string.connect);
             tv.setTextColor(Color.parseColor("#FF0000"));
         }
