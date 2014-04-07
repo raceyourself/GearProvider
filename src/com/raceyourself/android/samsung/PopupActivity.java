@@ -64,6 +64,32 @@ public class PopupActivity extends Activity {
         setTabColour(R.id.textview1, "#d4358a");
         setTabColour(R.id.textview2, "#6666ff");
         setTabColour(R.id.textview3, "#47ad4c");
+        
+        Thread pollThread = new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                while(!mBound || mService == null || !mService.hasGear()) {
+                    try {
+                        Thread.sleep(5000);
+                        final boolean connected = mService.hasBluetooth() && mService.hasGear();
+                        if (connected) {
+                            runOnUiThread(new Runnable() {
+
+                                @Override
+                                public void run() {
+                                    setConnectedStyle(connected);                        
+                                }
+                                
+                            });
+                        }
+                    } catch (InterruptedException e) {
+                    }
+                }
+            }
+            
+        });
+        pollThread.start();
     }
     
     private void setTabColour(int id, String colour) {

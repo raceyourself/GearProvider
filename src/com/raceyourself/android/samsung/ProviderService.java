@@ -70,6 +70,7 @@ public class ProviderService extends SAAgent {
     private final String SERVER_TOKEN = "3hrJfCEZwQbACyUB";
     private static final String EULA_KEY = "EulaAccept";
     private static final String DISCLAIMER_KEY = "DisclaimerAccept";
+    private static final String SUCCESS_KEY = "SuccessAccept";
 
 	private final IBinder mBinder = new LocalBinder();
 	private static HashMap<Integer, RaceYourselfSamsungProviderConnection> mConnectionsMap = new HashMap<Integer, RaceYourselfSamsungProviderConnection>();
@@ -258,13 +259,22 @@ public class ProviderService extends SAAgent {
 				
 				try {				    
 				    waitingAlert.cancel();
-				    alert.cancel();
 				} catch (Exception e) {
 				    // waiting Alert may have been null, or not popped up,
 				    // in which case don't worry
 				}
 				
-		        popupSuccessDialog();
+                try {                   
+                    alert.cancel();
+                } catch (Exception e) {
+                    // waiting Alert may have been null, or not popped up,
+                    // in which case don't worry
+                }
+                
+		        Boolean successAccept = Preference.getBoolean(SUCCESS_KEY);
+		        if (successAccept == null || !successAccept.booleanValue()) {
+		            popupSuccessDialog();
+		        }
 				
 			} else
 				Log.e(TAG, "SASocket object is null");
@@ -533,7 +543,7 @@ public class ProviderService extends SAAgent {
                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                    public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, 
                                        @SuppressWarnings("unused") final int id) {
-                        // nothing - just dismiss dialog
+                       Preference.setBoolean(SUCCESS_KEY, Boolean.TRUE);
                    }
                })
                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -820,7 +830,7 @@ public class ProviderService extends SAAgent {
         iconEnabled = true;
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.ic_launcher)
+                .setSmallIcon(R.drawable.rylogo)
                 .setContentTitle(getString(R.string.notification_title))
                 .setContentText(getString(R.string.notification_message));
         
