@@ -86,6 +86,8 @@ public class PopupActivity extends Activity {
             boolean connected = mService.hasBluetooth() && mService.hasGear();
             setConnectedStyle(connected);
             if (!connected) mService.runUserInit();
+            connected = mService.hasBluetooth() && mService.hasGear();
+            setConnectedStyle(connected);
         } else {
             Log.e("TAG", "Service not bound");
         }

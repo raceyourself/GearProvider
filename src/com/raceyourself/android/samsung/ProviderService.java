@@ -256,8 +256,9 @@ public class ProviderService extends SAAgent {
 				// init GPS tracker to start searching for position
 				ensureGps();
 				
-				try {
+				try {				    
 				    waitingAlert.cancel();
+				    alert.cancel();
 				} catch (Exception e) {
 				    // waiting Alert may have been null, or not popped up,
 				    // in which case don't worry
