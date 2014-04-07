@@ -48,6 +48,7 @@ public class PopupActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.e(TAG, "Starting activity");
           
         //makes full screen and takes away title bar
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -89,7 +90,8 @@ public class PopupActivity extends Activity {
             }
             
         });
-        pollThread.start();
+        pollThread.start();        
+        Log.e(TAG, "Activity started");
     }
     
     private void setTabColour(int id, String colour) {
@@ -108,14 +110,14 @@ public class PopupActivity extends Activity {
     
     public void onConnectionClick(View view) {
         if (mBound) {
-            Log.e("TAG", "Bluetooth: " + mService.hasBluetooth() + ", gear: " + mService.hasGear());
+            Log.e(TAG, "Bluetooth: " + mService.hasBluetooth() + ", gear: " + mService.hasGear());
             boolean connected = mService.hasBluetooth() && mService.hasGear();
             setConnectedStyle(connected);
             if (!connected) mService.runUserInit();
             connected = mService.hasBluetooth() && mService.hasGear();
             setConnectedStyle(connected);
         } else {
-            Log.e("TAG", "Service not bound");
+            Log.e(TAG, "Service not bound");
         }
     }
     
