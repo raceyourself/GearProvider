@@ -330,7 +330,19 @@ public class ProviderService extends SAAgent {
             } catch (JSONException e) {
                 Log.e(TAG, "Error parsing analytics event", e);
             }
-
+        } else if (data.contains(SAModel.LOG_TO_ADB)) {
+            try {
+                JSONObject json = new JSONObject(data);
+                String logLevel = json.getString("logLevel");
+                String logMessage = json.getString("logMessage");
+                if (logLevel.equals("VERBOSE")) Log.v(TAG, logMessage);
+                else if (logLevel.equals("DEBUG")) Log.d(TAG, logMessage);
+                else if (logLevel.equals("INFO")) Log.i(TAG, logMessage);
+                else if (logLevel.equals("WARNING")) Log.w(TAG, logMessage);
+                else if (logLevel.equals("ERROR")) Log.e(TAG, logMessage);
+            } catch (JSONException e) {
+                Log.e(TAG, "Error parsing log-to-adb message", e);
+            }            
 		} else if (data.contains(SAModel.WEB_LINK_REQ)) {
 		    JSONObject json;
             try {

@@ -41,6 +41,7 @@ public abstract class SAModel {
 	public static final String STOP_TRACKING_REQ = "stop-tracking-req";
 	public static final String AUTHENTICATION_REQ = "authentication-req";
 	public static final String LOG_ANALYTICS = "log-analytics";
+	public static final String LOG_TO_ADB = "log-to-adb";
 	public static final String WEB_LINK_REQ = "web-link-req";
 	public static final String REMOTE_CONFIGURATION_REQ = "remote-configuration-req";
     public static final String REMOTE_CONFIGURATION_RESP = "remote-configuration-resp";
