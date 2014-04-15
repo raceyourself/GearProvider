@@ -52,6 +52,7 @@ import com.glassfitgames.glassfitplatform.gpstracker.SyncHelper;
 import com.glassfitgames.glassfitplatform.models.Device;
 import com.glassfitgames.glassfitplatform.models.Preference;
 import com.glassfitgames.glassfitplatform.models.RemoteConfiguration;
+import com.glassfitgames.glassfitplatform.models.UserDetail;
 import com.raceyourself.android.samsung.models.GpsPositionData;
 import com.raceyourself.android.samsung.models.GpsStatusResp;
 import com.raceyourself.android.samsung.models.RemoteConfigurationResp;
@@ -664,6 +665,9 @@ public class ProviderService extends SAAgent {
 	}
 	
 	private void authorize() {
+	    UserDetail me = Helper.getUser();
+	    if (me != null && me.getApiAccessToken() != null) return;
+	    
     	AccountManager mAccountManager = AccountManager.get(this);
     	List<Account> accounts = new ArrayList<Account>();
     	accounts.addAll(Arrays.asList(mAccountManager.getAccountsByType("com.google")));
