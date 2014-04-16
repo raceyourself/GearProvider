@@ -67,6 +67,7 @@ import com.samsung.android.sdk.accessory.SASocket;
 public class ProviderService extends SAAgent {
 	
     public static final String TAG = "RaceYourselfProvider";
+    public static final String CONSUMER_TAG = "RaceYourselfConsumer";
     public final int DEFAULT_CHANNEL_ID = 104;
     private final String SERVER_TOKEN = "3hrJfCEZwQbACyUB";
     private static final String EULA_KEY = "EulaAccept";
@@ -276,6 +277,8 @@ public class ProviderService extends SAAgent {
 		        if (successAccept == null || !successAccept.booleanValue()) {
 		            popupSuccessDialog();
 		        }
+		        
+		        Log.e(TAG, "Successfully connected to Gear");
 				
 			} else
 				Log.e(TAG, "SASocket object is null");
@@ -303,7 +306,7 @@ public class ProviderService extends SAAgent {
 		// decide what to do based on the message
 		if (data.contains(SAModel.GPS_STATUS_REQ)) {
 		    ensureGps();
-		    if (gpsTracker.hasPosition()) {
+		    if (gpsTracker.hasPosition() && registered) {
 		        response = new GpsStatusResp(GpsStatusResp.GPS_READY);
 		    } else if (gpsTracker.isGpsEnabled()) {
 		        response = new GpsStatusResp(GpsStatusResp.GPS_ENABLED);
@@ -336,13 +339,13 @@ public class ProviderService extends SAAgent {
                 JSONObject json = new JSONObject(data);
                 String logLevel = json.getString("logLevel");
                 String logMessage = json.getString("logMessage");
-                if (logLevel.equals("VERBOSE")) Log.v(TAG, logMessage);
-                else if (logLevel.equals("DEBUG")) Log.d(TAG, logMessage);
-                else if (logLevel.equals("INFO")) Log.i(TAG, logMessage);
-                else if (logLevel.equals("WARNING")) Log.w(TAG, logMessage);
-                else if (logLevel.equals("ERROR")) Log.e(TAG, logMessage);
+                if (logLevel.equals("VERBOSE")) Log.v(CONSUMER_TAG, logMessage);
+                else if (logLevel.equals("DEBUG")) Log.d(CONSUMER_TAG, logMessage);
+                else if (logLevel.equals("INFO")) Log.i(CONSUMER_TAG, logMessage);
+                else if (logLevel.equals("WARNING")) Log.w(CONSUMER_TAG, logMessage);
+                else if (logLevel.equals("ERROR")) Log.e(CONSUMER_TAG, logMessage);
             } catch (JSONException e) {
-                Log.e(TAG, "Error parsing log-to-adb message", e);
+                Log.e(TAG, "Error parsing sap-to-adb message", e);
             }            
 		} else if (data.contains(SAModel.WEB_LINK_REQ)) {
 		    JSONObject json;
@@ -526,7 +529,7 @@ public class ProviderService extends SAAgent {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("RaceYourself Gear Edition")
                 .setMessage(
-                        "Please launch RaceYourself on Gear.\n\nIf you have just installed RaceYourself, the icon may take a few moments to appear. \n\nIf you are waiting a while, make sure UnifiedHostManager is connected to gear or try disabling/re-enabing bluetooth on Gear.")
+                        "Please launch RaceYourself on Gear.\n\nIf you have just installed RaceYourself, the icon may take a few moments to appear. \n\nIf you are waiting a while, make sure Gear Manager shows a connection to gear or try disabling/re-enabing bluetooth on Gear.")
                 .setCancelable(false)
                 .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
                     public void onClick(@SuppressWarnings("unused") final DialogInterface dialog,
@@ -592,33 +595,24 @@ public class ProviderService extends SAAgent {
 	        // registered previously, update local variable
 	        registered = true;
 	        return true;
-	    } else if (Helper.getInstance(this).hasInternet()){
-	        if (deviceRegistration != null && deviceRegistration.isAlive()) {
-	            return true;
-	        }
-	        // not yet registered, attempt to register
-            deviceRegistration = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                        
-                    try {
-                    	Device self = SyncHelper.registerDevice();
-                        self.self = true;
-                        self.save();
-                        registered = true;
-                        
-                        authorize();
-       					trySync();
-       					
-                    	} catch (IOException e) {
-                    		Log.e(TAG, "Error registering device", e);
-                    }
-                }
-            });
-            deviceRegistration.start();
-            return true;
-        } else {
+	    } else if (Helper.getInstance(this).hasInternet()) {
+	        try {
+                Device self = SyncHelper.registerDevice();
+                self.self = true;
+                self.save();
+                registered = true;
+                
+                authorize();
+                trySync();
+                return true;
+                
+            } catch (IOException e) {
+                Log.e(TAG, "Error registering device", e);
+                return false;
+            }
+	    } else {
             // not yet registered, no internet, need to prompt user
+	        this.popupNetworkDialog();
             return false;
         }
 	}
@@ -643,6 +637,10 @@ public class ProviderService extends SAAgent {
 
         Log.d(TAG,"startTracking called");
         ensureGps();
+        if (!ensureDeviceIsRegistered()) {
+            Log.e(TAG, "startTracking called before device was registered");
+            return;
+        }
         gpsTracker.startTracking();
         
         if (gpsDataSender == null) {
