@@ -59,11 +59,13 @@ import com.glassfitgames.glassfitplatform.models.RemoteConfiguration;
 import com.glassfitgames.glassfitplatform.models.UserDetail;
 import com.raceyourself.android.samsung.models.CycleCadenceData;
 import com.raceyourself.android.samsung.models.CycleWheelData;
+import com.google.android.gms.plus.PlusShare;
 import com.raceyourself.android.samsung.models.GpsPositionData;
 import com.raceyourself.android.samsung.models.GpsStatusResp;
 import com.raceyourself.android.samsung.models.HeartRateData;
 import com.raceyourself.android.samsung.models.RemoteConfigurationResp;
 import com.raceyourself.android.samsung.models.SAModel;
+import com.raceyourself.android.samsung.models.ShareScoreReq;
 import com.raceyourself.android.samsung.models.WebLinkReq;
 import com.raceyourself.samsungprovider.R;
 import com.roscopeco.ormdroid.ORMDroidApplication;
@@ -145,7 +147,14 @@ public class ProviderService extends SAAgent implements BluetoothLeListener {
     }
 	
 	
-	public void runUserInit() {
+	public void runUserInit() {	    
+	    try {
+            onDataAvailableOnChannel("bob", 1, new ShareScoreReq("twitter", 18, true).toJSON().toString());
+        } catch (JSONException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+	    if (true) return;
 	    
 	    Log.d(TAG, "Running user init");
 	    initialisingInProgress = true;
@@ -311,7 +320,7 @@ public class ProviderService extends SAAgent implements BluetoothLeListener {
      * @param channelId
      * @param data
      */
-	private void onDataAvailableonChannel(String connectedPeerId,
+	private void onDataAvailableOnChannel(String connectedPeerId,
 			long channelId, String data) {
 
         Log.d(TAG, "Received message on channel " + channelId + " from peer " + connectedPeerId
@@ -377,9 +386,59 @@ public class ProviderService extends SAAgent implements BluetoothLeListener {
         } else if (data.contains(SAModel.REMOTE_CONFIGURATION_REQ)) {
             RemoteConfiguration config = SyncHelper.get("configurations/gear", RemoteConfiguration.class);
             if (config != null) response = new RemoteConfigurationResp(config.configuration);
-            
+        } else if (data.contains(SAModel.SHARE_SCORE_REQ)) {
+            ShareScoreReq req = null;
+            try {
+                req = ShareScoreReq.fromJSON(new JSONObject(data));
+            } catch (JSONException e) {
+                Log.e(TAG, "Error parsing ShareHighscoreReq", e);
+            }
+           
+            if (req != null) {
+                String imageUrlFormat = "http://shared.raceyourself.com/gear-score-%d.jpg";
+                String shareType = "score";
+                if (req.isHighscore()) {
+                    imageUrlFormat = "http://shared.raceyourself.com/gear-high-score-%d.jpg";
+                    shareType = "highscore";
+                }
+                String imageUrl = String.format(imageUrlFormat, req.getScore());
+                
+                Helper.logEvent(String.format("{\"event_type\":\"share\", \"share_type\":\"%s\", \"service\":\"%s\"}", shareType, req.getScore()));
+                if ("google+".equals(req.getService())) {
+                    String text = String.format("I ran %d laps!", req.getScore());
+                    if (req.isHighscore()) text = "I got a new highscore! " + text;
+                    Intent shareIntent = new PlusShare.Builder(this)
+                    .setType("text/plain")
+                    .setText(text + " #RaceYourself")
+                    .setContentUrl(Uri.parse(imageUrl))
+                    .getIntent();
+        
+                    shareIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(shareIntent);                    
+                } else if ("facebook".equals(req.getService())) {
+                    Intent customIntent = new Intent("com.raceyourself.intent.FACEBOOK_SHARE");
+                    if (req.isHighscore()) customIntent.putExtra("name", "New Highscore!");
+                    else customIntent.putExtra("name", "Eliminated!");
+                    customIntent.putExtra("caption", String.format("I ran %d laps!", req.getScore()));
+                    customIntent.putExtra("picture", imageUrl);
+                    customIntent.putExtra("link", "http://www.raceyourself.com/gear");
+                    
+                    customIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(customIntent);
+                } else if ("twitter".equals(req.getService())) {
+                    String text = String.format("I ran %d laps!", req.getScore());
+                    String url = String.format("https://twitter.com/intent/tweet?url=%s&text=%s&via=Race_Yourself", imageUrl, text);
+                    Intent shareIntent = new Intent(Intent.ACTION_VIEW);
+                    shareIntent.setData(Uri.parse(url));
+                    
+                    shareIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(shareIntent);            
+                } else {
+                    Log.e(TAG, "onDataAvailableOnChannel: ShareHighScoreReq: Unknown service: " + req.getService());
+                }
+            }
 		} else {
-			Log.e(TAG, "onDataAvailableonChannel: Unknown request received");
+			Log.e(TAG, "onDataAvailableOnChannel: Unknown request received");
 		}
 		
 		// send the response
@@ -811,7 +870,7 @@ public class ProviderService extends SAAgent implements BluetoothLeListener {
 		public void onReceive(int channelId, byte[] data) {
 			Log.i(TAG, "onReceive ENTER channel = " + channelId);
 			String strToUpdateUI = new String(data);
-			onDataAvailableonChannel(String.valueOf(mConnectionId), channelId, //getRemotePeerId()
+			onDataAvailableOnChannel(String.valueOf(mConnectionId), channelId, //getRemotePeerId()
 					strToUpdateUI);
 		}
 

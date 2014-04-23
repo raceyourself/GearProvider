@@ -48,6 +48,7 @@ public abstract class SAModel {
     public static final String HEART_RATE_DATA = "heart-rate-data";
     public static final String CYCLE_SPEED_DATA = "cycle-speed-data";
     public static final String CYCLE_CADENCE_DATA = "cycle-cadence-data";
+    public static final String SHARE_SCORE_REQ = "share-score-req";
 	
 	public JSONObject toJSON() throws JSONException {
         JSONObject json = new JSONObject();

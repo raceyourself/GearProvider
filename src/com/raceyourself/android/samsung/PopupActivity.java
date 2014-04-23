@@ -35,6 +35,11 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.facebook.Session;
+import com.facebook.SessionState;
+import com.facebook.UiLifecycleHelper;
+import com.facebook.widget.FacebookDialog;
+import com.facebook.widget.FacebookDialog.ShareDialogBuilder;
 import com.glassfitgames.glassfitplatform.models.Device;
 import com.raceyourself.android.samsung.ProviderService.LocalBinder;
 import com.raceyourself.samsungprovider.R;
@@ -45,12 +50,40 @@ public class PopupActivity extends Activity {
     private ProviderService mService;
     private boolean mBound = false;
 
+    // Facebook
+    private UiLifecycleHelper uiHelper;
+    private Session.StatusCallback statusCallback = new Session.StatusCallback() {
+        @Override
+        public void call(Session session, SessionState state,
+                Exception exception) {
+//            onSessionStateChange(session, state, exception);
+        }
+    };
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.e(TAG, "Starting activity");
           
+        uiHelper = new UiLifecycleHelper(this, statusCallback);
+        uiHelper.onCreate(savedInstanceState);        
+        
+        Intent intent = getIntent();
+        if (intent != null && "com.raceyourself.intent.FACEBOOK_SHARE".equals(intent.getAction()) ) {
+            Bundle extras = intent.getExtras();
+            ShareDialogBuilder sdb = new FacebookDialog.ShareDialogBuilder(this);
+            sdb.setApplicationName("Race Yourself");
+            if (extras.containsKey("name")) sdb.setName(extras.getString("name"));
+            if (extras.containsKey("caption")) sdb.setCaption(extras.getString("caption"));
+            if (extras.containsKey("picture")) sdb.setPicture(extras.getString("picture"));
+            if (extras.containsKey("link")) sdb.setLink(extras.getString("link"));
+
+            FacebookDialog shareDialog = sdb.build();            
+            uiHelper.trackPendingDialogCall(shareDialog.present());
+            
+            finish();
+        }
+        
         //makes full screen and takes away title bar
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -93,6 +126,47 @@ public class PopupActivity extends Activity {
         });
         pollThread.start();        
         Log.e(TAG, "Activity started");
+    }
+    
+    @Override
+    protected void onResume() {
+        super.onResume();
+        uiHelper.onResume();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        uiHelper.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        uiHelper.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        uiHelper.onDestroy();
+    }
+    
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        uiHelper.onActivityResult(requestCode, resultCode, data, new FacebookDialog.Callback() {
+            @Override
+            public void onError(FacebookDialog.PendingCall pendingCall, Exception error, Bundle data) {
+                Log.e(TAG, String.format("Error: %s", error.toString()));
+            }
+
+            @Override
+            public void onComplete(FacebookDialog.PendingCall pendingCall, Bundle data) {
+                Log.i(TAG, "Facebook share completed!");
+            }
+        });
     }
     
     private void setTabColour(int id, String colour) {
