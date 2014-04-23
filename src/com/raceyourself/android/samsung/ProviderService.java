@@ -148,14 +148,6 @@ public class ProviderService extends SAAgent implements BluetoothLeListener {
 	
 	
 	public void runUserInit() {	    
-	    try {
-            onDataAvailableOnChannel("bob", 1, new ShareScoreReq("twitter", 18, true).toJSON().toString());
-        } catch (JSONException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-	    if (true) return;
-	    
 	    Log.d(TAG, "Running user init");
 	    initialisingInProgress = true;
 
