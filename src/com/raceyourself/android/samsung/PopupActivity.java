@@ -40,6 +40,7 @@ import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
 import com.facebook.widget.FacebookDialog;
 import com.facebook.widget.FacebookDialog.ShareDialogBuilder;
+import com.facebook.widget.WebDialog;
 import com.glassfitgames.glassfitplatform.models.Device;
 import com.raceyourself.android.samsung.ProviderService.LocalBinder;
 import com.raceyourself.samsungprovider.R;
@@ -71,15 +72,20 @@ public class PopupActivity extends Activity {
         Intent intent = getIntent();
         if (intent != null && "com.raceyourself.intent.FACEBOOK_SHARE".equals(intent.getAction()) ) {
             Bundle extras = intent.getExtras();
-            ShareDialogBuilder sdb = new FacebookDialog.ShareDialogBuilder(this);
-            sdb.setApplicationName("Race Yourself");
-            if (extras.containsKey("name")) sdb.setName(extras.getString("name"));
-            if (extras.containsKey("caption")) sdb.setCaption(extras.getString("caption"));
-            if (extras.containsKey("picture")) sdb.setPicture(extras.getString("picture"));
-            if (extras.containsKey("link")) sdb.setLink(extras.getString("link"));
-
-            FacebookDialog shareDialog = sdb.build();            
-            uiHelper.trackPendingDialogCall(shareDialog.present());
+            if (FacebookDialog.canPresentShareDialog(getApplicationContext(), FacebookDialog.ShareDialogFeature.SHARE_DIALOG)) {
+                ShareDialogBuilder sdb = new FacebookDialog.ShareDialogBuilder(this);
+                sdb.setApplicationName("Race Yourself");
+                if (extras.containsKey("name")) sdb.setName(extras.getString("name"));
+                if (extras.containsKey("caption")) sdb.setCaption(extras.getString("caption"));
+                if (extras.containsKey("picture")) sdb.setPicture(extras.getString("picture"));
+                if (extras.containsKey("link")) sdb.setLink(extras.getString("link"));
+    
+                FacebookDialog shareDialog = sdb.build();            
+                uiHelper.trackPendingDialogCall(shareDialog.present());
+            } else {
+                WebDialog feedDialog = new WebDialog.FeedDialogBuilder(this, Session.getActiveSession(), extras).build();
+                feedDialog.show();
+            }
             
             finish();
         }
