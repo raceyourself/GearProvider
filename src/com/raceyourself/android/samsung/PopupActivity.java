@@ -77,6 +77,7 @@ public class PopupActivity extends Activity {
                 sdb.setApplicationName("Race Yourself");
                 if (extras.containsKey("name")) sdb.setName(extras.getString("name"));
                 if (extras.containsKey("caption")) sdb.setCaption(extras.getString("caption"));
+//                if (extras.containsKey("description")) sdb.setDescription(extras.getString("description"));
                 if (extras.containsKey("picture")) sdb.setPicture(extras.getString("picture"));
                 if (extras.containsKey("link")) sdb.setLink(extras.getString("link"));
     
@@ -113,6 +114,7 @@ public class PopupActivity extends Activity {
                 while(!mBound || mService == null || !mService.hasGear()) {
                     try {
                         Thread.sleep(5000);
+                        if(mService == null) continue;
                         final boolean connected = mService.hasBluetooth() && mService.hasGear();
                         if (connected) {
                             runOnUiThread(new Runnable() {

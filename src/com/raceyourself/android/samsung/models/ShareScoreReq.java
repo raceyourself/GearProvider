@@ -7,9 +7,9 @@ public class ShareScoreReq extends SAModel {
     
     private String mService = null;
     private Integer mScore = null;
-    private Boolean mHighscore = null;
+    private Integer mHighscore = null;
     
-    public ShareScoreReq(String service, int score, boolean highscore) {
+    public ShareScoreReq(String service, int score, int highscore) {
         this.mService = service;
         this.mScore = score;
         this.mHighscore = highscore;
@@ -23,7 +23,7 @@ public class ShareScoreReq extends SAModel {
         return mScore;
     }
     
-    public Boolean isHighscore() {
+    public Integer getHighscore() {
         return mHighscore;
     }
     
@@ -37,7 +37,7 @@ public class ShareScoreReq extends SAModel {
 
     public static ShareScoreReq fromJSON(JSONObject obj) throws JSONException {
         
-        return new ShareScoreReq(obj.getString("service"), obj.getInt("score"), obj.getBoolean("highscore"));
+        return new ShareScoreReq(obj.getString("service"), obj.getInt("score"), obj.getInt("highscore"));
     }
 
     @Override
