@@ -45,9 +45,6 @@ public abstract class SAModel {
 	public static final String WEB_LINK_REQ = "web-link-req";
 	public static final String REMOTE_CONFIGURATION_REQ = "remote-configuration-req";
     public static final String REMOTE_CONFIGURATION_RESP = "remote-configuration-resp";
-    public static final String HEART_RATE_DATA = "heart-rate-data";
-    public static final String CYCLE_SPEED_DATA = "cycle-speed-data";
-    public static final String CYCLE_CADENCE_DATA = "cycle-cadence-data";
     public static final String SHARE_SCORE_REQ = "share-score-req";
 	
 	public JSONObject toJSON() throws JSONException {
