@@ -62,6 +62,275 @@ android.support.v4.widget.SlidingPaneLayout: void setShadowDrawable(android.grap
 android.support.v4.widget.SlidingPaneLayout: void setShadowResource(int)
 android.support.v4.widget.SlidingPaneLayout$SavedState
 android.support.v4.widget.SlidingPaneLayout$SavedState: android.os.Parcelable$Creator CREATOR
+bolts.AppLinkNavigation$NavigationResult: bolts.AppLinkNavigation$NavigationResult[] values()
+bolts.AppLinkNavigation$NavigationResult: bolts.AppLinkNavigation$NavigationResult valueOf(java.lang.String)
+com.facebook.AccessTokenSource: com.facebook.AccessTokenSource[] values()
+com.facebook.AccessTokenSource: com.facebook.AccessTokenSource valueOf(java.lang.String)
+com.facebook.AppEventsLogger$FlushBehavior: com.facebook.AppEventsLogger$FlushBehavior[] values()
+com.facebook.AppEventsLogger$FlushBehavior: com.facebook.AppEventsLogger$FlushBehavior valueOf(java.lang.String)
+com.facebook.AppEventsLogger$FlushReason: com.facebook.AppEventsLogger$FlushReason[] values()
+com.facebook.AppEventsLogger$FlushReason: com.facebook.AppEventsLogger$FlushReason valueOf(java.lang.String)
+com.facebook.AppEventsLogger$FlushResult: com.facebook.AppEventsLogger$FlushResult[] values()
+com.facebook.AppEventsLogger$FlushResult: com.facebook.AppEventsLogger$FlushResult valueOf(java.lang.String)
+com.facebook.AppEventsLogger$SuppressionTimeoutBehavior: com.facebook.AppEventsLogger$SuppressionTimeoutBehavior[] values()
+com.facebook.AppEventsLogger$SuppressionTimeoutBehavior: com.facebook.AppEventsLogger$SuppressionTimeoutBehavior valueOf(java.lang.String)
+com.facebook.AuthorizationClient$Result$Code: com.facebook.AuthorizationClient$Result$Code[] values()
+com.facebook.AuthorizationClient$Result$Code: com.facebook.AuthorizationClient$Result$Code valueOf(java.lang.String)
+com.facebook.FacebookRequestError$Category: com.facebook.FacebookRequestError$Category[] values()
+com.facebook.FacebookRequestError$Category: com.facebook.FacebookRequestError$Category valueOf(java.lang.String)
+com.facebook.HttpMethod: com.facebook.HttpMethod[] values()
+com.facebook.HttpMethod: com.facebook.HttpMethod valueOf(java.lang.String)
+com.facebook.LoggingBehavior: com.facebook.LoggingBehavior[] values()
+com.facebook.LoggingBehavior: com.facebook.LoggingBehavior valueOf(java.lang.String)
+com.facebook.LoginActivity
+com.facebook.LoginActivity: LoginActivity()
+com.facebook.Request$ParcelFileDescriptorWithMimeType
+com.facebook.Request$ParcelFileDescriptorWithMimeType: android.os.Parcelable$Creator CREATOR
+com.facebook.Response$PagingDirection: com.facebook.Response$PagingDirection[] values()
+com.facebook.Response$PagingDirection: com.facebook.Response$PagingDirection valueOf(java.lang.String)
+com.facebook.SessionDefaultAudience: com.facebook.SessionDefaultAudience[] values()
+com.facebook.SessionDefaultAudience: com.facebook.SessionDefaultAudience valueOf(java.lang.String)
+com.facebook.SessionLoginBehavior: com.facebook.SessionLoginBehavior[] values()
+com.facebook.SessionLoginBehavior: com.facebook.SessionLoginBehavior valueOf(java.lang.String)
+com.facebook.SessionState: com.facebook.SessionState[] values()
+com.facebook.SessionState: com.facebook.SessionState valueOf(java.lang.String)
+com.facebook.SessionState$Category: com.facebook.SessionState$Category[] values()
+com.facebook.SessionState$Category: com.facebook.SessionState$Category valueOf(java.lang.String)
+com.facebook.TestSession$Mode: com.facebook.TestSession$Mode[] values()
+com.facebook.TestSession$Mode: com.facebook.TestSession$Mode valueOf(java.lang.String)
+com.facebook.android.R$attr: int confirm_logout
+com.facebook.android.R$attr: int done_button_background
+com.facebook.android.R$attr: int done_button_text
+com.facebook.android.R$attr: int extra_fields
+com.facebook.android.R$attr: int fetch_user_info
+com.facebook.android.R$attr: int is_cropped
+com.facebook.android.R$attr: int login_text
+com.facebook.android.R$attr: int logout_text
+com.facebook.android.R$attr: int multi_select
+com.facebook.android.R$attr: int preset_size
+com.facebook.android.R$attr: int radius_in_meters
+com.facebook.android.R$attr: int results_limit
+com.facebook.android.R$attr: int search_text
+com.facebook.android.R$attr: int show_pictures
+com.facebook.android.R$attr: int show_search_box
+com.facebook.android.R$attr: int show_title_bar
+com.facebook.android.R$attr: int title_bar_background
+com.facebook.android.R$attr: int title_text
+com.facebook.android.R$color: int com_facebook_blue
+com.facebook.android.R$color: int com_facebook_loginview_text_color
+com.facebook.android.R$color: int com_facebook_picker_search_bar_background
+com.facebook.android.R$color: int com_facebook_picker_search_bar_text
+com.facebook.android.R$color: int com_facebook_usersettingsfragment_connected_shadow_color
+com.facebook.android.R$color: int com_facebook_usersettingsfragment_connected_text_color
+com.facebook.android.R$color: int com_facebook_usersettingsfragment_not_connected_text_color
+com.facebook.android.R$dimen: int com_facebook_loginview_compound_drawable_padding
+com.facebook.android.R$dimen: int com_facebook_loginview_padding_bottom
+com.facebook.android.R$dimen: int com_facebook_loginview_padding_left
+com.facebook.android.R$dimen: int com_facebook_loginview_padding_right
+com.facebook.android.R$dimen: int com_facebook_loginview_padding_top
+com.facebook.android.R$dimen: int com_facebook_loginview_text_size
+com.facebook.android.R$dimen: int com_facebook_picker_divider_width
+com.facebook.android.R$dimen: int com_facebook_picker_place_image_size
+com.facebook.android.R$dimen: int com_facebook_profilepictureview_preset_size_large
+com.facebook.android.R$dimen: int com_facebook_profilepictureview_preset_size_normal
+com.facebook.android.R$dimen: int com_facebook_profilepictureview_preset_size_small
+com.facebook.android.R$dimen: int com_facebook_tooltip_horizontal_padding
+com.facebook.android.R$dimen: int com_facebook_usersettingsfragment_profile_picture_height
+com.facebook.android.R$dimen: int com_facebook_usersettingsfragment_profile_picture_width
+com.facebook.android.R$drawable: int com_facebook_button_blue
+com.facebook.android.R$drawable: int com_facebook_button_blue_focused
+com.facebook.android.R$drawable: int com_facebook_button_blue_normal
+com.facebook.android.R$drawable: int com_facebook_button_blue_pressed
+com.facebook.android.R$drawable: int com_facebook_button_check
+com.facebook.android.R$drawable: int com_facebook_button_check_off
+com.facebook.android.R$drawable: int com_facebook_button_check_on
+com.facebook.android.R$drawable: int com_facebook_button_grey_focused
+com.facebook.android.R$drawable: int com_facebook_button_grey_normal
+com.facebook.android.R$drawable: int com_facebook_button_grey_pressed
+com.facebook.android.R$drawable: int com_facebook_close
+com.facebook.android.R$drawable: int com_facebook_inverse_icon
+com.facebook.android.R$drawable: int com_facebook_list_divider
+com.facebook.android.R$drawable: int com_facebook_list_section_header_background
+com.facebook.android.R$drawable: int com_facebook_loginbutton_silver
+com.facebook.android.R$drawable: int com_facebook_logo
+com.facebook.android.R$drawable: int com_facebook_picker_default_separator_color
+com.facebook.android.R$drawable: int com_facebook_picker_item_background
+com.facebook.android.R$drawable: int com_facebook_picker_list_focused
+com.facebook.android.R$drawable: int com_facebook_picker_list_longpressed
+com.facebook.android.R$drawable: int com_facebook_picker_list_pressed
+com.facebook.android.R$drawable: int com_facebook_picker_list_selector
+com.facebook.android.R$drawable: int com_facebook_picker_list_selector_background_transition
+com.facebook.android.R$drawable: int com_facebook_picker_list_selector_disabled
+com.facebook.android.R$drawable: int com_facebook_picker_magnifier
+com.facebook.android.R$drawable: int com_facebook_picker_top_button
+com.facebook.android.R$drawable: int com_facebook_place_default_icon
+com.facebook.android.R$drawable: int com_facebook_profile_default_icon
+com.facebook.android.R$drawable: int com_facebook_profile_picture_blank_portrait
+com.facebook.android.R$drawable: int com_facebook_profile_picture_blank_square
+com.facebook.android.R$drawable: int com_facebook_tooltip_black_background
+com.facebook.android.R$drawable: int com_facebook_tooltip_black_bottomnub
+com.facebook.android.R$drawable: int com_facebook_tooltip_black_topnub
+com.facebook.android.R$drawable: int com_facebook_tooltip_black_xout
+com.facebook.android.R$drawable: int com_facebook_tooltip_blue_background
+com.facebook.android.R$drawable: int com_facebook_tooltip_blue_bottomnub
+com.facebook.android.R$drawable: int com_facebook_tooltip_blue_topnub
+com.facebook.android.R$drawable: int com_facebook_tooltip_blue_xout
+com.facebook.android.R$drawable: int com_facebook_top_background
+com.facebook.android.R$drawable: int com_facebook_top_button
+com.facebook.android.R$drawable: int com_facebook_usersettingsfragment_background_gradient
+com.facebook.android.R$id: int com_facebook_body_frame
+com.facebook.android.R$id: int com_facebook_button_xout
+com.facebook.android.R$id: int com_facebook_login_activity_progress_bar
+com.facebook.android.R$id: int com_facebook_picker_activity_circle
+com.facebook.android.R$id: int com_facebook_picker_checkbox
+com.facebook.android.R$id: int com_facebook_picker_checkbox_stub
+com.facebook.android.R$id: int com_facebook_picker_divider
+com.facebook.android.R$id: int com_facebook_picker_done_button
+com.facebook.android.R$id: int com_facebook_picker_image
+com.facebook.android.R$id: int com_facebook_picker_list_section_header
+com.facebook.android.R$id: int com_facebook_picker_list_view
+com.facebook.android.R$id: int com_facebook_picker_profile_pic_stub
+com.facebook.android.R$id: int com_facebook_picker_row_activity_circle
+com.facebook.android.R$id: int com_facebook_picker_search_text
+com.facebook.android.R$id: int com_facebook_picker_title
+com.facebook.android.R$id: int com_facebook_picker_title_bar
+com.facebook.android.R$id: int com_facebook_picker_title_bar_stub
+com.facebook.android.R$id: int com_facebook_picker_top_bar
+com.facebook.android.R$id: int com_facebook_search_bar_view
+com.facebook.android.R$id: int com_facebook_tooltip_bubble_view_bottom_pointer
+com.facebook.android.R$id: int com_facebook_tooltip_bubble_view_text_body
+com.facebook.android.R$id: int com_facebook_tooltip_bubble_view_top_pointer
+com.facebook.android.R$id: int com_facebook_usersettingsfragment_login_button
+com.facebook.android.R$id: int com_facebook_usersettingsfragment_logo_image
+com.facebook.android.R$id: int com_facebook_usersettingsfragment_profile_name
+com.facebook.android.R$id: int large
+com.facebook.android.R$id: int normal
+com.facebook.android.R$id: int picker_subtitle
+com.facebook.android.R$id: int small
+com.facebook.android.R$layout: int com_facebook_friendpickerfragment
+com.facebook.android.R$layout: int com_facebook_login_activity_layout
+com.facebook.android.R$layout: int com_facebook_picker_activity_circle_row
+com.facebook.android.R$layout: int com_facebook_picker_checkbox
+com.facebook.android.R$layout: int com_facebook_picker_image
+com.facebook.android.R$layout: int com_facebook_picker_list_row
+com.facebook.android.R$layout: int com_facebook_picker_list_section_header
+com.facebook.android.R$layout: int com_facebook_picker_search_box
+com.facebook.android.R$layout: int com_facebook_picker_title_bar
+com.facebook.android.R$layout: int com_facebook_picker_title_bar_stub
+com.facebook.android.R$layout: int com_facebook_placepickerfragment
+com.facebook.android.R$layout: int com_facebook_placepickerfragment_list_row
+com.facebook.android.R$layout: int com_facebook_search_bar_layout
+com.facebook.android.R$layout: int com_facebook_tooltip_bubble
+com.facebook.android.R$layout: int com_facebook_usersettingsfragment
+com.facebook.android.R$string: int com_facebook_choose_friends
+com.facebook.android.R$string: int com_facebook_dialogloginactivity_ok_button
+com.facebook.android.R$string: int com_facebook_internet_permission_error_message
+com.facebook.android.R$string: int com_facebook_internet_permission_error_title
+com.facebook.android.R$string: int com_facebook_loading
+com.facebook.android.R$string: int com_facebook_loginview_cancel_action
+com.facebook.android.R$string: int com_facebook_loginview_log_in_button
+com.facebook.android.R$string: int com_facebook_loginview_log_out_action
+com.facebook.android.R$string: int com_facebook_loginview_log_out_button
+com.facebook.android.R$string: int com_facebook_loginview_logged_in_as
+com.facebook.android.R$string: int com_facebook_loginview_logged_in_using_facebook
+com.facebook.android.R$string: int com_facebook_logo_content_description
+com.facebook.android.R$string: int com_facebook_nearby
+com.facebook.android.R$string: int com_facebook_picker_done_button_text
+com.facebook.android.R$string: int com_facebook_placepicker_subtitle_catetory_only_format
+com.facebook.android.R$string: int com_facebook_placepicker_subtitle_format
+com.facebook.android.R$string: int com_facebook_placepicker_subtitle_were_here_only_format
+com.facebook.android.R$string: int com_facebook_requesterror_password_changed
+com.facebook.android.R$string: int com_facebook_requesterror_permissions
+com.facebook.android.R$string: int com_facebook_requesterror_reconnect
+com.facebook.android.R$string: int com_facebook_requesterror_relogin
+com.facebook.android.R$string: int com_facebook_requesterror_web_login
+com.facebook.android.R$string: int com_facebook_tooltip_default
+com.facebook.android.R$string: int com_facebook_usersettingsfragment_log_in_button
+com.facebook.android.R$string: int com_facebook_usersettingsfragment_logged_in
+com.facebook.android.R$string: int com_facebook_usersettingsfragment_not_logged_in
+com.facebook.android.R$style: int com_facebook_loginview_default_style
+com.facebook.android.R$style: int com_facebook_loginview_silver_style
+com.facebook.android.R$style: int tooltip_bubble_text
+com.facebook.android.R$styleable: int[] com_facebook_friend_picker_fragment
+com.facebook.android.R$styleable: int com_facebook_friend_picker_fragment_multi_select
+com.facebook.android.R$styleable: int[] com_facebook_login_view
+com.facebook.android.R$styleable: int com_facebook_login_view_confirm_logout
+com.facebook.android.R$styleable: int com_facebook_login_view_fetch_user_info
+com.facebook.android.R$styleable: int com_facebook_login_view_login_text
+com.facebook.android.R$styleable: int com_facebook_login_view_logout_text
+com.facebook.android.R$styleable: int[] com_facebook_picker_fragment
+com.facebook.android.R$styleable: int com_facebook_picker_fragment_done_button_background
+com.facebook.android.R$styleable: int com_facebook_picker_fragment_done_button_text
+com.facebook.android.R$styleable: int com_facebook_picker_fragment_extra_fields
+com.facebook.android.R$styleable: int com_facebook_picker_fragment_show_pictures
+com.facebook.android.R$styleable: int com_facebook_picker_fragment_show_title_bar
+com.facebook.android.R$styleable: int com_facebook_picker_fragment_title_bar_background
+com.facebook.android.R$styleable: int com_facebook_picker_fragment_title_text
+com.facebook.android.R$styleable: int[] com_facebook_place_picker_fragment
+com.facebook.android.R$styleable: int com_facebook_place_picker_fragment_radius_in_meters
+com.facebook.android.R$styleable: int com_facebook_place_picker_fragment_results_limit
+com.facebook.android.R$styleable: int com_facebook_place_picker_fragment_search_text
+com.facebook.android.R$styleable: int com_facebook_place_picker_fragment_show_search_box
+com.facebook.android.R$styleable: int[] com_facebook_profile_picture_view
+com.facebook.android.R$styleable: int com_facebook_profile_picture_view_is_cropped
+com.facebook.android.R$styleable: int com_facebook_profile_picture_view_preset_size
+com.facebook.internal.SessionAuthorizationType: com.facebook.internal.SessionAuthorizationType[] values()
+com.facebook.internal.SessionAuthorizationType: com.facebook.internal.SessionAuthorizationType valueOf(java.lang.String)
+com.facebook.widget.FacebookDialog$MessageDialogFeature: com.facebook.widget.FacebookDialog$MessageDialogFeature[] values()
+com.facebook.widget.FacebookDialog$MessageDialogFeature: com.facebook.widget.FacebookDialog$MessageDialogFeature valueOf(java.lang.String)
+com.facebook.widget.FacebookDialog$OpenGraphActionDialogFeature: com.facebook.widget.FacebookDialog$OpenGraphActionDialogFeature[] values()
+com.facebook.widget.FacebookDialog$OpenGraphActionDialogFeature: com.facebook.widget.FacebookDialog$OpenGraphActionDialogFeature valueOf(java.lang.String)
+com.facebook.widget.FacebookDialog$OpenGraphMessageDialogFeature: com.facebook.widget.FacebookDialog$OpenGraphMessageDialogFeature[] values()
+com.facebook.widget.FacebookDialog$OpenGraphMessageDialogFeature: com.facebook.widget.FacebookDialog$OpenGraphMessageDialogFeature valueOf(java.lang.String)
+com.facebook.widget.FacebookDialog$PendingCall
+com.facebook.widget.FacebookDialog$PendingCall: android.os.Parcelable$Creator CREATOR
+com.facebook.widget.FacebookDialog$ShareDialogFeature: com.facebook.widget.FacebookDialog$ShareDialogFeature[] values()
+com.facebook.widget.FacebookDialog$ShareDialogFeature: com.facebook.widget.FacebookDialog$ShareDialogFeature valueOf(java.lang.String)
+com.facebook.widget.GraphObjectAdapter$SectionAndItem$Type: com.facebook.widget.GraphObjectAdapter$SectionAndItem$Type[] values()
+com.facebook.widget.GraphObjectAdapter$SectionAndItem$Type: com.facebook.widget.GraphObjectAdapter$SectionAndItem$Type valueOf(java.lang.String)
+com.facebook.widget.LoginButton
+com.facebook.widget.LoginButton: LoginButton(android.content.Context)
+com.facebook.widget.LoginButton: LoginButton(android.content.Context,android.util.AttributeSet)
+com.facebook.widget.LoginButton: LoginButton(android.content.Context,android.util.AttributeSet,int)
+com.facebook.widget.LoginButton: void setOnErrorListener(com.facebook.widget.LoginButton$OnErrorListener)
+com.facebook.widget.LoginButton: com.facebook.widget.LoginButton$OnErrorListener getOnErrorListener()
+com.facebook.widget.LoginButton: void setDefaultAudience(com.facebook.SessionDefaultAudience)
+com.facebook.widget.LoginButton: com.facebook.SessionDefaultAudience getDefaultAudience()
+com.facebook.widget.LoginButton: void setReadPermissions(java.util.List)
+com.facebook.widget.LoginButton: void setReadPermissions(java.lang.String[])
+com.facebook.widget.LoginButton: void setPublishPermissions(java.util.List)
+com.facebook.widget.LoginButton: void setPublishPermissions(java.lang.String[])
+com.facebook.widget.LoginButton: void setLoginBehavior(com.facebook.SessionLoginBehavior)
+com.facebook.widget.LoginButton: com.facebook.SessionLoginBehavior getLoginBehavior()
+com.facebook.widget.LoginButton: void setApplicationId(java.lang.String)
+com.facebook.widget.LoginButton: com.facebook.widget.LoginButton$UserInfoChangedCallback getUserInfoChangedCallback()
+com.facebook.widget.LoginButton: void setUserInfoChangedCallback(com.facebook.widget.LoginButton$UserInfoChangedCallback)
+com.facebook.widget.LoginButton: void setSessionStatusCallback(com.facebook.Session$StatusCallback)
+com.facebook.widget.LoginButton: com.facebook.Session$StatusCallback getSessionStatusCallback()
+com.facebook.widget.LoginButton: void setToolTipStyle(com.facebook.widget.ToolTipPopup$Style)
+com.facebook.widget.LoginButton: void setToolTipMode(com.facebook.widget.LoginButton$ToolTipMode)
+com.facebook.widget.LoginButton: com.facebook.widget.LoginButton$ToolTipMode getToolTipMode()
+com.facebook.widget.LoginButton: void setToolTipDisplayTime(long)
+com.facebook.widget.LoginButton: long getToolTipDisplayTime()
+com.facebook.widget.LoginButton: void setSession(com.facebook.Session)
+com.facebook.widget.LoginButton: void setFragment(android.support.v4.app.Fragment)
+com.facebook.widget.LoginButton: java.util.List getPermissions()
+com.facebook.widget.LoginButton: void setProperties(com.facebook.widget.LoginButton$LoginButtonProperties)
+com.facebook.widget.LoginButton: void setLoginLogoutEventName(java.lang.String)
+com.facebook.widget.LoginButton: void setOnClickListener(android.view.View$OnClickListener)
+com.facebook.widget.LoginButton$ToolTipMode: com.facebook.widget.LoginButton$ToolTipMode[] values()
+com.facebook.widget.LoginButton$ToolTipMode: com.facebook.widget.LoginButton$ToolTipMode valueOf(java.lang.String)
+com.facebook.widget.ProfilePictureView: int getPresetSize()
+com.facebook.widget.ProfilePictureView: void setPresetSize(int)
+com.facebook.widget.ProfilePictureView: void setCropped(boolean)
+com.facebook.widget.ProfilePictureView: java.lang.String getProfileId()
+com.facebook.widget.ProfilePictureView: void setProfileId(java.lang.String)
+com.facebook.widget.ProfilePictureView: com.facebook.widget.ProfilePictureView$OnErrorListener getOnErrorListener()
+com.facebook.widget.ProfilePictureView: void setOnErrorListener(com.facebook.widget.ProfilePictureView$OnErrorListener)
+com.facebook.widget.ProfilePictureView: void setDefaultProfilePicture(android.graphics.Bitmap)
+com.facebook.widget.ProfilePictureView: void setImageBitmap(android.graphics.Bitmap)
+com.facebook.widget.ToolTipPopup$Style: com.facebook.widget.ToolTipPopup$Style[] values()
+com.facebook.widget.ToolTipPopup$Style: com.facebook.widget.ToolTipPopup$Style valueOf(java.lang.String)
 com.fasterxml.jackson.annotation.JacksonAnnotation
 com.fasterxml.jackson.annotation.JacksonAnnotationsInside
 com.fasterxml.jackson.annotation.JacksonInject
@@ -9938,6 +10207,7 @@ com.glassfitgames.glassfitplatform.R$string: int common_signin_button_text
 com.glassfitgames.glassfitplatform.R$string: int common_signin_button_text_long
 com.glassfitgames.glassfitplatform.R$string: int glass_voice_trigger
 com.glassfitgames.glassfitplatform.R$string: int hello_world
+com.glassfitgames.glassfitplatform.R$string: int location_client_powered_by_google
 com.glassfitgames.glassfitplatform.R$string: int sensor_service_name
 com.glassfitgames.glassfitplatform.R$string: int title_activity_authentication
 com.glassfitgames.glassfitplatform.R$string: int title_orientation_helper
@@ -10080,11 +10350,9 @@ com.glassfitgames.glassfitplatform.models.Calibration: long last_update_timestam
 com.glassfitgames.glassfitplatform.models.Calibration: Calibration()
 com.glassfitgames.glassfitplatform.models.Calibration: void setGuid(com.fasterxml.jackson.databind.JsonNode)
 com.glassfitgames.glassfitplatform.models.Challenge
-com.glassfitgames.glassfitplatform.models.Challenge: java.lang.String id
+com.glassfitgames.glassfitplatform.models.Challenge: int id
 com.glassfitgames.glassfitplatform.models.Challenge: java.lang.String json
 com.glassfitgames.glassfitplatform.models.Challenge: Challenge()
-com.glassfitgames.glassfitplatform.models.Challenge: Challenge(com.fasterxml.jackson.databind.JsonNode)
-com.glassfitgames.glassfitplatform.models.Challenge: com.glassfitgames.glassfitplatform.models.Challenge build(com.fasterxml.jackson.databind.JsonNode)
 com.glassfitgames.glassfitplatform.models.Challenge: java.lang.String toJson()
 com.glassfitgames.glassfitplatform.models.Challenge: com.glassfitgames.glassfitplatform.models.Challenge get(java.lang.String)
 com.glassfitgames.glassfitplatform.models.Challenge: java.util.List getPersonalChallenges()
@@ -10223,13 +10491,12 @@ com.glassfitgames.glassfitplatform.models.GameBlob: java.util.List getDatabaseBl
 com.glassfitgames.glassfitplatform.models.GameBlob: java.io.File getBlobPath()
 com.glassfitgames.glassfitplatform.models.GameBlob: java.lang.String calculateEntityTag(byte[])
 com.glassfitgames.glassfitplatform.models.Notification
-com.glassfitgames.glassfitplatform.models.Notification: java.lang.String id
+com.glassfitgames.glassfitplatform.models.Notification: int id
 com.glassfitgames.glassfitplatform.models.Notification: boolean read
 com.glassfitgames.glassfitplatform.models.Notification: java.lang.String message
 com.glassfitgames.glassfitplatform.models.Notification: boolean dirty
 com.glassfitgames.glassfitplatform.models.Notification: Notification()
 com.glassfitgames.glassfitplatform.models.Notification: java.util.List getNotifications()
-com.glassfitgames.glassfitplatform.models.Notification: void setId(com.fasterxml.jackson.databind.JsonNode)
 com.glassfitgames.glassfitplatform.models.Notification: boolean isRead()
 com.glassfitgames.glassfitplatform.models.Notification: void setRead(boolean)
 com.glassfitgames.glassfitplatform.models.Notification: java.lang.String getMessage()
@@ -10498,6 +10765,7 @@ com.glassfitgames.glassfitplatform.models.UserDetail: java.lang.String getPhotoU
 com.glassfitgames.glassfitplatform.models.UserDetail: void setPhotoUri(java.lang.String)
 com.glassfitgames.glassfitplatform.models.UserDetail: java.lang.String getApiAccessToken()
 com.glassfitgames.glassfitplatform.models.UserDetail: void setApiAccessToken(java.lang.String)
+com.glassfitgames.glassfitplatform.models.UserDetail: void resetTokenExpiration()
 com.glassfitgames.glassfitplatform.models.UserDetail: void tokenExpiresIn(int)
 com.glassfitgames.glassfitplatform.models.UserDetail: boolean hasExpired()
 com.glassfitgames.glassfitplatform.sensors.SensorService
@@ -10612,6 +10880,7 @@ com.google.android.gms.R$string: int common_google_play_services_update_text
 com.google.android.gms.R$string: int common_google_play_services_update_title
 com.google.android.gms.R$string: int common_signin_button_text
 com.google.android.gms.R$string: int common_signin_button_text_long
+com.google.android.gms.R$string: int location_client_powered_by_google
 com.google.android.gms.R$styleable: int[] AdsAttrs
 com.google.android.gms.R$styleable: int AdsAttrs_adSize
 com.google.android.gms.R$styleable: int AdsAttrs_adSizes
@@ -10652,6 +10921,10 @@ com.google.android.gms.ads.search.SearchAdView: java.lang.String getAdUnitId()
 com.google.android.gms.ads.search.SearchAdView: void setAdListener(com.google.android.gms.ads.AdListener)
 com.google.android.gms.ads.search.SearchAdView: void setAdSize(com.google.android.gms.ads.AdSize)
 com.google.android.gms.ads.search.SearchAdView: void setAdUnitId(java.lang.String)
+com.google.android.gms.analytics.s$a: com.google.android.gms.analytics.s$a[] values()
+com.google.android.gms.analytics.s$a: com.google.android.gms.analytics.s$a valueOf(java.lang.String)
+com.google.android.gms.analytics.u$a: com.google.android.gms.analytics.u$a[] values()
+com.google.android.gms.analytics.u$a: com.google.android.gms.analytics.u$a valueOf(java.lang.String)
 com.google.android.gms.cast.ApplicationMetadata
 com.google.android.gms.cast.ApplicationMetadata: android.os.Parcelable$Creator CREATOR
 com.google.android.gms.cast.CastDevice
@@ -10673,6 +10946,18 @@ com.google.android.gms.drive.Contents
 com.google.android.gms.drive.Contents: android.os.Parcelable$Creator CREATOR
 com.google.android.gms.drive.DriveId
 com.google.android.gms.drive.DriveId: android.os.Parcelable$Creator CREATOR
+com.google.android.gms.drive.events.ChangeEvent
+com.google.android.gms.drive.events.ChangeEvent: android.os.Parcelable$Creator CREATOR
+com.google.android.gms.drive.events.ConflictEvent
+com.google.android.gms.drive.events.ConflictEvent: android.os.Parcelable$Creator CREATOR
+com.google.android.gms.drive.events.DriveEvent
+com.google.android.gms.drive.events.ResourceEvent
+com.google.android.gms.drive.internal.AddEventListenerRequest
+com.google.android.gms.drive.internal.AddEventListenerRequest: android.os.Parcelable$Creator CREATOR
+com.google.android.gms.drive.internal.AuthorizeAccessRequest
+com.google.android.gms.drive.internal.AuthorizeAccessRequest: android.os.Parcelable$Creator CREATOR
+com.google.android.gms.drive.internal.CloseContentsAndUpdateMetadataRequest
+com.google.android.gms.drive.internal.CloseContentsAndUpdateMetadataRequest: android.os.Parcelable$Creator CREATOR
 com.google.android.gms.drive.internal.CloseContentsRequest
 com.google.android.gms.drive.internal.CloseContentsRequest: android.os.Parcelable$Creator CREATOR
 com.google.android.gms.drive.internal.CreateContentsRequest
@@ -10683,16 +10968,24 @@ com.google.android.gms.drive.internal.CreateFileRequest
 com.google.android.gms.drive.internal.CreateFileRequest: android.os.Parcelable$Creator CREATOR
 com.google.android.gms.drive.internal.CreateFolderRequest
 com.google.android.gms.drive.internal.CreateFolderRequest: android.os.Parcelable$Creator CREATOR
+com.google.android.gms.drive.internal.DisconnectRequest
+com.google.android.gms.drive.internal.DisconnectRequest: android.os.Parcelable$Creator CREATOR
 com.google.android.gms.drive.internal.GetMetadataRequest
 com.google.android.gms.drive.internal.GetMetadataRequest: android.os.Parcelable$Creator CREATOR
+com.google.android.gms.drive.internal.ListParentsRequest
+com.google.android.gms.drive.internal.ListParentsRequest: android.os.Parcelable$Creator CREATOR
 com.google.android.gms.drive.internal.OnContentsResponse
 com.google.android.gms.drive.internal.OnContentsResponse: android.os.Parcelable$Creator CREATOR
 com.google.android.gms.drive.internal.OnDownloadProgressResponse
 com.google.android.gms.drive.internal.OnDownloadProgressResponse: android.os.Parcelable$Creator CREATOR
 com.google.android.gms.drive.internal.OnDriveIdResponse
 com.google.android.gms.drive.internal.OnDriveIdResponse: android.os.Parcelable$Creator CREATOR
+com.google.android.gms.drive.internal.OnEventResponse
+com.google.android.gms.drive.internal.OnEventResponse: android.os.Parcelable$Creator CREATOR
 com.google.android.gms.drive.internal.OnListEntriesResponse
 com.google.android.gms.drive.internal.OnListEntriesResponse: android.os.Parcelable$Creator CREATOR
+com.google.android.gms.drive.internal.OnListParentsResponse
+com.google.android.gms.drive.internal.OnListParentsResponse: android.os.Parcelable$Creator CREATOR
 com.google.android.gms.drive.internal.OnMetadataResponse
 com.google.android.gms.drive.internal.OnMetadataResponse: android.os.Parcelable$Creator CREATOR
 com.google.android.gms.drive.internal.OpenContentsRequest
@@ -10701,6 +10994,10 @@ com.google.android.gms.drive.internal.OpenFileIntentSenderRequest
 com.google.android.gms.drive.internal.OpenFileIntentSenderRequest: android.os.Parcelable$Creator CREATOR
 com.google.android.gms.drive.internal.QueryRequest
 com.google.android.gms.drive.internal.QueryRequest: android.os.Parcelable$Creator CREATOR
+com.google.android.gms.drive.internal.RemoveEventListenerRequest
+com.google.android.gms.drive.internal.RemoveEventListenerRequest: android.os.Parcelable$Creator CREATOR
+com.google.android.gms.drive.internal.TrashResourceRequest
+com.google.android.gms.drive.internal.TrashResourceRequest: android.os.Parcelable$Creator CREATOR
 com.google.android.gms.drive.internal.UpdateMetadataRequest
 com.google.android.gms.drive.internal.UpdateMetadataRequest: android.os.Parcelable$Creator CREATOR
 com.google.android.gms.drive.metadata.internal.MetadataBundle
@@ -10749,103 +11046,131 @@ com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch
 com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatchEntity
 com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatchEntity: com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatchEntityCreator CREATOR
 com.google.android.gms.games.multiplayer.turnbased.a
-com.google.android.gms.internal.ai
-com.google.android.gms.internal.ai: com.google.android.gms.internal.aj CREATOR
-com.google.android.gms.internal.bj
-com.google.android.gms.internal.bj: com.google.android.gms.internal.bi CREATOR
-com.google.android.gms.internal.bm
-com.google.android.gms.internal.bm: com.google.android.gms.internal.bl CREATOR
-com.google.android.gms.internal.bz
-com.google.android.gms.internal.bz: com.google.android.gms.internal.ca CREATOR
-com.google.android.gms.internal.cb
-com.google.android.gms.internal.cb: com.google.android.gms.internal.cc CREATOR
-com.google.android.gms.internal.cu
-com.google.android.gms.internal.cu: com.google.android.gms.internal.cv CREATOR
-com.google.android.gms.internal.cw: void setContext(android.content.Context)
-com.google.android.gms.internal.dt$a
-com.google.android.gms.internal.dt$a: com.google.android.gms.internal.ef CREATOR
-com.google.android.gms.internal.dv
-com.google.android.gms.internal.el
-com.google.android.gms.internal.el: com.google.android.gms.internal.em CREATOR
-com.google.android.gms.internal.en
-com.google.android.gms.internal.en: com.google.android.gms.internal.eo CREATOR
-com.google.android.gms.internal.ep
-com.google.android.gms.internal.ep: com.google.android.gms.internal.eq CREATOR
-com.google.android.gms.internal.ep$a
-com.google.android.gms.internal.ep$a: com.google.android.gms.internal.er CREATOR
-com.google.android.gms.internal.es$a
-com.google.android.gms.internal.es$a: com.google.android.gms.internal.et CREATOR
-com.google.android.gms.internal.ev
-com.google.android.gms.internal.ev: com.google.android.gms.internal.ew CREATOR
-com.google.android.gms.internal.ev$a
-com.google.android.gms.internal.ev$a: com.google.android.gms.internal.ex CREATOR
-com.google.android.gms.internal.ev$b
-com.google.android.gms.internal.ev$b: com.google.android.gms.internal.eu CREATOR
+com.google.android.gms.games.request.GameRequest
+com.google.android.gms.games.request.GameRequestEntity
+com.google.android.gms.games.request.GameRequestEntity: com.google.android.gms.games.request.GameRequestEntityCreator CREATOR
+com.google.android.gms.games.request.a
+com.google.android.gms.identity.intents.UserAddressRequest
+com.google.android.gms.identity.intents.UserAddressRequest: android.os.Parcelable$Creator CREATOR
+com.google.android.gms.identity.intents.model.CountrySpecification
+com.google.android.gms.identity.intents.model.CountrySpecification: android.os.Parcelable$Creator CREATOR
+com.google.android.gms.identity.intents.model.UserAddress
+com.google.android.gms.identity.intents.model.UserAddress: android.os.Parcelable$Creator CREATOR
+com.google.android.gms.internal.a: com.google.android.gms.internal.a[] values()
+com.google.android.gms.internal.a: com.google.android.gms.internal.a valueOf(java.lang.String)
+com.google.android.gms.internal.ab
+com.google.android.gms.internal.ab: com.google.android.gms.internal.ac CREATOR
+com.google.android.gms.internal.am
+com.google.android.gms.internal.am: com.google.android.gms.internal.an CREATOR
+com.google.android.gms.internal.b: com.google.android.gms.internal.b[] values()
+com.google.android.gms.internal.b: com.google.android.gms.internal.b valueOf(java.lang.String)
+com.google.android.gms.internal.bn
+com.google.android.gms.internal.bn: com.google.android.gms.internal.bm CREATOR
+com.google.android.gms.internal.bq
+com.google.android.gms.internal.bq: com.google.android.gms.internal.bp CREATOR
+com.google.android.gms.internal.cd
+com.google.android.gms.internal.cd: com.google.android.gms.internal.ce CREATOR
+com.google.android.gms.internal.cf
+com.google.android.gms.internal.cf: com.google.android.gms.internal.cg CREATOR
+com.google.android.gms.internal.db
+com.google.android.gms.internal.db: com.google.android.gms.internal.dc CREATOR
+com.google.android.gms.internal.dd: void setContext(android.content.Context)
+com.google.android.gms.internal.di
+com.google.android.gms.internal.di: android.os.Parcelable$Creator CREATOR
+com.google.android.gms.internal.do: com.google.android.gms.internal.do[] values()
+com.google.android.gms.internal.do: com.google.android.gms.internal.do valueOf(java.lang.String)
+com.google.android.gms.internal.ee$a
+com.google.android.gms.internal.ee$a: com.google.android.gms.internal.eq CREATOR
+com.google.android.gms.internal.eg
+com.google.android.gms.internal.ew
+com.google.android.gms.internal.ew: com.google.android.gms.internal.ex CREATOR
 com.google.android.gms.internal.ey
 com.google.android.gms.internal.ey: com.google.android.gms.internal.ez CREATOR
-com.google.android.gms.internal.fm
-com.google.android.gms.internal.gh
-com.google.android.gms.internal.gh: com.google.android.gms.internal.gi CREATOR
-com.google.android.gms.internal.go
-com.google.android.gms.internal.go: com.google.android.gms.internal.gp CREATOR
-com.google.android.gms.internal.gt
-com.google.android.gms.internal.gt: com.google.android.gms.internal.gu CREATOR
-com.google.android.gms.internal.gv
-com.google.android.gms.internal.gv: com.google.android.gms.internal.gw CREATOR
-com.google.android.gms.internal.gx
-com.google.android.gms.internal.gx: com.google.android.gms.internal.gy CREATOR
-com.google.android.gms.internal.hb
-com.google.android.gms.internal.hb: com.google.android.gms.internal.hc CREATOR
-com.google.android.gms.internal.hd
-com.google.android.gms.internal.hd: com.google.android.gms.internal.he CREATOR
-com.google.android.gms.internal.hd$a
-com.google.android.gms.internal.hd$a: com.google.android.gms.internal.ha CREATOR
-com.google.android.gms.internal.hf
-com.google.android.gms.internal.hf: com.google.android.gms.internal.hg CREATOR
-com.google.android.gms.internal.hi
-com.google.android.gms.internal.hi: com.google.android.gms.internal.hj CREATOR
-com.google.android.gms.internal.hu
-com.google.android.gms.internal.hu: com.google.android.gms.internal.hw CREATOR
-com.google.android.gms.internal.ib
-com.google.android.gms.internal.ib: com.google.android.gms.internal.ic CREATOR
+com.google.android.gms.internal.ey$a
+com.google.android.gms.internal.ey$a: com.google.android.gms.internal.fa CREATOR
+com.google.android.gms.internal.fb$a
+com.google.android.gms.internal.fb$a: com.google.android.gms.internal.fc CREATOR
+com.google.android.gms.internal.fe
+com.google.android.gms.internal.fe: com.google.android.gms.internal.ff CREATOR
+com.google.android.gms.internal.fe$a
+com.google.android.gms.internal.fe$a: com.google.android.gms.internal.fg CREATOR
+com.google.android.gms.internal.fe$b
+com.google.android.gms.internal.fe$b: com.google.android.gms.internal.fd CREATOR
+com.google.android.gms.internal.fh
+com.google.android.gms.internal.fh: com.google.android.gms.internal.fi CREATOR
+com.google.android.gms.internal.fy
+com.google.android.gms.internal.gy
+com.google.android.gms.internal.gy: com.google.android.gms.internal.gx CREATOR
+com.google.android.gms.internal.gz
+com.google.android.gms.internal.gz: com.google.android.gms.internal.ha CREATOR
+com.google.android.gms.internal.hj
+com.google.android.gms.internal.hj: com.google.android.gms.internal.hk CREATOR
+com.google.android.gms.internal.hn
+com.google.android.gms.internal.hn: com.google.android.gms.internal.ho CREATOR
+com.google.android.gms.internal.hp
+com.google.android.gms.internal.hp: com.google.android.gms.internal.hq CREATOR
+com.google.android.gms.internal.hr
+com.google.android.gms.internal.hr: com.google.android.gms.internal.hs CREATOR
+com.google.android.gms.internal.ht
+com.google.android.gms.internal.ht: com.google.android.gms.internal.hu CREATOR
+com.google.android.gms.internal.hx
+com.google.android.gms.internal.hx: com.google.android.gms.internal.hy CREATOR
+com.google.android.gms.internal.hx$a
+com.google.android.gms.internal.hx$a: com.google.android.gms.internal.hw CREATOR
+com.google.android.gms.internal.hz
+com.google.android.gms.internal.hz: com.google.android.gms.internal.ia CREATOR
 com.google.android.gms.internal.id
 com.google.android.gms.internal.id: com.google.android.gms.internal.ie CREATOR
-com.google.android.gms.internal.ig
-com.google.android.gms.internal.ig: com.google.android.gms.internal.ih CREATOR
-com.google.android.gms.internal.ig$a
-com.google.android.gms.internal.ig$a: com.google.android.gms.internal.ii CREATOR
-com.google.android.gms.internal.ig$b
-com.google.android.gms.internal.ig$b: com.google.android.gms.internal.ij CREATOR
-com.google.android.gms.internal.ig$b$a
-com.google.android.gms.internal.ig$b$a: com.google.android.gms.internal.ik CREATOR
-com.google.android.gms.internal.ig$b$b
-com.google.android.gms.internal.ig$b$b: com.google.android.gms.internal.il CREATOR
-com.google.android.gms.internal.ig$c
-com.google.android.gms.internal.ig$c: com.google.android.gms.internal.im CREATOR
-com.google.android.gms.internal.ig$d
-com.google.android.gms.internal.ig$d: com.google.android.gms.internal.in CREATOR
-com.google.android.gms.internal.ig$f
-com.google.android.gms.internal.ig$f: com.google.android.gms.internal.io CREATOR
-com.google.android.gms.internal.ig$g
-com.google.android.gms.internal.ig$g: com.google.android.gms.internal.ip CREATOR
-com.google.android.gms.internal.ig$h
-com.google.android.gms.internal.ig$h: com.google.android.gms.internal.iq CREATOR
-com.google.android.gms.internal.v
-com.google.android.gms.internal.v: com.google.android.gms.internal.w CREATOR
-com.google.android.gms.internal.x
-com.google.android.gms.internal.x: com.google.android.gms.internal.y CREATOR
+com.google.android.gms.internal.im
+com.google.android.gms.internal.im: com.google.android.gms.internal.in CREATOR
+com.google.android.gms.internal.io
+com.google.android.gms.internal.io: com.google.android.gms.internal.ip CREATOR
+com.google.android.gms.internal.ir
+com.google.android.gms.internal.ir: com.google.android.gms.internal.is CREATOR
+com.google.android.gms.internal.ir$a
+com.google.android.gms.internal.ir$a: com.google.android.gms.internal.it CREATOR
+com.google.android.gms.internal.ir$b
+com.google.android.gms.internal.ir$b: com.google.android.gms.internal.iu CREATOR
+com.google.android.gms.internal.ir$b$a
+com.google.android.gms.internal.ir$b$a: com.google.android.gms.internal.iv CREATOR
+com.google.android.gms.internal.ir$b$b
+com.google.android.gms.internal.ir$b$b: com.google.android.gms.internal.iw CREATOR
+com.google.android.gms.internal.ir$c
+com.google.android.gms.internal.ir$c: com.google.android.gms.internal.ix CREATOR
+com.google.android.gms.internal.ir$d
+com.google.android.gms.internal.ir$d: com.google.android.gms.internal.iy CREATOR
+com.google.android.gms.internal.ir$f
+com.google.android.gms.internal.ir$f: com.google.android.gms.internal.iz CREATOR
+com.google.android.gms.internal.ir$g
+com.google.android.gms.internal.ir$g: com.google.android.gms.internal.ja CREATOR
+com.google.android.gms.internal.ir$h
+com.google.android.gms.internal.ir$h: com.google.android.gms.internal.jb CREATOR
+com.google.android.gms.internal.jh
+com.google.android.gms.internal.jh: android.os.Parcelable$Creator CREATOR
+com.google.android.gms.internal.jj
+com.google.android.gms.internal.jj: android.os.Parcelable$Creator CREATOR
+com.google.android.gms.internal.jl
+com.google.android.gms.internal.jl: android.os.Parcelable$Creator CREATOR
+com.google.android.gms.internal.jm
+com.google.android.gms.internal.jm: android.os.Parcelable$Creator CREATOR
+com.google.android.gms.internal.jp
+com.google.android.gms.internal.jp: android.os.Parcelable$Creator CREATOR
+com.google.android.gms.internal.jr
+com.google.android.gms.internal.jr: android.os.Parcelable$Creator CREATOR
+com.google.android.gms.internal.jt
+com.google.android.gms.internal.jt: android.os.Parcelable$Creator CREATOR
+com.google.android.gms.internal.jv
+com.google.android.gms.internal.jv: android.os.Parcelable$Creator CREATOR
+com.google.android.gms.internal.z
+com.google.android.gms.internal.z: com.google.android.gms.internal.aa CREATOR
 com.google.android.gms.location.ActivityRecognitionResult
 com.google.android.gms.location.ActivityRecognitionResult: com.google.android.gms.location.ActivityRecognitionResultCreator CREATOR
 com.google.android.gms.location.DetectedActivity
 com.google.android.gms.location.DetectedActivity: com.google.android.gms.location.DetectedActivityCreator CREATOR
 com.google.android.gms.location.LocationRequest
 com.google.android.gms.location.LocationRequest: com.google.android.gms.location.LocationRequestCreator CREATOR
-com.google.android.gms.location.a
-com.google.android.gms.location.a: com.google.android.gms.location.b CREATOR
-com.google.android.gms.location.d
-com.google.android.gms.location.d: com.google.android.gms.location.e CREATOR
-com.google.android.gms.location.f
-com.google.android.gms.location.f: com.google.android.gms.location.g CREATOR
+com.google.android.gms.location.b
+com.google.android.gms.location.b: com.google.android.gms.location.c CREATOR
 com.google.android.gms.maps.GoogleMapOptions
 com.google.android.gms.maps.GoogleMapOptions: com.google.android.gms.maps.GoogleMapOptionsCreator CREATOR
 com.google.android.gms.maps.MapView: com.google.android.gms.maps.GoogleMap getMap()
@@ -10874,10 +11199,16 @@ com.google.android.gms.maps.model.VisibleRegion: com.google.android.gms.maps.mod
 com.google.android.gms.plus.PlusOneButton: void setOnPlusOneClickListener(com.google.android.gms.plus.PlusOneButton$OnPlusOneClickListener)
 com.google.android.gms.plus.PlusOneButton: void setAnnotation(int)
 com.google.android.gms.plus.PlusOneButton: void setSize(int)
-com.google.android.gms.plus.PlusOneButtonWithPopup: void setOnClickListener(android.view.View$OnClickListener)
-com.google.android.gms.plus.PlusOneButtonWithPopup: void setAnnotation(int)
-com.google.android.gms.plus.PlusOneButtonWithPopup: void setSize(int)
-com.google.android.gms.plus.PlusOneButtonWithPopup: android.app.PendingIntent getResolution()
+com.google.android.gms.plus.internal.PlusCommonExtras
+com.google.android.gms.plus.internal.PlusCommonExtras: com.google.android.gms.plus.internal.f CREATOR
+com.google.android.gms.plus.internal.h
+com.google.android.gms.plus.internal.h: com.google.android.gms.plus.internal.j CREATOR
+com.google.android.gms.tagmanager.az$a: com.google.android.gms.tagmanager.az$a[] values()
+com.google.android.gms.tagmanager.az$a: com.google.android.gms.tagmanager.az$a valueOf(java.lang.String)
+com.google.android.gms.tagmanager.bg$a: com.google.android.gms.tagmanager.bg$a[] values()
+com.google.android.gms.tagmanager.bg$a: com.google.android.gms.tagmanager.bg$a valueOf(java.lang.String)
+com.google.android.gms.tagmanager.ce$a: com.google.android.gms.tagmanager.ce$a[] values()
+com.google.android.gms.tagmanager.ce$a: com.google.android.gms.tagmanager.ce$a valueOf(java.lang.String)
 com.google.android.gms.wallet.Address
 com.google.android.gms.wallet.Address: android.os.Parcelable$Creator CREATOR
 com.google.android.gms.wallet.Cart
@@ -10888,6 +11219,8 @@ com.google.android.gms.wallet.FullWallet
 com.google.android.gms.wallet.FullWallet: android.os.Parcelable$Creator CREATOR
 com.google.android.gms.wallet.FullWalletRequest
 com.google.android.gms.wallet.FullWalletRequest: android.os.Parcelable$Creator CREATOR
+com.google.android.gms.wallet.InstrumentInfo
+com.google.android.gms.wallet.InstrumentInfo: android.os.Parcelable$Creator CREATOR
 com.google.android.gms.wallet.LineItem
 com.google.android.gms.wallet.LineItem: android.os.Parcelable$Creator CREATOR
 com.google.android.gms.wallet.LoyaltyWalletObject
@@ -10902,17 +11235,44 @@ com.google.android.gms.wallet.OfferWalletObject
 com.google.android.gms.wallet.OfferWalletObject: android.os.Parcelable$Creator CREATOR
 com.google.android.gms.wallet.ProxyCard
 com.google.android.gms.wallet.ProxyCard: android.os.Parcelable$Creator CREATOR
+com.google.android.gms.wallet.d
+com.google.android.gms.wallet.d: android.os.Parcelable$Creator CREATOR
 com.javadocmd.simplelatlng.util.LengthUnit: com.javadocmd.simplelatlng.util.LengthUnit[] values()
 com.javadocmd.simplelatlng.util.LengthUnit: com.javadocmd.simplelatlng.util.LengthUnit valueOf(java.lang.String)
 com.raceyourself.android.samsung.PopupActivity
+com.raceyourself.android.samsung.PopupActivity: java.lang.String TAG
+com.raceyourself.android.samsung.PopupActivity: com.raceyourself.android.samsung.ProviderService mService
+com.raceyourself.android.samsung.PopupActivity: boolean mBound
+com.raceyourself.android.samsung.PopupActivity: com.facebook.UiLifecycleHelper uiHelper
+com.raceyourself.android.samsung.PopupActivity: com.facebook.Session$StatusCallback statusCallback
+com.raceyourself.android.samsung.PopupActivity: android.content.ServiceConnection mConnection
 com.raceyourself.android.samsung.PopupActivity: PopupActivity()
 com.raceyourself.android.samsung.PopupActivity: void onCreate(android.os.Bundle)
+com.raceyourself.android.samsung.PopupActivity: void onResume()
+com.raceyourself.android.samsung.PopupActivity: void onSaveInstanceState(android.os.Bundle)
+com.raceyourself.android.samsung.PopupActivity: void onPause()
+com.raceyourself.android.samsung.PopupActivity: void onDestroy()
+com.raceyourself.android.samsung.PopupActivity: void onActivityResult(int,int,android.content.Intent)
+com.raceyourself.android.samsung.PopupActivity: void setTabColour(int,java.lang.String)
+com.raceyourself.android.samsung.PopupActivity: void onHowtoClick(android.view.View)
+com.raceyourself.android.samsung.PopupActivity: void onConnectionClick(android.view.View)
+com.raceyourself.android.samsung.PopupActivity: void onFeedbackClick(android.view.View)
+com.raceyourself.android.samsung.PopupActivity: void onStart()
+com.raceyourself.android.samsung.PopupActivity: void onStop()
+com.raceyourself.android.samsung.PopupActivity: void setConnectedStyle(boolean)
+com.raceyourself.android.samsung.PopupActivity: void access$0(com.raceyourself.android.samsung.PopupActivity,com.raceyourself.android.samsung.ProviderService)
+com.raceyourself.android.samsung.PopupActivity: void access$1(com.raceyourself.android.samsung.PopupActivity,boolean)
+com.raceyourself.android.samsung.PopupActivity: com.raceyourself.android.samsung.ProviderService access$2(com.raceyourself.android.samsung.PopupActivity)
+com.raceyourself.android.samsung.PopupActivity: void access$3(com.raceyourself.android.samsung.PopupActivity,boolean)
+com.raceyourself.android.samsung.PopupActivity: boolean access$4(com.raceyourself.android.samsung.PopupActivity)
 com.raceyourself.android.samsung.ProviderService
 com.raceyourself.android.samsung.ProviderService: java.lang.String TAG
+com.raceyourself.android.samsung.ProviderService: java.lang.String CONSUMER_TAG
 com.raceyourself.android.samsung.ProviderService: int DEFAULT_CHANNEL_ID
 com.raceyourself.android.samsung.ProviderService: java.lang.String SERVER_TOKEN
 com.raceyourself.android.samsung.ProviderService: java.lang.String EULA_KEY
 com.raceyourself.android.samsung.ProviderService: java.lang.String DISCLAIMER_KEY
+com.raceyourself.android.samsung.ProviderService: java.lang.String SUCCESS_KEY
 com.raceyourself.android.samsung.ProviderService: android.os.IBinder mBinder
 com.raceyourself.android.samsung.ProviderService: java.util.HashMap mConnectionsMap
 com.raceyourself.android.samsung.ProviderService: com.glassfitgames.glassfitplatform.gpstracker.GPSTracker gpsTracker
@@ -10921,8 +11281,10 @@ com.raceyourself.android.samsung.ProviderService: java.util.Timer timer
 com.raceyourself.android.samsung.ProviderService: android.app.AlertDialog alert
 com.raceyourself.android.samsung.ProviderService: android.app.AlertDialog waitingAlert
 com.raceyourself.android.samsung.ProviderService: boolean initialisingInProgress
-com.raceyourself.android.samsung.ProviderService: boolean firstLaunch
 com.raceyourself.android.samsung.ProviderService: boolean registered
+com.raceyourself.android.samsung.ProviderService: java.lang.Thread deviceRegistration
+com.raceyourself.android.samsung.ProviderService: int TETHER_NOTIFICATION_ID
+com.raceyourself.android.samsung.ProviderService: boolean iconEnabled
 com.raceyourself.android.samsung.ProviderService: void <clinit>()
 com.raceyourself.android.samsung.ProviderService: android.os.IBinder onBind(android.content.Intent)
 com.raceyourself.android.samsung.ProviderService: boolean onUnbind(android.content.Intent)
@@ -10933,7 +11295,7 @@ com.raceyourself.android.samsung.ProviderService: void onDestroy()
 com.raceyourself.android.samsung.ProviderService: ProviderService()
 com.raceyourself.android.samsung.ProviderService: boolean closeConnection()
 com.raceyourself.android.samsung.ProviderService: void onServiceConnectionResponse(com.samsung.android.sdk.accessory.SASocket,int)
-com.raceyourself.android.samsung.ProviderService: void onDataAvailableonChannel(java.lang.String,long,java.lang.String)
+com.raceyourself.android.samsung.ProviderService: void onDataAvailableOnChannel(java.lang.String,long,java.lang.String)
 com.raceyourself.android.samsung.ProviderService: void popupBluetoothDialog()
 com.raceyourself.android.samsung.ProviderService: void popupGpsDialog()
 com.raceyourself.android.samsung.ProviderService: void popupEula()
@@ -10944,6 +11306,8 @@ com.raceyourself.android.samsung.ProviderService: void popupSuccessDialog()
 com.raceyourself.android.samsung.ProviderService: void send(java.lang.String,com.raceyourself.android.samsung.models.SAModel)
 com.raceyourself.android.samsung.ProviderService: boolean ensureDeviceIsRegistered()
 com.raceyourself.android.samsung.ProviderService: void ensureGps()
+com.raceyourself.android.samsung.ProviderService: boolean hasBluetooth()
+com.raceyourself.android.samsung.ProviderService: boolean hasGear()
 com.raceyourself.android.samsung.ProviderService: void startTracking()
 com.raceyourself.android.samsung.ProviderService: void stopTracking()
 com.raceyourself.android.samsung.ProviderService: void ensureInternet()
@@ -10952,15 +11316,14 @@ com.raceyourself.android.samsung.ProviderService: void trySync()
 com.raceyourself.android.samsung.ProviderService: void onFindPeerAgentResponse(com.samsung.android.sdk.accessory.SAPeerAgent,int)
 com.raceyourself.android.samsung.ProviderService: void onError(java.lang.String,int)
 com.raceyourself.android.samsung.ProviderService: void launchWebBrowser(java.lang.String)
+com.raceyourself.android.samsung.ProviderService: void enableIcon()
+com.raceyourself.android.samsung.ProviderService: void disableIcon()
 com.raceyourself.android.samsung.ProviderService: com.glassfitgames.glassfitplatform.gpstracker.GPSTracker access$0()
 com.raceyourself.android.samsung.ProviderService: java.util.HashMap access$1()
 com.raceyourself.android.samsung.ProviderService: void access$2(com.raceyourself.android.samsung.ProviderService,java.lang.String,com.raceyourself.android.samsung.models.SAModel)
 com.raceyourself.android.samsung.ProviderService: void access$3(com.raceyourself.android.samsung.ProviderService,java.lang.String,long,java.lang.String)
 com.raceyourself.android.samsung.ProviderService: void access$4(com.raceyourself.android.samsung.ProviderService)
 com.raceyourself.android.samsung.ProviderService: void access$5(com.raceyourself.android.samsung.ProviderService)
-com.raceyourself.android.samsung.ProviderService: void access$6(com.raceyourself.android.samsung.ProviderService,boolean)
-com.raceyourself.android.samsung.ProviderService: void access$7(com.raceyourself.android.samsung.ProviderService)
-com.raceyourself.android.samsung.ProviderService: void access$8(com.raceyourself.android.samsung.ProviderService)
 com.raceyourself.android.samsung.ProviderService$RaceYourselfSamsungProviderConnection
 com.raceyourself.android.samsung.ProviderService$RaceYourselfSamsungProviderConnection: java.lang.String TAG
 com.raceyourself.android.samsung.ProviderService$RaceYourselfSamsungProviderConnection: int mConnectionId
@@ -10979,7 +11342,25 @@ com.raceyourself.samsungprovider.R$attr: int cameraTargetLat
 com.raceyourself.samsungprovider.R$attr: int cameraTargetLng
 com.raceyourself.samsungprovider.R$attr: int cameraTilt
 com.raceyourself.samsungprovider.R$attr: int cameraZoom
+com.raceyourself.samsungprovider.R$attr: int confirm_logout
+com.raceyourself.samsungprovider.R$attr: int done_button_background
+com.raceyourself.samsungprovider.R$attr: int done_button_text
+com.raceyourself.samsungprovider.R$attr: int extra_fields
+com.raceyourself.samsungprovider.R$attr: int fetch_user_info
+com.raceyourself.samsungprovider.R$attr: int is_cropped
+com.raceyourself.samsungprovider.R$attr: int login_text
+com.raceyourself.samsungprovider.R$attr: int logout_text
 com.raceyourself.samsungprovider.R$attr: int mapType
+com.raceyourself.samsungprovider.R$attr: int multi_select
+com.raceyourself.samsungprovider.R$attr: int preset_size
+com.raceyourself.samsungprovider.R$attr: int radius_in_meters
+com.raceyourself.samsungprovider.R$attr: int results_limit
+com.raceyourself.samsungprovider.R$attr: int search_text
+com.raceyourself.samsungprovider.R$attr: int show_pictures
+com.raceyourself.samsungprovider.R$attr: int show_search_box
+com.raceyourself.samsungprovider.R$attr: int show_title_bar
+com.raceyourself.samsungprovider.R$attr: int title_bar_background
+com.raceyourself.samsungprovider.R$attr: int title_text
 com.raceyourself.samsungprovider.R$attr: int uiCompass
 com.raceyourself.samsungprovider.R$attr: int uiRotateGestures
 com.raceyourself.samsungprovider.R$attr: int uiScrollGestures
@@ -10988,6 +11369,13 @@ com.raceyourself.samsungprovider.R$attr: int uiZoomControls
 com.raceyourself.samsungprovider.R$attr: int uiZoomGestures
 com.raceyourself.samsungprovider.R$attr: int useViewLifecycle
 com.raceyourself.samsungprovider.R$attr: int zOrderOnTop
+com.raceyourself.samsungprovider.R$color: int com_facebook_blue
+com.raceyourself.samsungprovider.R$color: int com_facebook_loginview_text_color
+com.raceyourself.samsungprovider.R$color: int com_facebook_picker_search_bar_background
+com.raceyourself.samsungprovider.R$color: int com_facebook_picker_search_bar_text
+com.raceyourself.samsungprovider.R$color: int com_facebook_usersettingsfragment_connected_shadow_color
+com.raceyourself.samsungprovider.R$color: int com_facebook_usersettingsfragment_connected_text_color
+com.raceyourself.samsungprovider.R$color: int com_facebook_usersettingsfragment_not_connected_text_color
 com.raceyourself.samsungprovider.R$color: int common_action_bar_splitter
 com.raceyourself.samsungprovider.R$color: int common_signin_btn_dark_text_default
 com.raceyourself.samsungprovider.R$color: int common_signin_btn_dark_text_disabled
@@ -11002,6 +11390,66 @@ com.raceyourself.samsungprovider.R$color: int common_signin_btn_text_dark
 com.raceyourself.samsungprovider.R$color: int common_signin_btn_text_light
 com.raceyourself.samsungprovider.R$dimen: int activity_horizontal_margin
 com.raceyourself.samsungprovider.R$dimen: int activity_vertical_margin
+com.raceyourself.samsungprovider.R$dimen: int com_facebook_loginview_compound_drawable_padding
+com.raceyourself.samsungprovider.R$dimen: int com_facebook_loginview_padding_bottom
+com.raceyourself.samsungprovider.R$dimen: int com_facebook_loginview_padding_left
+com.raceyourself.samsungprovider.R$dimen: int com_facebook_loginview_padding_right
+com.raceyourself.samsungprovider.R$dimen: int com_facebook_loginview_padding_top
+com.raceyourself.samsungprovider.R$dimen: int com_facebook_loginview_text_size
+com.raceyourself.samsungprovider.R$dimen: int com_facebook_picker_divider_width
+com.raceyourself.samsungprovider.R$dimen: int com_facebook_picker_place_image_size
+com.raceyourself.samsungprovider.R$dimen: int com_facebook_profilepictureview_preset_size_large
+com.raceyourself.samsungprovider.R$dimen: int com_facebook_profilepictureview_preset_size_normal
+com.raceyourself.samsungprovider.R$dimen: int com_facebook_profilepictureview_preset_size_small
+com.raceyourself.samsungprovider.R$dimen: int com_facebook_tooltip_horizontal_padding
+com.raceyourself.samsungprovider.R$dimen: int com_facebook_usersettingsfragment_profile_picture_height
+com.raceyourself.samsungprovider.R$dimen: int com_facebook_usersettingsfragment_profile_picture_width
+com.raceyourself.samsungprovider.R$drawable: int background
+com.raceyourself.samsungprovider.R$drawable: int background_active
+com.raceyourself.samsungprovider.R$drawable: int button
+com.raceyourself.samsungprovider.R$drawable: int button_active
+com.raceyourself.samsungprovider.R$drawable: int button_idle
+com.raceyourself.samsungprovider.R$drawable: int com_facebook_button_blue
+com.raceyourself.samsungprovider.R$drawable: int com_facebook_button_blue_focused
+com.raceyourself.samsungprovider.R$drawable: int com_facebook_button_blue_normal
+com.raceyourself.samsungprovider.R$drawable: int com_facebook_button_blue_pressed
+com.raceyourself.samsungprovider.R$drawable: int com_facebook_button_check
+com.raceyourself.samsungprovider.R$drawable: int com_facebook_button_check_off
+com.raceyourself.samsungprovider.R$drawable: int com_facebook_button_check_on
+com.raceyourself.samsungprovider.R$drawable: int com_facebook_button_grey_focused
+com.raceyourself.samsungprovider.R$drawable: int com_facebook_button_grey_normal
+com.raceyourself.samsungprovider.R$drawable: int com_facebook_button_grey_pressed
+com.raceyourself.samsungprovider.R$drawable: int com_facebook_close
+com.raceyourself.samsungprovider.R$drawable: int com_facebook_inverse_icon
+com.raceyourself.samsungprovider.R$drawable: int com_facebook_list_divider
+com.raceyourself.samsungprovider.R$drawable: int com_facebook_list_section_header_background
+com.raceyourself.samsungprovider.R$drawable: int com_facebook_loginbutton_silver
+com.raceyourself.samsungprovider.R$drawable: int com_facebook_logo
+com.raceyourself.samsungprovider.R$drawable: int com_facebook_picker_default_separator_color
+com.raceyourself.samsungprovider.R$drawable: int com_facebook_picker_item_background
+com.raceyourself.samsungprovider.R$drawable: int com_facebook_picker_list_focused
+com.raceyourself.samsungprovider.R$drawable: int com_facebook_picker_list_longpressed
+com.raceyourself.samsungprovider.R$drawable: int com_facebook_picker_list_pressed
+com.raceyourself.samsungprovider.R$drawable: int com_facebook_picker_list_selector
+com.raceyourself.samsungprovider.R$drawable: int com_facebook_picker_list_selector_background_transition
+com.raceyourself.samsungprovider.R$drawable: int com_facebook_picker_list_selector_disabled
+com.raceyourself.samsungprovider.R$drawable: int com_facebook_picker_magnifier
+com.raceyourself.samsungprovider.R$drawable: int com_facebook_picker_top_button
+com.raceyourself.samsungprovider.R$drawable: int com_facebook_place_default_icon
+com.raceyourself.samsungprovider.R$drawable: int com_facebook_profile_default_icon
+com.raceyourself.samsungprovider.R$drawable: int com_facebook_profile_picture_blank_portrait
+com.raceyourself.samsungprovider.R$drawable: int com_facebook_profile_picture_blank_square
+com.raceyourself.samsungprovider.R$drawable: int com_facebook_tooltip_black_background
+com.raceyourself.samsungprovider.R$drawable: int com_facebook_tooltip_black_bottomnub
+com.raceyourself.samsungprovider.R$drawable: int com_facebook_tooltip_black_topnub
+com.raceyourself.samsungprovider.R$drawable: int com_facebook_tooltip_black_xout
+com.raceyourself.samsungprovider.R$drawable: int com_facebook_tooltip_blue_background
+com.raceyourself.samsungprovider.R$drawable: int com_facebook_tooltip_blue_bottomnub
+com.raceyourself.samsungprovider.R$drawable: int com_facebook_tooltip_blue_topnub
+com.raceyourself.samsungprovider.R$drawable: int com_facebook_tooltip_blue_xout
+com.raceyourself.samsungprovider.R$drawable: int com_facebook_top_background
+com.raceyourself.samsungprovider.R$drawable: int com_facebook_top_button
+com.raceyourself.samsungprovider.R$drawable: int com_facebook_usersettingsfragment_background_gradient
 com.raceyourself.samsungprovider.R$drawable: int common_signin_btn_icon_dark
 com.raceyourself.samsungprovider.R$drawable: int common_signin_btn_icon_disabled_dark
 com.raceyourself.samsungprovider.R$drawable: int common_signin_btn_icon_disabled_focus_dark
@@ -11026,32 +11474,90 @@ com.raceyourself.samsungprovider.R$drawable: int common_signin_btn_text_normal_d
 com.raceyourself.samsungprovider.R$drawable: int common_signin_btn_text_normal_light
 com.raceyourself.samsungprovider.R$drawable: int common_signin_btn_text_pressed_dark
 com.raceyourself.samsungprovider.R$drawable: int common_signin_btn_text_pressed_light
+com.raceyourself.samsungprovider.R$drawable: int connected
+com.raceyourself.samsungprovider.R$drawable: int header
 com.raceyourself.samsungprovider.R$drawable: int ic_launcher
 com.raceyourself.samsungprovider.R$drawable: int ic_plusone_medium_off_client
 com.raceyourself.samsungprovider.R$drawable: int ic_plusone_small_off_client
 com.raceyourself.samsungprovider.R$drawable: int ic_plusone_standard_off_client
 com.raceyourself.samsungprovider.R$drawable: int ic_plusone_tall_off_client
+com.raceyourself.samsungprovider.R$drawable: int notconnected
 com.raceyourself.samsungprovider.R$drawable: int rylogo
+com.raceyourself.samsungprovider.R$drawable: int splash
+com.raceyourself.samsungprovider.R$drawable: int tab
 com.raceyourself.samsungprovider.R$id: int action_settings
+com.raceyourself.samsungprovider.R$id: int button_background
+com.raceyourself.samsungprovider.R$id: int button_background_active
+com.raceyourself.samsungprovider.R$id: int button_tab
+com.raceyourself.samsungprovider.R$id: int com_facebook_body_frame
+com.raceyourself.samsungprovider.R$id: int com_facebook_button_xout
+com.raceyourself.samsungprovider.R$id: int com_facebook_login_activity_progress_bar
+com.raceyourself.samsungprovider.R$id: int com_facebook_picker_activity_circle
+com.raceyourself.samsungprovider.R$id: int com_facebook_picker_checkbox
+com.raceyourself.samsungprovider.R$id: int com_facebook_picker_checkbox_stub
+com.raceyourself.samsungprovider.R$id: int com_facebook_picker_divider
+com.raceyourself.samsungprovider.R$id: int com_facebook_picker_done_button
+com.raceyourself.samsungprovider.R$id: int com_facebook_picker_image
+com.raceyourself.samsungprovider.R$id: int com_facebook_picker_list_section_header
+com.raceyourself.samsungprovider.R$id: int com_facebook_picker_list_view
+com.raceyourself.samsungprovider.R$id: int com_facebook_picker_profile_pic_stub
+com.raceyourself.samsungprovider.R$id: int com_facebook_picker_row_activity_circle
+com.raceyourself.samsungprovider.R$id: int com_facebook_picker_search_text
+com.raceyourself.samsungprovider.R$id: int com_facebook_picker_title
+com.raceyourself.samsungprovider.R$id: int com_facebook_picker_title_bar
+com.raceyourself.samsungprovider.R$id: int com_facebook_picker_title_bar_stub
+com.raceyourself.samsungprovider.R$id: int com_facebook_picker_top_bar
+com.raceyourself.samsungprovider.R$id: int com_facebook_search_bar_view
+com.raceyourself.samsungprovider.R$id: int com_facebook_tooltip_bubble_view_bottom_pointer
+com.raceyourself.samsungprovider.R$id: int com_facebook_tooltip_bubble_view_text_body
+com.raceyourself.samsungprovider.R$id: int com_facebook_tooltip_bubble_view_top_pointer
+com.raceyourself.samsungprovider.R$id: int com_facebook_usersettingsfragment_login_button
+com.raceyourself.samsungprovider.R$id: int com_facebook_usersettingsfragment_logo_image
+com.raceyourself.samsungprovider.R$id: int com_facebook_usersettingsfragment_profile_name
 com.raceyourself.samsungprovider.R$id: int editText1
 com.raceyourself.samsungprovider.R$id: int getOrientationButton
 com.raceyourself.samsungprovider.R$id: int hybrid
+com.raceyourself.samsungprovider.R$id: int imageview1
+com.raceyourself.samsungprovider.R$id: int imageview2
+com.raceyourself.samsungprovider.R$id: int large
 com.raceyourself.samsungprovider.R$id: int mainLayout
 com.raceyourself.samsungprovider.R$id: int none
 com.raceyourself.samsungprovider.R$id: int normal
 com.raceyourself.samsungprovider.R$id: int orientationText
+com.raceyourself.samsungprovider.R$id: int picker_subtitle
 com.raceyourself.samsungprovider.R$id: int radioButton1
 com.raceyourself.samsungprovider.R$id: int radioButton2
 com.raceyourself.samsungprovider.R$id: int radioGroup1
 com.raceyourself.samsungprovider.R$id: int satellite
 com.raceyourself.samsungprovider.R$id: int savebtn
+com.raceyourself.samsungprovider.R$id: int small
 com.raceyourself.samsungprovider.R$id: int terrain
+com.raceyourself.samsungprovider.R$id: int textview1
+com.raceyourself.samsungprovider.R$id: int textview2
+com.raceyourself.samsungprovider.R$id: int textview3
+com.raceyourself.samsungprovider.R$id: int textview4
 com.raceyourself.samsungprovider.R$id: int unityLayout
 com.raceyourself.samsungprovider.R$id: int webview
 com.raceyourself.samsungprovider.R$integer: int google_play_services_version
 com.raceyourself.samsungprovider.R$layout: int activity_authentication
 com.raceyourself.samsungprovider.R$layout: int activity_main
 com.raceyourself.samsungprovider.R$layout: int activity_popup
+com.raceyourself.samsungprovider.R$layout: int activity_splash
+com.raceyourself.samsungprovider.R$layout: int com_facebook_friendpickerfragment
+com.raceyourself.samsungprovider.R$layout: int com_facebook_login_activity_layout
+com.raceyourself.samsungprovider.R$layout: int com_facebook_picker_activity_circle_row
+com.raceyourself.samsungprovider.R$layout: int com_facebook_picker_checkbox
+com.raceyourself.samsungprovider.R$layout: int com_facebook_picker_image
+com.raceyourself.samsungprovider.R$layout: int com_facebook_picker_list_row
+com.raceyourself.samsungprovider.R$layout: int com_facebook_picker_list_section_header
+com.raceyourself.samsungprovider.R$layout: int com_facebook_picker_search_box
+com.raceyourself.samsungprovider.R$layout: int com_facebook_picker_title_bar
+com.raceyourself.samsungprovider.R$layout: int com_facebook_picker_title_bar_stub
+com.raceyourself.samsungprovider.R$layout: int com_facebook_placepickerfragment
+com.raceyourself.samsungprovider.R$layout: int com_facebook_placepickerfragment_list_row
+com.raceyourself.samsungprovider.R$layout: int com_facebook_search_bar_layout
+com.raceyourself.samsungprovider.R$layout: int com_facebook_tooltip_bubble
+com.raceyourself.samsungprovider.R$layout: int com_facebook_usersettingsfragment
 com.raceyourself.samsungprovider.R$layout: int enter_ip
 com.raceyourself.samsungprovider.R$layout: int orientation_helper
 com.raceyourself.samsungprovider.R$layout: int test_layout
@@ -11067,6 +11573,7 @@ com.raceyourself.samsungprovider.R$raw: int open_source_license_acknowledgement
 com.raceyourself.samsungprovider.R$raw: int sensoria_demo_data
 com.raceyourself.samsungprovider.R$string: int ConnectionEstablishedMsg
 com.raceyourself.samsungprovider.R$string: int action_settings
+com.raceyourself.samsungprovider.R$string: int app_id
 com.raceyourself.samsungprovider.R$string: int app_name
 com.raceyourself.samsungprovider.R$string: int auth_client_needs_enabling_title
 com.raceyourself.samsungprovider.R$string: int auth_client_needs_installation_title
@@ -11074,6 +11581,32 @@ com.raceyourself.samsungprovider.R$string: int auth_client_needs_update_title
 com.raceyourself.samsungprovider.R$string: int auth_client_play_services_err_notification_msg
 com.raceyourself.samsungprovider.R$string: int auth_client_requested_by_msg
 com.raceyourself.samsungprovider.R$string: int auth_client_using_bad_version_title
+com.raceyourself.samsungprovider.R$string: int com_facebook_choose_friends
+com.raceyourself.samsungprovider.R$string: int com_facebook_dialogloginactivity_ok_button
+com.raceyourself.samsungprovider.R$string: int com_facebook_internet_permission_error_message
+com.raceyourself.samsungprovider.R$string: int com_facebook_internet_permission_error_title
+com.raceyourself.samsungprovider.R$string: int com_facebook_loading
+com.raceyourself.samsungprovider.R$string: int com_facebook_loginview_cancel_action
+com.raceyourself.samsungprovider.R$string: int com_facebook_loginview_log_in_button
+com.raceyourself.samsungprovider.R$string: int com_facebook_loginview_log_out_action
+com.raceyourself.samsungprovider.R$string: int com_facebook_loginview_log_out_button
+com.raceyourself.samsungprovider.R$string: int com_facebook_loginview_logged_in_as
+com.raceyourself.samsungprovider.R$string: int com_facebook_loginview_logged_in_using_facebook
+com.raceyourself.samsungprovider.R$string: int com_facebook_logo_content_description
+com.raceyourself.samsungprovider.R$string: int com_facebook_nearby
+com.raceyourself.samsungprovider.R$string: int com_facebook_picker_done_button_text
+com.raceyourself.samsungprovider.R$string: int com_facebook_placepicker_subtitle_catetory_only_format
+com.raceyourself.samsungprovider.R$string: int com_facebook_placepicker_subtitle_format
+com.raceyourself.samsungprovider.R$string: int com_facebook_placepicker_subtitle_were_here_only_format
+com.raceyourself.samsungprovider.R$string: int com_facebook_requesterror_password_changed
+com.raceyourself.samsungprovider.R$string: int com_facebook_requesterror_permissions
+com.raceyourself.samsungprovider.R$string: int com_facebook_requesterror_reconnect
+com.raceyourself.samsungprovider.R$string: int com_facebook_requesterror_relogin
+com.raceyourself.samsungprovider.R$string: int com_facebook_requesterror_web_login
+com.raceyourself.samsungprovider.R$string: int com_facebook_tooltip_default
+com.raceyourself.samsungprovider.R$string: int com_facebook_usersettingsfragment_log_in_button
+com.raceyourself.samsungprovider.R$string: int com_facebook_usersettingsfragment_logged_in
+com.raceyourself.samsungprovider.R$string: int com_facebook_usersettingsfragment_not_logged_in
 com.raceyourself.samsungprovider.R$string: int common_google_play_services_enable_button
 com.raceyourself.samsungprovider.R$string: int common_google_play_services_enable_text
 com.raceyourself.samsungprovider.R$string: int common_google_play_services_enable_title
@@ -11094,14 +11627,28 @@ com.raceyourself.samsungprovider.R$string: int common_google_play_services_updat
 com.raceyourself.samsungprovider.R$string: int common_google_play_services_update_title
 com.raceyourself.samsungprovider.R$string: int common_signin_button_text
 com.raceyourself.samsungprovider.R$string: int common_signin_button_text_long
+com.raceyourself.samsungprovider.R$string: int connect
+com.raceyourself.samsungprovider.R$string: int connected
+com.raceyourself.samsungprovider.R$string: int feedback
+com.raceyourself.samsungprovider.R$string: int footer
 com.raceyourself.samsungprovider.R$string: int glass_voice_trigger
+com.raceyourself.samsungprovider.R$string: int header_content
 com.raceyourself.samsungprovider.R$string: int hello_world
+com.raceyourself.samsungprovider.R$string: int howto
+com.raceyourself.samsungprovider.R$string: int location_client_powered_by_google
+com.raceyourself.samsungprovider.R$string: int notification_message
+com.raceyourself.samsungprovider.R$string: int notification_title
 com.raceyourself.samsungprovider.R$string: int sensor_service_name
+com.raceyourself.samsungprovider.R$string: int service_starting
+com.raceyourself.samsungprovider.R$string: int splash_content
 com.raceyourself.samsungprovider.R$string: int title_activity_authentication
 com.raceyourself.samsungprovider.R$string: int title_activity_popup
 com.raceyourself.samsungprovider.R$string: int title_orientation_helper
 com.raceyourself.samsungprovider.R$style: int AppBaseTheme
 com.raceyourself.samsungprovider.R$style: int AppTheme
+com.raceyourself.samsungprovider.R$style: int com_facebook_loginview_default_style
+com.raceyourself.samsungprovider.R$style: int com_facebook_loginview_silver_style
+com.raceyourself.samsungprovider.R$style: int tooltip_bubble_text
 com.raceyourself.samsungprovider.R$styleable: int[] AdsAttrs
 com.raceyourself.samsungprovider.R$styleable: int AdsAttrs_adSize
 com.raceyourself.samsungprovider.R$styleable: int AdsAttrs_adSizes
@@ -11121,6 +11668,29 @@ com.raceyourself.samsungprovider.R$styleable: int MapAttrs_uiZoomControls
 com.raceyourself.samsungprovider.R$styleable: int MapAttrs_uiZoomGestures
 com.raceyourself.samsungprovider.R$styleable: int MapAttrs_useViewLifecycle
 com.raceyourself.samsungprovider.R$styleable: int MapAttrs_zOrderOnTop
+com.raceyourself.samsungprovider.R$styleable: int[] com_facebook_friend_picker_fragment
+com.raceyourself.samsungprovider.R$styleable: int com_facebook_friend_picker_fragment_multi_select
+com.raceyourself.samsungprovider.R$styleable: int[] com_facebook_login_view
+com.raceyourself.samsungprovider.R$styleable: int com_facebook_login_view_confirm_logout
+com.raceyourself.samsungprovider.R$styleable: int com_facebook_login_view_fetch_user_info
+com.raceyourself.samsungprovider.R$styleable: int com_facebook_login_view_login_text
+com.raceyourself.samsungprovider.R$styleable: int com_facebook_login_view_logout_text
+com.raceyourself.samsungprovider.R$styleable: int[] com_facebook_picker_fragment
+com.raceyourself.samsungprovider.R$styleable: int com_facebook_picker_fragment_done_button_background
+com.raceyourself.samsungprovider.R$styleable: int com_facebook_picker_fragment_done_button_text
+com.raceyourself.samsungprovider.R$styleable: int com_facebook_picker_fragment_extra_fields
+com.raceyourself.samsungprovider.R$styleable: int com_facebook_picker_fragment_show_pictures
+com.raceyourself.samsungprovider.R$styleable: int com_facebook_picker_fragment_show_title_bar
+com.raceyourself.samsungprovider.R$styleable: int com_facebook_picker_fragment_title_bar_background
+com.raceyourself.samsungprovider.R$styleable: int com_facebook_picker_fragment_title_text
+com.raceyourself.samsungprovider.R$styleable: int[] com_facebook_place_picker_fragment
+com.raceyourself.samsungprovider.R$styleable: int com_facebook_place_picker_fragment_radius_in_meters
+com.raceyourself.samsungprovider.R$styleable: int com_facebook_place_picker_fragment_results_limit
+com.raceyourself.samsungprovider.R$styleable: int com_facebook_place_picker_fragment_search_text
+com.raceyourself.samsungprovider.R$styleable: int com_facebook_place_picker_fragment_show_search_box
+com.raceyourself.samsungprovider.R$styleable: int[] com_facebook_profile_picture_view
+com.raceyourself.samsungprovider.R$styleable: int com_facebook_profile_picture_view_is_cropped
+com.raceyourself.samsungprovider.R$styleable: int com_facebook_profile_picture_view_preset_size
 com.raceyourself.samsungprovider.R$xml: int accessoryservices
 com.raceyourself.samsungprovider.R$xml: int voice_trigger
 com.roscopeco.ormdroid.BlobTypeMapping

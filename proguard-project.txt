@@ -4,13 +4,13 @@
 
 ## uncomment for CLI use
 #-injars bin/classes
-#-injars /Users/benlister/git/GlassFitPlatform/bin/glassfitplatform.jar  #want to include obfuscated code from here too
-#-libraryjars /Users/benlister/git/GlassFitPlatform/libs
+#-injars /Users/benlister/git/AndroidPlatform/bin/glassfitplatform.jar  #want to include obfuscated code from here too
+#-libraryjars /Users/benlister/git/AndroidPlatform/libs
 #-outjars release/RaceYourselfGearEdition_Proguard.jar
 
 -libraryjars libs/accessorysdk.jar
--libraryjars /Users/benlister/android-sdks/platforms/android-15/android.jar
--libraryjars /Users/benlister/android-sdks/extras/google/google_play_services/libproject/google-play-services_lib/libs/google-play-services.jar
+-libraryjars /Users/benlister/android-sdks/platforms/android-19/android.jar
+#-libraryjars /Users/benlister/android-sdks/extras/google/google_play_services/libproject/google-play-services_lib/libs/google-play-services.jar
 
 
 ## comment for CLI use
