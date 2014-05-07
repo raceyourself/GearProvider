@@ -35,12 +35,10 @@ import android.accounts.AccountManager;
 import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.bluetooth.BluetoothGattCharacteristic;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Binder;
-import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
@@ -48,8 +46,6 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.WindowManager;
 
-import com.glassfitgames.glassfitplatform.BLE.BluetoothLeHelper;
-import com.glassfitgames.glassfitplatform.BLE.BluetoothLeListener;
 import com.glassfitgames.glassfitplatform.gpstracker.GPSTracker;
 import com.glassfitgames.glassfitplatform.gpstracker.Helper;
 import com.glassfitgames.glassfitplatform.gpstracker.SyncHelper;
@@ -57,12 +53,9 @@ import com.glassfitgames.glassfitplatform.models.Device;
 import com.glassfitgames.glassfitplatform.models.Preference;
 import com.glassfitgames.glassfitplatform.models.RemoteConfiguration;
 import com.glassfitgames.glassfitplatform.models.UserDetail;
-import com.raceyourself.android.samsung.models.CycleCadenceData;
-import com.raceyourself.android.samsung.models.CycleWheelData;
 import com.google.android.gms.plus.PlusShare;
 import com.raceyourself.android.samsung.models.GpsPositionData;
 import com.raceyourself.android.samsung.models.GpsStatusResp;
-import com.raceyourself.android.samsung.models.HeartRateData;
 import com.raceyourself.android.samsung.models.RemoteConfigurationResp;
 import com.raceyourself.android.samsung.models.SAModel;
 import com.raceyourself.android.samsung.models.ShareScoreReq;
@@ -73,7 +66,7 @@ import com.samsung.android.sdk.accessory.SAAgent;
 import com.samsung.android.sdk.accessory.SAPeerAgent;
 import com.samsung.android.sdk.accessory.SASocket;
 
-public class ProviderService extends SAAgent implements BluetoothLeListener {
+public class ProviderService extends SAAgent {
 	
     public static final String TAG = "RaceYourselfProvider";
     public static final String CONSUMER_TAG = "RaceYourselfConsumer";
@@ -88,7 +81,6 @@ public class ProviderService extends SAAgent implements BluetoothLeListener {
 	private static GPSTracker gpsTracker = null;
 	private static GpsDataSender gpsDataSender = null;
 	private Timer timer = new Timer();
-	private BluetoothLeHelper mBleHelper;
 	
 	private AlertDialog alert;
 	private AlertDialog waitingAlert;
@@ -232,9 +224,6 @@ public class ProviderService extends SAAgent implements BluetoothLeListener {
 				    // stop sending updates
 				    Log.d(TAG, "No connections remaining, destroying GPS tracker");
 				    stopTracking();
-				    
-				    mBleHelper.stopListening();
-				    mBleHelper.unregisterListener(this);
 				}
 			}
 		} else
@@ -270,13 +259,6 @@ public class ProviderService extends SAAgent implements BluetoothLeListener {
 				
 				// init GPS tracker to start searching for position
 				ensureGps();
-				
-				// look for BLE devices (HR, bike speedo) if we're on API 18 or above
-				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-    				mBleHelper = new BluetoothLeHelper(this);
-    				mBleHelper.registerListener(this);
-    				mBleHelper.startListening();
-				}
 				
 				try {				    
 				    waitingAlert.cancel();
@@ -942,34 +924,4 @@ public class ProviderService extends SAAgent implements BluetoothLeListener {
         mNotifyMgr.cancel(TETHER_NOTIFICATION_ID);
         iconEnabled = false;
 	}
-
-    @Override
-    public void characteristicDetected(BluetoothGattCharacteristic characteristic) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void onNewHeartrateData(int heartRateBpm) {
-        // Send new heart-rate to all connected devices
-        for (RaceYourselfSamsungProviderConnection conn : mConnectionsMap.values()) {
-            send(String.valueOf(conn.mConnectionId), new HeartRateData(heartRateBpm));
-        }
-    }
-
-    @Override
-    public void onNewCadenceData(float cadenceRpm) {
-     // Send new cadence to all connected devices
-        for (RaceYourselfSamsungProviderConnection conn : mConnectionsMap.values()) {
-            send(String.valueOf(conn.mConnectionId), new CycleCadenceData(cadenceRpm));
-        }
-    }
-
-    @Override
-    public void onNewWheelSpeedData(float wheelSpeedRpm) {
-        // Send new speed to all connected devices
-        for (RaceYourselfSamsungProviderConnection conn : mConnectionsMap.values()) {
-            send(String.valueOf(conn.mConnectionId), new CycleWheelData(wheelSpeedRpm));
-        }
-    }
 }
