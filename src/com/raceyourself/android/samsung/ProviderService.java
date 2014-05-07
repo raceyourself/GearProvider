@@ -387,18 +387,19 @@ public class ProviderService extends SAAgent implements BluetoothLeListener {
             }
            
             if (req != null) {
-                String imageUrlFormat = "http://shared.raceyourself.com/gear-score-%d.jpg";
+                String imageUrlFormat = "http://shared.raceyourself.com/gear-score-%d-%d.jpg";
                 String shareType = "score";
-                if (req.isHighscore()) {
-                    imageUrlFormat = "http://shared.raceyourself.com/gear-high-score-%d.jpg";
+                if (req.getHighscore() < req.getScore()) {
+                    imageUrlFormat = "http://shared.raceyourself.com/gear-high-score-%d-%d.jpg";
                     shareType = "highscore";
                 }
-                String imageUrl = String.format(imageUrlFormat, req.getScore());
+                
+                String imageUrl = String.format(imageUrlFormat, req.getScore(), Math.max(req.getScore(), req.getHighscore()));
                 
                 Helper.logEvent(String.format("{\"event_type\":\"share\", \"share_type\":\"%s\", \"service\":\"%s\"}", shareType, req.getScore()));
                 if ("google+".equals(req.getService())) {
-                    String text = String.format("I ran %d laps!", req.getScore());
-                    if (req.isHighscore()) text = "I got a new highscore! " + text;
+                    String text = String.format(req.getScore() > 1 ? "I ran %d laps!" : "I ran %d lap", req.getScore());
+                    if (req.getHighscore() < req.getScore()) text = "I got a new highscore! " + text;
                     Intent shareIntent = new PlusShare.Builder(this)
                     .setType("text/plain")
                     .setText(text + " #RaceYourself")
@@ -409,17 +410,19 @@ public class ProviderService extends SAAgent implements BluetoothLeListener {
                     startActivity(shareIntent);                    
                 } else if ("facebook".equals(req.getService())) {
                     Intent customIntent = new Intent("com.raceyourself.intent.FACEBOOK_SHARE");
-                    if (req.isHighscore()) customIntent.putExtra("name", "New Highscore!");
+                    if (req.getHighscore() < req.getScore()) customIntent.putExtra("name", "New Highscore!");
                     else customIntent.putExtra("name", "Eliminated!");
-                    customIntent.putExtra("caption", String.format("I ran %d laps!", req.getScore()));
+                    customIntent.putExtra("caption", String.format(req.getScore() > 1 || req.getScore() == 0 ? "I survived %d laps of the Eliminator! Get the app free at http://www.raceyourself.com" : "I survived %d lap of the Eliminator! Get the app free at http://www.raceyourself.com", req.getScore()));
+//                    customIntent.putExtra("description", "");
                     customIntent.putExtra("picture", imageUrl);
-                    customIntent.putExtra("link", "http://www.raceyourself.com/gear");
+                    customIntent.putExtra("link", "https://www.raceyourself.com/gear");
                     
                     customIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(customIntent);
                 } else if ("twitter".equals(req.getService())) {
-                    String text = String.format("I ran %d laps!", req.getScore());
-                    String url = String.format("https://twitter.com/intent/tweet?url=%s&text=%s&via=Race_Yourself", imageUrl, text);
+                	String cardUrl = String.format(imageUrlFormat.replace("jpg", "html"), req.getScore(), Math.max(req.getScore(), req.getHighscore()));
+                	String text = String.format(req.getScore() > 1 || req.getScore() == 0 ? "I survived %d laps of the Eliminator!" : "I survived %d lap of the Eliminator!", req.getScore());
+                    String url = String.format("https://twitter.com/intent/tweet?url=%s&text=%s&via=Race_Yourself", cardUrl, text);
                     Intent shareIntent = new Intent(Intent.ACTION_VIEW);
                     shareIntent.setData(Uri.parse(url));
                     
