@@ -130,6 +130,8 @@ public class ProviderService extends SAAgent {
         }
         // make sure we have a record for the user
         Helper.getUser();
+        // Initialize helper singleton
+        Helper.getInstance(this);
         
         int result = super.onStartCommand(i,j,k);
         
