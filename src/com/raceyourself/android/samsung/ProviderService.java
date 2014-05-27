@@ -92,6 +92,7 @@ public class ProviderService extends SAAgent {
 	
 	private final int TETHER_NOTIFICATION_ID = 1;
 	private boolean iconEnabled = false;
+	private long lastGpsReqTimestamp = 0;  // the last time we were asked for a gps status
 
 	public class LocalBinder extends Binder {
 		public ProviderService getService() {
@@ -316,7 +317,10 @@ public class ProviderService extends SAAgent {
 		        response = new GpsStatusResp(GpsStatusResp.GPS_ENABLED);
 		    } else {
 		        response = new GpsStatusResp(GpsStatusResp.GPS_DISABLED);
-		        popupGpsDialog();
+		        if (System.currentTimeMillis() > lastGpsReqTimestamp + 3000) {
+		        	popupGpsDialog();  // only popup on first poll (they happen every second at time of writing..)
+		        }
+		        lastGpsReqTimestamp = System.currentTimeMillis();
 		    }
 		} else if (data.contains(SAModel.START_TRACKING_REQ)) {
 		    startTracking();
