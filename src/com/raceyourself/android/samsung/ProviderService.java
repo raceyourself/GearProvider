@@ -18,6 +18,7 @@
 package com.raceyourself.android.samsung;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -91,6 +92,7 @@ public class ProviderService extends SAAgent {
 	
 	private final int TETHER_NOTIFICATION_ID = 1;
 	private boolean iconEnabled = false;
+	private long lastGpsReqTimestamp = 0;  // the last time we were asked for a gps status
 
 	public class LocalBinder extends Binder {
 		public ProviderService getService() {
@@ -130,6 +132,8 @@ public class ProviderService extends SAAgent {
         }
         // make sure we have a record for the user
         Helper.getUser();
+        // Initialize helper singleton
+        Helper.getInstance(this);
         
         int result = super.onStartCommand(i,j,k);
         
@@ -313,7 +317,10 @@ public class ProviderService extends SAAgent {
 		        response = new GpsStatusResp(GpsStatusResp.GPS_ENABLED);
 		    } else {
 		        response = new GpsStatusResp(GpsStatusResp.GPS_DISABLED);
-		        popupGpsDialog();
+		        if (System.currentTimeMillis() > lastGpsReqTimestamp + 3000) {
+		        	popupGpsDialog();  // only popup on first poll (they happen every second at time of writing..)
+		        }
+		        lastGpsReqTimestamp = System.currentTimeMillis();
 		    }
 		} else if (data.contains(SAModel.START_TRACKING_REQ)) {
 		    startTracking();
@@ -369,14 +376,14 @@ public class ProviderService extends SAAgent {
             }
            
             if (req != null) {
-                String imageUrlFormat = "http://shared.raceyourself.com/gear-score-%d-%d.jpg";
+                String filenameFormat = "gear-score-%d-%d-%s";
                 String shareType = "score";
                 if (req.getHighscore() < req.getScore()) {
-                    imageUrlFormat = "http://shared.raceyourself.com/gear-high-score-%d-%d.jpg";
+                    filenameFormat = "gear-high-score-%d-%d-%s";
                     shareType = "highscore";
                 }
                 
-                String imageUrl = String.format(imageUrlFormat, req.getScore(), Math.max(req.getScore(), req.getHighscore()));
+                String imageUrl = "http://shared.raceyourself.com/" + MD5(String.format(filenameFormat, req.getScore(), Math.max(req.getScore(), req.getHighscore()), req.getSubtext())) + ".jpg";
                 
                 Helper.logEvent(String.format("{\"event_type\":\"share\", \"share_type\":\"%s\", \"service\":\"%s\"}", shareType, req.getScore()));
                 if ("google+".equals(req.getService())) {
@@ -402,7 +409,7 @@ public class ProviderService extends SAAgent {
                     customIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(customIntent);
                 } else if ("twitter".equals(req.getService())) {
-                	String cardUrl = String.format(imageUrlFormat.replace("jpg", "html"), req.getScore(), Math.max(req.getScore(), req.getHighscore()));
+                	String cardUrl = "http://shared.raceyourself.com/" + MD5(String.format(filenameFormat, req.getScore(), Math.max(req.getScore(), req.getHighscore()), req.getSubtext())) + ".html";
                 	String text = String.format(req.getScore() > 1 || req.getScore() == 0 ? "I survived %d laps of the Eliminator!" : "I survived %d lap of the Eliminator!", req.getScore());
                     String url = String.format("https://twitter.com/intent/tweet?url=%s&text=%s&via=Race_Yourself", cardUrl, text);
                     Intent shareIntent = new Intent(Intent.ACTION_VIEW);
@@ -926,5 +933,15 @@ public class ProviderService extends SAAgent {
                 (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         mNotifyMgr.cancel(TETHER_NOTIFICATION_ID);
         iconEnabled = false;
+	}
+	
+	public static String MD5(String plaintext) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("MD5");
+            digest.update(plaintext.getBytes());
+            return String.format("%x", new BigInteger(digest.digest()));
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
 	}
 }

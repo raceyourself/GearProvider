@@ -28,6 +28,7 @@ import android.graphics.drawable.StateListDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.StrictMode;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -47,6 +48,8 @@ import com.raceyourself.samsungprovider.R;
 
 public class PopupActivity extends Activity {
     public static final String TAG = "PopupActivity";
+    
+    private static final boolean DEBUG = false;
 
     private ProviderService mService;
     private boolean mBound = false;
@@ -65,6 +68,21 @@ public class PopupActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.e(TAG, "Starting activity");
+        
+        if (DEBUG) {
+            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+                    .detectDiskReads()
+                    .detectDiskWrites()
+                    .detectAll()   // or .detectNetwork() 
+                    .penaltyLog()
+                    .build());
+            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+                    .detectLeakedSqlLiteObjects()
+                    .detectLeakedClosableObjects()
+                    .penaltyLog()
+                    .penaltyDeath()
+                    .build());
+        }        
           
         uiHelper = new UiLifecycleHelper(this, statusCallback);
         uiHelper.onCreate(savedInstanceState);        
