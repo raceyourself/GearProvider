@@ -162,7 +162,6 @@ public class ProviderService extends SAAgent {
         
         // register with server
         if (!ensureDeviceIsRegistered()) {
-            popupNetworkDialog();
             return;
         }
         
@@ -577,7 +576,8 @@ public class ProviderService extends SAAgent {
                })
                .setNegativeButton("Quit", new DialogInterface.OnClickListener() {
                    public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
-                        ProviderService.this.stopSelf();
+                       ProviderService.this.stopSelf();
+                       dialog.cancel();
                    }
                })
                .setTitle("RaceYourself Gear Edition");
